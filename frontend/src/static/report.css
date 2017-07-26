@@ -1,0 +1,47 @@
+body {
+  padding-top: 15px;
+  /*padding-bottom: 30px;*/
+}
+
+.theme-dropdown .dropdown-menu {
+  position: static;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.theme-showcase > p > .btn {
+  margin: 5px 0;
+}
+
+.theme-showcase .navbar .container {
+  width: auto;
+}
+
+/* edit beginning here */
+
+table {
+  table-layout: fixed;
+  width: 75%;
+}
+
+table td {
+  word-wrap: break-word;         /* All browsers since IE 5.5+ */
+  overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
+  white-space: pre;
+}
+
+table th {
+    word-wrap: break-word;         /* All browsers since IE 5.5+ */
+    overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
+    white-space: pre;
+}
+
+.footer {
+  position: relative;
+  margin-top: 25px;
+  background-color: #f5f5f5;
+}
+
+.progress { margin-left: auto; margin-right:auto; }
+
+
