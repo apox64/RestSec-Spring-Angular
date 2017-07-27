@@ -1,4 +1,4 @@
-package de.novatecgmbh.restsecspring.controller;
+package de.novatecgmbh.restsecspring.api.crawler;
 
 import de.novatecgmbh.restsecspring.crawler.HateoasCrawler;
 import org.slf4j.Logger;

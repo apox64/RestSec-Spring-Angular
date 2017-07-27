@@ -1,31 +1,26 @@
-package de.novatecgmbh.restsecspring.scanner;
+package de.novatecgmbh.restsecspring.gateway;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Map;
 
-public class ZapConnector {
+public class ZapGateway {
 
     //TODO: use zap-clientapi 1.3.0
 
-    private static Logger logger = LoggerFactory.getLogger(ZapConnector.class);
+    private static Logger logger = LoggerFactory.getLogger(ZapGateway.class);
     private static String ZAP_URL = "http://127.0.0.1:8081";
 
-    public ZapConnector(String url) {
-        ZapConnector.ZAP_URL = url;
+    public ZapGateway(String url) {
+        ZapGateway.ZAP_URL = url;
     }
 
     public boolean isOnline() {

@@ -18,6 +18,64 @@
 
 <hr>
 
+  <h2>1. Set the target</h2>
+  <div class="row">
+    <div class="col-md-6">
+      1.1 Set a specific URL
+      <br>
+      Target <input type="text" [(ngModel)]="targetURL">
+    </div>
+    <div class="col-md-6">
+      1.2 Let a crawler do the work
+      <div class="radio">
+        <label><input type="radio" name="optradio" checked>Swagger</label>
+      </div>
+      <div class="radio">
+        <label><input type="radio" name="optradio">HATEOAS</label>
+      </div>
+      <br>
+      <button>
+        Upload Swaggerfile
+      </button> Status: <label>Nothing uploaded</label>
+      <br>
+        HATEOAS Entrypoint URL <input type="text" [(ngModel)]="targetURL">
+
+<!--
+
+            <div class="radio">
+                <label><input type="radio" name="optradio" checked="">Swagger</input></label>
+            </div>
+            <div class="radio">
+                <label><input type="radio" name="optradio">HATEOAS</input></label>
+            </div>
+-->
+
+    </div>
+  </div>
+
+<hr>
+
+  <h2>2. Set the scanners</h2>
+
+  <h2>Scanner Types</h2>
+            <p>Please choose what you want to check.</p>
+            <form>
+                <div class="checkbox">
+                    <label><input type="checkbox" value="">OWASP ZAP Proxy</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" value="">SQLMap</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" value="">RestSec XSS Scanner</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" value="">RestSec Security Header Scanner</label>
+                </div>
+                <button>check all</button>
+                <button>uncheck all</button>
+            </form>
+
 <div class="row">
   <div class="col-md-5">
     <div class="pull-right">
@@ -37,8 +95,6 @@
     </div>
   </div>
 </div>
-
-<hr>
 
 <div class="row">
   <div class="col-md-10">
@@ -68,13 +124,9 @@
   </div>
 </div>
 
-<hr>
-
 <div class="row">
   <div class="col-md-5">
-    <div class="pull-right">
-      Target <input type="text" [(ngModel)]="targetURL">
-    </div>
+
   </div>
   <div class="col-md-2">
     <button type="button" class="btn btn-danger" (click)=startZapSpiderScanner() id="fireButton">Fire!</button>

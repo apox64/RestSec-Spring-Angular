@@ -1,4 +1,4 @@
-package de.novatecgmbh.restsecspring.controller;
+package de.novatecgmbh.restsecspring.api;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
