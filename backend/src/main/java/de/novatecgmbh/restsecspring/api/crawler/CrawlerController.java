@@ -1,6 +1,6 @@
 package de.novatecgmbh.restsecspring.api.crawler;
 
-import de.novatecgmbh.restsecspring.crawler.HateoasCrawler;
+import de.novatecgmbh.restsecspring.logic.crawler.HateoasCrawler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;

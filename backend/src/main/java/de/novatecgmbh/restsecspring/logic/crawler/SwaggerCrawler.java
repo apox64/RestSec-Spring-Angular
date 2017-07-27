@@ -1,4 +1,4 @@
-package de.novatecgmbh.restsecspring.crawler;
+package de.novatecgmbh.restsecspring.logic.crawler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
