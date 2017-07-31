@@ -41,7 +41,6 @@
         HATEOAS Entrypoint URL <input type="text" [(ngModel)]="targetURL">
 
 <!--
-
             <div class="radio">
                 <label><input type="radio" name="optradio" checked="">Swagger</input></label>
             </div>
@@ -52,6 +51,23 @@
 
     </div>
   </div>
+
+<hr>
+  <h3>Available Endpoints</h3>
+  <button type="button" class="btn btn-default" (click)=getAvailableEndpoints()>
+    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+  </button>
+
+  <table>
+    <tbody ng-repeat="i in attackSet">
+      <tr><td>{{i}}</td><td>{{$index}}</td></tr>
+      <!-- <tr><td>{{i.name}}</td><td>{{$index}}</td></tr>
+      <tr ng-repeat="e in i.details">
+         <td>{{$index}}</td>
+         <td>{{e.foo}}</td>
+         <td>{{e.bar}}</td></tr> -->
+    </tbody>
+  </table>
 
 <hr>
 
@@ -74,6 +90,11 @@
                 </div>
                 <button>check all</button>
                 <button>uncheck all</button>
+
+                <div class="checkbox">
+                    <label><input type="checkbox" value="">Brute Force (all HTTP Verbs (GET, POST, ...))</label>
+                </div>
+
             </form>
 
 <div class="row">
@@ -123,6 +144,10 @@
     </div>
   </div>
 </div>
+
+<hr>
+
+2.5 Customize Report Level
 
 <hr>
 <h2>3. Start the scanners</h2>

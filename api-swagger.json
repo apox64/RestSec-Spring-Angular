@@ -1,0 +1,550 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Frontend: [http://localhost:4200/](http://localhost:4200/). Backend: [http://localhost:8080](http://localhost:8080). API Key: none.",
+    "version": "1.0.0",
+    "title": "RestSec API",
+    "termsOfService": "http://swagger.io/terms/",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "crawler",
+      "description": "Provide a Swagger File or give a link to a HATEOAS resource to scan for attackable endpoints.",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "scanner",
+      "description": "OWASP Zap Proxy; sqlmap; RestSec XSS Scanner; RestSec Security Header Scanner"
+    },
+    {
+      "name": "reporting",
+      "description": "Returns and edits attack sets and HTML reports."
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/crawler/hateoas": {
+      "get": {
+        "tags": [
+          "crawler"
+        ],
+        "summary": "Get status of HATEOAS Crawler.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "crawler"
+        ],
+        "summary": "Start HATEOAS Crawler with given target URL.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/crawler/swagger": {
+      "get": {
+        "tags": [
+          "crawler"
+        ],
+        "summary": "Get status of Swagger Crawler.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "crawler"
+        ],
+        "summary": "Start Swagger Crawler with current file in \"cache\".",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/crawler/swagger/upload": {
+      "post": {
+        "tags": [
+          "crawler"
+        ],
+        "summary": "uploads a swagger file (Format: yaml or json)",
+        "description": "uploads a swagger file (Format: yaml or json)",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "file",
+            "in": "formData",
+            "description": "file to upload",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/scanner/zap": {
+      "get": {
+        "tags": [
+          "scanner"
+        ],
+        "summary": "ZAP online / offline?",
+        "description": "ZAP online / offline?",
+        "operationId": "getStatus",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      }
+    },
+    "/scanner/zap/status": {
+      "get": {
+        "tags": [
+          "scanner"
+        ],
+        "summary": "Current status of the spider and scanner. Finished? Percentage?",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "type",
+            "type": "string",
+            "enum": [
+              "spider",
+              "ascan"
+            ],
+            "required": true,
+            "description": "spider / ascan"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/scanner/zap/start": {
+      "post": {
+        "summary": "Start a ZAP spider and scanner.",
+        "tags": [
+          "scanner"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "targetUrl",
+            "type": "string",
+            "required": true,
+            "default": "http://localhost:8080",
+            "description": "Specifiy full URL to target."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/scanner/sqlmap": {
+      "get": {
+        "tags": [
+          "scanner"
+        ],
+        "summary": "Get status of sqlmap.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "scanner"
+        ],
+        "summary": "Start sqlmap with given target URL.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/scanner/restsec/xss": {
+      "get": {
+        "tags": [
+          "scanner"
+        ],
+        "summary": "Get status of RestSec XSS Scanner.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "scanner"
+        ],
+        "summary": "Start RestSec XSS Scanner with given target URL.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/scanner/restsec/headerscan": {
+      "get": {
+        "tags": [
+          "scanner"
+        ],
+        "summary": "Get status of RestSec Security Header Scanner.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "scanner"
+        ],
+        "summary": "Start RestSec Security Header Scanner with given target URL.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/reporting/attackset": {
+      "get": {
+        "tags": [
+          "reporting"
+        ],
+        "summary": "Returns current attack set.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/reporting/attackset/{id}": {
+      "delete": {
+        "tags": [
+          "reporting"
+        ],
+        "summary": "Deletes element in attack set by ID.",
+        "description": "Deletes element in attack set by ID.",
+        "operationId": "deletePet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Pet id to delete",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AttackSet"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Pet not found"
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "reporting"
+        ],
+        "summary": "Updates an element by ID.",
+        "description": "Updates an element by ID.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AttackSet"
+            }
+          },
+          "400": {
+            "description": "Invalid ID."
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/reporting/report/{scannerType}": {
+      "get": {
+        "tags": [
+          "reporting"
+        ],
+        "summary": "Returns HTML report for given scanner type.",
+        "parameters": [
+          {
+            "name": "scannerType",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "zap",
+              "sqlmap",
+              "restsecxss",
+              "restsecheaders"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "get": {
+        "tags": [
+          "Swagger Sample (Petstore)"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The user name for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            },
+            "headers": {
+              "X-Rate-Limit": {
+                "type": "integer",
+                "format": "int32",
+                "description": "calls per hour allowed by the user"
+              },
+              "X-Expires-After": {
+                "type": "string",
+                "format": "date-time",
+                "description": "date in UTC when token expires"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/pet/{petId}/uploadImage": {
+      "post": {
+        "tags": [
+          "Swagger Sample (Petstore)"
+        ],
+        "summary": "uploads an image",
+        "description": "",
+        "operationId": "uploadFile",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "petId",
+            "in": "path",
+            "description": "ID of pet to update",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "additionalMetadata",
+            "in": "formData",
+            "description": "Additional data to pass to server",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "file",
+            "in": "formData",
+            "description": "file to upload",
+            "required": false,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:pets": "modify pets in your account",
+        "read:pets": "read your pets"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "AttackSet": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "endpointURL": {
+          "type": "string"
+        },
+        "isScanned": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "AttackSet"
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "GitHub",
+    "url": "https://github.com/apox64/RestSec-Spring-Angular"
+  }
+}

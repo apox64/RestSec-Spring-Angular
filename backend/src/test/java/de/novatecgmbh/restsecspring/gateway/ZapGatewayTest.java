@@ -1,6 +1,5 @@
-package de.novatecgmbh.restsecspring.scanner;
+package de.novatecgmbh.restsecspring.gateway;
 
-import de.novatecgmbh.restsecspring.gateway.ZapGateway;
 import org.junit.jupiter.api.Test;
 
 class ZapGatewayTest {

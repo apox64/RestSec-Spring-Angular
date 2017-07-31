@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-public class ScannerController {
+@RequestMapping(value = "/scanner/zap", produces = "application/json; charset=UTF-8")
+@CrossOrigin
+public class ZapController {
 
-    private static Logger logger = LoggerFactory.getLogger(ScannerController.class);
+    private static Logger logger = LoggerFactory.getLogger(ZapController.class);
     private String ZAP_URL = "http://localhost:8081";
 
-    @CrossOrigin
-    @RequestMapping(value = "/scanner/zap", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(path = "", method = RequestMethod.GET)
     public String zapOnline(@RequestParam Map<String, String> requestParams) {
         if (requestParams.get("zapUrl") != null) {
             ZAP_URL = requestParams.get("zapUrl");
@@ -28,16 +29,14 @@ public class ScannerController {
         }
     }
 
-    @CrossOrigin
-    @RequestMapping(value = "/scanner/zap/status", method = RequestMethod.GET, produces = "application/json")
-    public String zapProgress(@RequestParam Map<String, String> requestParams) {
+    @RequestMapping(path = "/status", method = RequestMethod.GET)
+    public String zapStatus(@RequestParam Map<String, String> requestParams) {
         ZapGateway zapGateway = new ZapGateway(ZAP_URL);
         logger.info("type: " + requestParams.get("type"));
         return zapGateway.getStatus(requestParams.get("type"));
     }
 
-    @CrossOrigin
-    @RequestMapping(value = "/scanner/zap/start", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(path = "/start", method = RequestMethod.POST)
     public String zapStart(@RequestParam Map<String, String> requestParams) {
         ZapGateway zapGateway = new ZapGateway(ZAP_URL);
         logger.info("url: " + requestParams.get("url"));

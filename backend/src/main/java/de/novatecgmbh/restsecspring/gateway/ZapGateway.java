@@ -102,7 +102,7 @@ public class ZapGateway {
 
         try {
             status.put("spider", "finished");
-            status.put("scanner", "finished");
+            status.put("gateway", "finished");
         } catch (JSONException e) {
             e.printStackTrace();
         }

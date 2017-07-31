@@ -9,15 +9,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Map;
 
 @RestController
-public class CrawlerController {
+@RequestMapping(value = "/crawler/swagger")
+public class SwaggerCrawlerController {
 
-    private static Logger logger = LoggerFactory.getLogger(CrawlerController.class);
+    private static Logger logger = LoggerFactory.getLogger(SwaggerCrawlerController.class);
 
     //TODO: Save Swagger File and then parse it.
-    @RequestMapping(value = "/crawler/swagger", method = RequestMethod.POST, headers = "content-type=multipart/form-data")
+    @RequestMapping(value = "", method = RequestMethod.POST, headers = "content-type=multipart/form-data")
     public String handleFileUpload(@RequestParam ("file") MultipartFile file){
         logger.info("File upload ...");
         String name = "test1";
@@ -36,16 +36,5 @@ public class CrawlerController {
         }
     }
 
-    @RequestMapping(value = "/crawler/hateoas", method = RequestMethod.POST)
-    public String hateoas(@RequestParam Map<String, String> requestParams){
 
-        String url = requestParams.get("url");
-        String authtoken = requestParams.get("authtoken");
-
-        logger.info(url);
-        logger.info(authtoken);
-
-        HateoasCrawler hateoasCrawler = new HateoasCrawler(url);
-        return String.valueOf(hateoasCrawler.getNumberOfEndpoints());
-    }
 }
