@@ -1,0 +1,72 @@
+<h2>Customize the scanners</h2>
+
+          <p>Please choose what you want to check.</p>
+          <form>
+              <div class="checkbox">
+                  <label><input type="checkbox" value="">OWASP ZAP Proxy</label>
+              </div>
+              <div class="checkbox">
+                  <label><input type="checkbox" value="">SQLMap</label>
+              </div>
+              <div class="checkbox">
+                  <label><input type="checkbox" value="">RestSec XSS Scanner</label>
+              </div>
+              <div class="checkbox">
+                  <label><input type="checkbox" value="">RestSec Security Header Scanner</label>
+              </div>
+              <button>check all</button>
+              <button>uncheck all</button>
+
+              <div class="checkbox">
+                  <label><input type="checkbox" value="">Brute Force (all HTTP Verbs (GET, POST, ...))</label>
+              </div>
+
+          </form>
+
+<div class="row">
+<div class="col-md-5">
+  <div class="pull-right">
+    URL <input type="text" [(ngModel)]="zapUrl">
+  </div>
+</div>
+<div class="col-md-5">
+  <div class="pull-left">
+    Status <span class="label label-default" id="onlineStatusLabel">{{zapOnlineStatus}}</span>
+  </div>
+</div>
+<div class="col-md-2">
+  <div class="pull-left">
+    <button type="button" class="btn btn-default" (click)=isZapOnline()>
+      <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+    </button>
+  </div>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-10">
+  <div class="container">
+    <table class="table">
+      <tbody>
+        <tr>
+          <td>Spider:</td>
+          <td><span class="label label-default">{{spiderStatus}}</span></td>
+          <td><span class="label label-default">({{spiderProgress}}%)</span></td>
+        </tr>
+        <tr>
+          <td>Scanner:</td>
+          <td><span class="label label-default">{{scannerStatus}}</span></td>
+          <td><span class="label label-default">({{scannerProgress}}%)</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="col-md-2">
+  <div class="pull-left">
+    <button type="button" class="btn btn-default" (click)=getZapStatus()>
+      <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+    </button>
+  </div>
+</div>
+</div>

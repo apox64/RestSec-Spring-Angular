@@ -23,7 +23,7 @@ public class SwaggerCrawler {
 
     private void crawl() throws JSONException {
         logger.info("Crawling a file ...");
-        attackset = new Attackset();
+        attackset = Attackset.getInstance();
         AttackableEndpoint attackableEndpoint = new AttackableEndpoint();
         attackableEndpoint.setEndpointURL("http://test.local");
         attackableEndpoint.setScanStatus(false);

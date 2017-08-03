@@ -16,7 +16,7 @@ public class AttacksetController {
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     @ResponseBody
     public String attackset() {
-        Attackset attackset = new Attackset();
+        Attackset attackset = Attackset.getInstance();
         AttackableEndpoint a1 = new AttackableEndpoint();
         a1.setEndpointURL("http://test.local");
         a1.setScanStatus(false);
@@ -33,5 +33,4 @@ public class AttacksetController {
         logger.info("Returning attackSet (length: " + attackset.getAttackSet().length()+")");
         return attackset.getAttackSet().toString();
     }
-
 }

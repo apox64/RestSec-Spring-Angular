@@ -1,16 +1,15 @@
-<!doctype html>
-
 <head>
   <meta charset="utf-8">
-  <title>Angular Bootstrap Demo</title>
+  <title>RestSec Vulnerability Scanner</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 
-<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script> -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
 
 <div style="text-align:center">
 
@@ -18,149 +17,34 @@
 
 <hr>
 
-  <h2>1. Set the target</h2>
-  <div class="row">
-    <div class="col-md-6">
-      1.1 Set a specific URL
-      <br>
-      Target <input type="text" [(ngModel)]="targetURL">
-    </div>
-    <div class="col-md-6">
-      1.2 Let a crawler do the work
-      <div class="radio">
-        <label><input type="radio" name="optradio" checked>Swagger</label>
-      </div>
-      <div class="radio">
-        <label><input type="radio" name="optradio">HATEOAS</label>
-      </div>
-      <br>
-      <button>
-        Upload Swaggerfile
-      </button> Status: <label>Nothing uploaded</label>
-      <br>
-        HATEOAS Entrypoint URL <input type="text" [(ngModel)]="targetURL">
-
-<!--
-            <div class="radio">
-                <label><input type="radio" name="optradio" checked="">Swagger</input></label>
-            </div>
-            <div class="radio">
-                <label><input type="radio" name="optradio">HATEOAS</input></label>
-            </div>
--->
-
-    </div>
-  </div>
-
-  <attackset></attackset>
-
-<hr>
-
-  <h2>2. Customize the scanners</h2>
-
-  <h3>Scanner Types</h3>
-            <p>Please choose what you want to check.</p>
-            <form>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">OWASP ZAP Proxy</label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">SQLMap</label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">RestSec XSS Scanner</label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">RestSec Security Header Scanner</label>
-                </div>
-                <button>check all</button>
-                <button>uncheck all</button>
-
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">Brute Force (all HTTP Verbs (GET, POST, ...))</label>
-                </div>
-
-            </form>
-
-<div class="row">
-  <div class="col-md-5">
-    <div class="pull-right">
-      URL <input type="text" [(ngModel)]="zapUrl">
-    </div>
-  </div>
-  <div class="col-md-5">
-    <div class="pull-left">
-      Status <span class="label label-default" id="onlineStatusLabel">{{zapOnlineStatus}}</span>
-    </div>
-  </div>
-  <div class="col-md-2">
-    <div class="pull-left">
-      <button type="button" class="btn btn-default" (click)=isZapOnline()>
-        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-      </button>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-10">
-    <div class="container">
-      <table class="table">
-        <tbody>
-          <tr>
-            <td>Spider:</td>
-            <td><span class="label label-default">{{spiderStatus}}</span></td>
-            <td><span class="label label-default">({{spiderProgress}}%)</span></td>
-          </tr>
-          <tr>
-            <td>Scanner:</td>
-            <td><span class="label label-default">{{scannerStatus}}</span></td>
-            <td><span class="label label-default">({{scannerProgress}}%)</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="col-md-2">
-    <div class="pull-left">
-      <button type="button" class="btn btn-default" (click)=getZapStatus()>
-        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-      </button>
-    </div>
-  </div>
-</div>
-
-<hr>
-
-2.5 Customize Report Level
-
-<hr>
-<h2>3. Start the scanners</h2>
-
-<div class="row">
-  <div class="col-md-5">
-  </div>
-  <div class="col-md-2">
-    <button type="button" class="btn btn-danger" (click)=startZapSpiderScanner() id="fireButton">Fire!</button>
-  </div>
-  <div class="col-md-3">
-    <div class="pull-left">
-      <td><span class="label label-default" id="attackRunningLabel">{{scanInProgress}}</span></td>
-    </div>
-  </div>
-  <div class="col-md-2">
-    <div class="pull-left">
-    <!-- <button type="button" class="btn btn-info" (click)=downloadResults() id="downloadButton" disabled> TODO:DISABLED FOR TESTING PURPOSES ONLY!-->
+<md-tab-group>
+  <md-tab label="Crawler">
+    <crawler></crawler>
+  </md-tab>
+  <md-tab label="Endpoints">
+    <attackset></attackset>
+  </md-tab>
+  <md-tab label="Scanner">
+    <scanner></scanner>
+  </md-tab>
+  <md-tab label="Reporting">
+    Customize Report Level
+  </md-tab>
+  <md-tab label="Results">
+    Counters + Links here
     <button type="button" class="btn btn-info" (click)=downloadResults() id="downloadButton">
       <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
     </button>
-    </div>
-  </div>
-</div>
+  </md-tab>
+</md-tab-group>
 
 <hr>
-
-<h2>4. Take a look at the results</h2>
-Counters + Links here
-
+<button md-raised-button>Fire!</button>
+<md-progress-spinner
+  class="example-margin"
+  color = "accent"
+  mode = "determinate"
+  value = "66">
+</md-progress-spinner>
 <hr>
+<button type="button" class="btn btn-danger" (click)=startZapSpiderScanner() id="fireButton">Fire!</button>

@@ -7,13 +7,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AttacksetTest {
 
-    private static Attackset attackset;
+    private static Attackset attackset = Attackset.getInstance();
     private static AttackableEndpoint endpoint1;
     private static AttackableEndpoint endpoint2;
 
     @BeforeEach
     void setUp() {
-        attackset = new Attackset();
+        //attackset = Attackset.getInstance();
         endpoint1 = new AttackableEndpoint();
         endpoint1.setEndpointURL("http://127.0.0.1.local/rest/1");
         endpoint1.setScanStatus(false);

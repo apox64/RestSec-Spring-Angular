@@ -4,10 +4,10 @@ import { Http, Response } from '@angular/http';
 @Component({
   selector: 'attackset',
   templateUrl: './attackset.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['../app.component.css']
 })
 
-export class Attackset {
+export class AttacksetComponent {
 
   constructor (private http: Http) {}
 

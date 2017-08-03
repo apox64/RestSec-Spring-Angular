@@ -11,11 +11,19 @@ import java.util.UUID;
 
 public class Attackset {
 
+    public static Attackset instance = null;
+
     private static final Logger logger = LoggerFactory.getLogger(Attackset.class);
     private final JSONArray attackSetJSON = new JSONArray();
 
-    public Attackset() {
+    private Attackset() {
         logger.info("New Attackset created.");
+    }
+
+    //Singleton
+    public static Attackset getInstance() {
+        if (instance == null) instance = new Attackset();
+        return instance;
     }
 
     public void add(AttackableEndpoint attackableEndpoint) {

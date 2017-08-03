@@ -4,17 +4,31 @@ import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { Attackset } from './attackset.component';
+import { AttacksetComponent } from './attackset/attackset.component';
+import { CrawlerComponent } from './crawler/crawler.component';
+import { ScannerComponent } from './scanner/scanner.component';
+
+import { MaterialModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import 'hammerjs';
 
 @NgModule({
   declarations: [
     AppComponent,
-    Attackset
+    AttacksetComponent,
+    CrawlerComponent,
+    ScannerComponent
   ],
   imports: [
     BrowserModule,
     HttpModule,
-    FormsModule
+    FormsModule,
+    MaterialModule,
+    BrowserAnimationsModule
+  ],
+  exports: [
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]

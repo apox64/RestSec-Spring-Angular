@@ -1,0 +1,34 @@
+<h2>Find attackable Endpoints</h2>
+<div class="row">
+  <div class="col-md-6">
+    Set a specific URL ...
+    <br>
+    <input type="text" [(ngModel)]="targetURL">
+  </div>
+  <div class="col-md-6">
+    <hr>
+    ... or let a crawler do the work!
+    <div class="radio">
+      <label><input type="radio" name="optradio" checked>Swagger</label>
+    </div>
+    <div class="radio">
+      <label><input type="radio" name="optradio">HATEOAS</label>
+    </div>
+    <br>
+    <button>
+      Upload Swaggerfile
+    </button> Status: <label>Nothing uploaded</label>
+    <br>
+      HATEOAS Entrypoint URL <input type="text" [(ngModel)]="targetURL">
+
+<!--
+          <div class="radio">
+              <label><input type="radio" name="optradio" checked="">Swagger</input></label>
+          </div>
+          <div class="radio">
+              <label><input type="radio" name="optradio">HATEOAS</input></label>
+          </div>
+-->
+
+  </div>
+</div>
