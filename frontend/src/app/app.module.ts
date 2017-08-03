@@ -4,10 +4,12 @@ import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
+import { Attackset } from './attackset.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    Attackset
   ],
   imports: [
     BrowserModule,

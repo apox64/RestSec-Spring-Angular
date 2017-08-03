@@ -2,6 +2,7 @@ package de.novatecgmbh.restsecspring.logic.crawler;
 
 import de.novatecgmbh.restsecspring.logic.reporting.attackset.AttackableEndpoint;
 import de.novatecgmbh.restsecspring.logic.reporting.attackset.Attackset;
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,27 +14,26 @@ public class SwaggerCrawler {
     private Attackset attackset;
 
     public SwaggerCrawler() {
-        crawl();
+        try {
+            crawl();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void crawl() {
+    private void crawl() throws JSONException {
         logger.info("Crawling a file ...");
         attackset = new Attackset();
         AttackableEndpoint attackableEndpoint = new AttackableEndpoint();
         attackableEndpoint.setEndpointURL("http://test.local");
         attackableEndpoint.setScanStatus(false);
-        attackset.add(4, attackableEndpoint);
-        attackset.add(attackableEndpoint);
-        attackset.add(attackableEndpoint);
-        attackset.add(8, attackableEndpoint);
-        attackset.add(attackableEndpoint);
         attackset.add(attackableEndpoint);
         // do some file magic here ...
-        this.numberOfEndpoints = 5;
+//        this.numberOfEndpoints = getNumberOfEndpoints();
     }
 
-    public int getNumberOfEndpoints() {
-        return numberOfEndpoints;
-    }
+//    public int getNumberOfEndpoints() {
+//        return attackset.getAttackSet().length();
+//    }
 
 }

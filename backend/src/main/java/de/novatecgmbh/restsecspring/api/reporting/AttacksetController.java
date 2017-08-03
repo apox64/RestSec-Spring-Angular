@@ -6,8 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @CrossOrigin
 @RestController
 @RequestMapping("/reporting/attackset")
@@ -17,15 +15,23 @@ public class AttacksetController {
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     @ResponseBody
-    public Attackset attackset() {
+    public String attackset() {
         Attackset attackset = new Attackset();
         AttackableEndpoint a1 = new AttackableEndpoint();
-        a1.setEndpointURL("http://test.com");
+        a1.setEndpointURL("http://test.local");
         a1.setScanStatus(false);
         attackset.add(a1);
+        AttackableEndpoint a2 = new AttackableEndpoint();
+        a2.setEndpointURL("http://test.local/api/attack-me/");
+        a2.setScanStatus(true);
+        AttackableEndpoint a3 = new AttackableEndpoint();
+        a3.setEndpointURL("http://test.local/test/3");
+        a3.setScanStatus(false);
+        attackset.add(a3);
+        attackset.add(a2);
         attackset.add(a1);
-        attackset.add(a1);
-        return attackset;
+        logger.info("Returning attackSet (length: " + attackset.getAttackSet().length()+")");
+        return attackset.getAttackSet().toString();
     }
 
 }

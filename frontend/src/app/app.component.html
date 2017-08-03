@@ -52,22 +52,7 @@
     </div>
   </div>
 
-<hr>
-  <h3>Available Endpoints</h3>
-  <button type="button" class="btn btn-default" (click)=getAvailableEndpoints()>
-    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-  </button>
-
-  <table>
-    <tbody ng-repeat="i in attackSet">
-      <tr><td>{{i}}</td><td>{{$index}}</td></tr>
-      <!-- <tr><td>{{i.name}}</td><td>{{$index}}</td></tr>
-      <tr ng-repeat="e in i.details">
-         <td>{{$index}}</td>
-         <td>{{e.foo}}</td>
-         <td>{{e.bar}}</td></tr> -->
-    </tbody>
-  </table>
+  <attackset></attackset>
 
 <hr>
 

@@ -1,7 +1,5 @@
 package de.novatecgmbh.restsecspring.gateway;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -38,7 +36,7 @@ public class ZapGateway {
         return false;
     }
 
-    @JsonSerialize(using = DateSerializer.class)
+    //@JsonSerialize(using = DateSerializer.class)
     public String getStatus(String type) {
         RestTemplate restTemplate = new RestTemplate();
         String spiderStatusURL = ZAP_URL + "/JSON/" + type + "/view/scans/?zapapiformat=JSON&formMethod=GET";

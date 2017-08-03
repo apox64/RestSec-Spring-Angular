@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Http , Response, URLSearchParams } from '@angular/http';
+import { Http, Response, URLSearchParams } from '@angular/http';
 import * as angular from "angular";
 
 @Component({
@@ -7,6 +7,7 @@ import * as angular from "angular";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
   constructor (private http: Http) {}
 
@@ -19,18 +20,6 @@ export class AppComponent {
   scannerStatus = '?';
   scannerProgress = "0";
   scanInProgress = 'no attack running';
-  attackSet = "";
-
-  getAvailableEndpoints() {
-    this.http.get(this.backendURL + '/reporting/attackset')
-    .subscribe(
-      (res: Response) => {
-        const response = res.json();
-        this.attackSet = response;
-        console.log(this.attackSet);
-      }
-    )
-  }
 
   isZapOnline() {
     this.http.get(this.backendURL + '/scanner/zap', {params: {"zapUrl" : this.zapUrl}})

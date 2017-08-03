@@ -1,9 +1,26 @@
 package de.novatecgmbh.restsecspring.logic.reporting.attackset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.UUID;
+
 public class AttackableEndpoint {
 
-    private String endpointURL;
-    private boolean scanStatus;
+    private UUID id;
+    private String endpointURL = "";
+    private boolean scanStatus = false;
+
+    private static Logger logger = LoggerFactory.getLogger(AttackableEndpoint.class);
+
+    public AttackableEndpoint() {
+        this.id = UUID.randomUUID();
+        logger.info("New AttackableEndpoint: " + this.id);
+    }
+
+    public UUID getId() {
+        return id;
+    }
 
     public String getEndpointURL() {
         return endpointURL;
@@ -11,6 +28,7 @@ public class AttackableEndpoint {
 
     public void setEndpointURL(String endpointURL) {
         this.endpointURL = endpointURL;
+        logger.info("endpointURL set: " + this.endpointURL);
     }
 
     public boolean getScanStatus() {
@@ -19,5 +37,9 @@ public class AttackableEndpoint {
 
     public void setScanStatus(boolean scanStatus) {
         this.scanStatus = scanStatus;
+        logger.info("scanStatus set: " + this.scanStatus);
+
     }
+
+
 }

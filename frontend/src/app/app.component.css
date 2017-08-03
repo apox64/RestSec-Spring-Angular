@@ -20,3 +20,11 @@ span.glyphicon-download {
 span.glyphicon-refresh {
     font-size: 200%;
 }
+
+.table th {
+  text-align: center;
+}
+
+.table td {
+  text-align: left;
+}

@@ -1,67 +1,84 @@
 package de.novatecgmbh.restsecspring.logic.reporting.attackset;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.util.UUID;
 
 public class Attackset {
 
     private static final Logger logger = LoggerFactory.getLogger(Attackset.class);
-    private final HashMap<Integer, AttackableEndpoint> attackSet;
+    private final JSONArray attackSetJSON = new JSONArray();
 
     public Attackset() {
-        attackSet = new HashMap<>();
         logger.info("New Attackset created.");
     }
 
     public void add(AttackableEndpoint attackableEndpoint) {
-        int currentMaxID = getCurrentMaxID();
-        logger.info("Adding \"" + (currentMaxID+1) + ":" + attackableEndpoint.getEndpointURL() + "\" to Attackset.");
-        attackableEndpoint.setScanStatus(false);
-        attackSet.put(currentMaxID+1, attackableEndpoint);
+        UUID id = attackableEndpoint.getId();
+        if (getIndexForID(id) >= 0) {
+            logger.info("Endpoint already exists with id : " + id);
+            return;
+        }
+        logger.info("Adding \"" + id + " : " + attackableEndpoint.getEndpointURL() + "\" to Attackset.");
+        JSONObject attackableEndpointJSON = new JSONObject();
+        try {
+            attackableEndpointJSON.put("id", id.toString());
+            attackableEndpointJSON.put("endpointURL", attackableEndpoint.getEndpointURL());
+            attackableEndpointJSON.put("scanStatus", attackableEndpoint.getScanStatus());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        attackSetJSON.put(attackableEndpointJSON);
     }
 
-    public void add(int id, AttackableEndpoint attackableEndpoint) {
-        logger.info("Adding \"" + id + ":" + attackableEndpoint.getEndpointURL() + "\" to Attackset.");
-        attackableEndpoint.setScanStatus(false);
-        attackSet.put(id, attackableEndpoint);
+    public void remove(AttackableEndpoint attackableEndpoint) {
+        UUID id = attackableEndpoint.getId();
+        logger.info("Removing \"" + id + "\" from Attackset.");
+        attackSetJSON.remove(getIndexForID(id));
     }
 
-    public void remove(int id) {
-        logger.info("Removing " + id + " from Attackset.");
-        attackSet.remove(id);
-    }
-
-    public void setScanned(int id) {
+    public void setScannedTrue(AttackableEndpoint attackableEndpoint) {
+        UUID id = attackableEndpoint.getId();
         logger.info("Setting scanStatus = true for " + id);
-        AttackableEndpoint attackableEndpoint = attackSet.get(id);
         attackableEndpoint.setScanStatus(true);
     }
 
-    public boolean getScanned(int id) {
-        logger.info("Getting scanStatus for " + id);
-        AttackableEndpoint attackableEndpoint = attackSet.get(id);
+    public boolean getScanStatus(AttackableEndpoint attackableEndpoint) {
         return attackableEndpoint.getScanStatus();
     }
 
-    public AttackableEndpoint get(int id) {
-        return attackSet.get(id);
+//    public AttackableEndpoint getAttackableEndpoint(UUID id) {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        AttackableEndpoint attackableEndpoint = null;
+//        try {
+//            attackableEndpoint = objectMapper.readValue(attackSetJSON.get(getIndexForID(id)).toString(), AttackableEndpoint.class);
+//        } catch (IOException | JSONException e) {
+//            e.printStackTrace();
+//        }
+//        return attackableEndpoint;
+//    }
+
+    public JSONArray getAttackSet() {
+        return attackSetJSON;
     }
 
-    public HashMap getHashMap() {
-        return attackSet;
-    }
-
-    private int getCurrentMaxID() {
-        if (attackSet.size() == 0) {
-            return 0;
+    private int getIndexForID(UUID id) {
+        for (int i = 0; i < attackSetJSON.length(); i++) {
+            try {
+                JSONObject jsonObject = (JSONObject) attackSetJSON.get(i);
+                if (jsonObject.get("id").equals(id.toString())) {
+                    return i;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-        int maxID = Collections.max(attackSet.entrySet(), Map.Entry.comparingByKey()).getKey();
-        return maxID;
+        return -1;
     }
 
 }
