@@ -1,34 +1,43 @@
-<h2>Find attackable Endpoints</h2>
-<div class="row">
-  <div class="col-md-6">
-    Set a specific URL ...
-    <br>
-    <input type="text" [(ngModel)]="targetURL">
-  </div>
-  <div class="col-md-6">
-    <hr>
-    ... or let a crawler do the work!
-    <div class="radio">
-      <label><input type="radio" name="optradio" checked>Swagger</label>
+<md-grid-list cols="4" rowHeight="2:1">
+  <md-grid-tile colspan=3 rowspan=1>
+    <div class="header">
+      <h2>Find attackable Endpoints automatically</h2>
     </div>
-    <div class="radio">
-      <label><input type="radio" name="optradio">HATEOAS</label>
+  </md-grid-tile>
+  <md-grid-tile colspan=1 rowspan=2>
+    <div class="check">
+      <button md-fab (click)="addToAttackset()" class="check-button">
+        <div [hidden]="isLoading">
+          <md-icon>check</md-icon>
+        </div>
+        <div [hidden]="!isLoading">
+          <md-progress-spinner
+            class="progress-spinner"
+            color = 'default'
+            mode = 'indeterminate'>
+          </md-progress-spinner>
+        </div>
+      </button>
     </div>
-    <br>
-    <button>
-      Upload Swaggerfile
-    </button> Status: <label>Nothing uploaded</label>
-    <br>
-      HATEOAS Entrypoint URL <input type="text" [(ngModel)]="targetURL">
-
-<!--
-          <div class="radio">
-              <label><input type="radio" name="optradio" checked="">Swagger</input></label>
-          </div>
-          <div class="radio">
-              <label><input type="radio" name="optradio">HATEOAS</input></label>
-          </div>
--->
-
-  </div>
-</div>
+  </md-grid-tile>
+  <md-grid-tile colspan=1 rowspan=1>
+    <md-radio-group class="radio-group" [(ngModel)]="selectedCrawlerType">
+      <md-radio-button class="radio-button" *ngFor="let crawlerType of crawlerTypes" [value]="crawlerType">
+        {{crawlerType}}
+      </md-radio-button>
+    </md-radio-group>
+  </md-grid-tile>
+  <md-grid-tile colspan=2 rowspan=1>
+    <div *ngIf="selectedCrawlerType == 'Swagger'" class="selected-value">
+        <button md-raised-button color="primary" class="upload-button">Upload Swagger</button>
+    </div>
+    <div *ngIf="selectedCrawlerType == 'HATEOAS'" class="selected-value">
+      <md-card>
+        <md-input-container class="example-full-width">
+            <input mdInput placeholder="HATEOAS Entrypoint URL" [value]="hateoasUrl">
+        </md-input-container>
+        <button md-mini-fab (click)="addHateoasUrl()"><md-icon>add</md-icon></button>
+      </md-card>
+    </div>
+  </md-grid-tile>
+</md-grid-list>

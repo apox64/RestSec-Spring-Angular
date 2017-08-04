@@ -27,7 +27,7 @@ export class AttacksetComponent {
   id: number;
   name: string;
 
-  getAvailableEndpoints() {
+  getAttackset() {
     this.http.get(this.backendURL + '/reporting/attackset')
     .subscribe(
       (res: Response) => {

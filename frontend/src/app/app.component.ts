@@ -9,13 +9,19 @@ import * as angular from "angular";
 })
 
 export class AppComponent {
-  constructor (private http: Http) {}
+  constructor(private http: Http) { }
 
   backendURL = 'http://127.0.0.1:8080';
   targetURL = 'http://127.0.0.1:8080';
+  selectedTab = 1;
+  isLoading = false;
 
-  downloadResults() {
-    console.log("Serving the html results file from backend here ...")
+  runAttack() {
+    this.isLoading = true;
+    setTimeout(
+      () => this.isLoading = false,
+      3000
+    );
   }
 
   title = 'app';

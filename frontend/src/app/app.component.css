@@ -28,3 +28,34 @@ span.glyphicon-refresh {
 .table td {
   text-align: left;
 }
+
+md-progress-spinner {
+  width: 36px;
+  height: 36px;
+  padding-top: 0px;
+}
+
+.footer-card {
+  background-color: #ffcccc;
+  align-items: center;
+}
+
+.main-cards {
+  text-align: center;
+}
+
+md-card {
+  padding: 5px;
+  margin: 12px;
+}
+
+.fire-button {
+  padding: 5px;
+  margin: 10px;
+  font-size: 125%;
+  font-weight: bold;
+}
+
+.progress-spinner {
+  margin: 0 auto;
+}

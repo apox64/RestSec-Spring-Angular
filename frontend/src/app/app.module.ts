@@ -10,6 +10,7 @@ import { ScannerComponent } from './scanner/scanner.component';
 
 import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import 'hammerjs';
 
@@ -25,7 +26,8 @@ import 'hammerjs';
     HttpModule,
     FormsModule,
     MaterialModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FlexLayoutModule
   ],
   exports: [
     MaterialModule
