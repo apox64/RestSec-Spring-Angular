@@ -1,0 +1,11 @@
+{
+  "/": {
+    "target": {
+      "host": "localhost",
+      "protocol": "http",
+      "port": 8888
+    },
+    "secure": false,
+    "logLevel": "debug"
+  }
+}

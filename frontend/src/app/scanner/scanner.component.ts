@@ -11,7 +11,6 @@ export class ScannerComponent {
 
   constructor (private http: Http) {}
 
-  backendURL = 'http://127.0.0.1:8080';
   id: number;
   name: string;
 
@@ -24,8 +23,18 @@ export class ScannerComponent {
   scannerProgress = "0";
   scanInProgress = 'no attack running';
 
+  httpVerbs = [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'PATCH',
+    'UPDATE',
+    'HEAD'
+  ]
+
   isZapOnline() {
-    this.http.get(this.backendURL + '/scanner/zap', {params: {"zapUrl" : this.zapUrl}})
+    this.http.get('/scanner/zap', {params: {"zapUrl" : this.zapUrl}})
     .subscribe(
       (res: Response) => {
         const statusOnline = res.json();
@@ -45,7 +54,7 @@ export class ScannerComponent {
     document.getElementById("attackRunningLabel").className = "label label-danger"
     let parameters = new URLSearchParams();
     parameters.append('url', this.targetURL);
-    this.http.post(this.backendURL + '/scanner/zap/start', parameters)
+    this.http.post('/scanner/zap/start', parameters)
     .subscribe(
       (res: Response) => {
         const response = res.json();
@@ -59,7 +68,7 @@ export class ScannerComponent {
   }
 
   getZapStatus() {
-    this.http.get(this.backendURL + '/scanner/zap/status', {params: {"type" : "spider"}})
+    this.http.get('/scanner/zap/status', {params: {"type" : "spider"}})
     .subscribe(
       (res: Response) => {
         const spiderStatus = res.json();
@@ -71,7 +80,7 @@ export class ScannerComponent {
       }
     );
 
-    this.http.get(this.backendURL + '/scanner/zap/status', {params: {"type" : "ascan"}})
+    this.http.get('/scanner/zap/status', {params: {"type" : "ascan"}})
     .subscribe(
       (res: Response) => {
         const scannerStatus = res.json();

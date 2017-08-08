@@ -2,6 +2,7 @@
   <md-grid-tile colspan=3 rowspan=1>
     <div class="header">
       <h2>Find attackable Endpoints automatically</h2>
+      <h3>Current: {{numberOfAttackPointsFound}}</h3>
     </div>
   </md-grid-tile>
   <md-grid-tile colspan=1 rowspan=2>
@@ -29,15 +30,22 @@
   </md-grid-tile>
   <md-grid-tile colspan=2 rowspan=1>
     <div *ngIf="selectedCrawlerType == 'Swagger'" class="selected-value">
-        <button md-raised-button color="primary" class="upload-button">Upload Swagger</button>
+      <button md-raised-button color="primary" class="upload-button">Upload Swagger</button>
     </div>
     <div *ngIf="selectedCrawlerType == 'HATEOAS'" class="selected-value">
-      <md-card>
-        <md-input-container class="example-full-width">
-            <input mdInput placeholder="HATEOAS Entrypoint URL" [value]="hateoasUrl">
-        </md-input-container>
-        <button md-mini-fab (click)="addHateoasUrl()"><md-icon>add</md-icon></button>
-      </md-card>
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <md-card>
+          <md-input-container md-block>
+            <input mdInput type="url" placeholder="HATEOAS Entrypoint URL" [(ngModel)]="hateoasUrl">
+          </md-input-container>
+        </md-card>
+        <md-card>
+          <md-input-container md-block>
+            <input mdInput type="text" placeholder="Auth token" [value]="targetAuthToken">
+          </md-input-container>
+        </md-card>
+        <!-- <button md-mini-fab (click)="addHateoasUrl()"><md-icon>add</md-icon></button> -->
+      </div>
     </div>
   </md-grid-tile>
 </md-grid-list>

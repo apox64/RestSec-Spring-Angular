@@ -11,9 +11,8 @@ import * as angular from "angular";
 export class AppComponent {
   constructor(private http: Http) { }
 
-  backendURL = 'http://127.0.0.1:8080';
   targetURL = 'http://127.0.0.1:8080';
-  selectedTab = 1;
+  selectedTab = 0;
   isLoading = false;
 
   runAttack() {

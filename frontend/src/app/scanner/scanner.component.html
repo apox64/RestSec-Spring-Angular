@@ -1,3 +1,24 @@
+<md-card>
+  <form>
+    <md-select placeholder="HTTP Verb" [(ngModel)]="selectedHttpVerb" name="httpVerbs">
+      <md-option *ngFor="let httpVerb of httpVerbs" [value]="httpVerb">
+        {{httpVerb}}
+      </md-option>
+    </md-select>
+    <md-card-content>
+      <section class="example-section">
+        <md-checkbox class="example-margin" [checked]="addAllHttpVerbs">
+          All HTTP Verbs
+        </md-checkbox>
+      </section>
+    </md-card-content>
+    <!-- <p> Selected value: {{selectedHttpVerb}} </p> -->
+  </form>
+</md-card>
+
+
+
+
 <h2>Customize the scanners</h2>
 
           <p>Please choose what you want to check.</p>
