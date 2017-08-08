@@ -8,6 +8,7 @@ import java.util.UUID;
 public class AttackableEndpoint {
 
     private UUID id;
+    private String httpVerb = "GET";
     private String endpointURL = "";
     private boolean scanStatus = false;
 
@@ -24,6 +25,14 @@ public class AttackableEndpoint {
 
     public String getEndpointURL() {
         return endpointURL;
+    }
+
+    public String getHttpVerb() {
+        return httpVerb;
+    }
+
+    public void setHttpVerb(String httpVerb) {
+        this.httpVerb = httpVerb;
     }
 
     public void setEndpointURL(String endpointURL) {

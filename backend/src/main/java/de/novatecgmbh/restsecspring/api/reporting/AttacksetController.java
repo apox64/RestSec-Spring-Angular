@@ -19,6 +19,7 @@ public class AttacksetController {
         Attackset attackset = Attackset.getInstance();
         AttackableEndpoint a1 = new AttackableEndpoint();
         a1.setEndpointURL("http://test.local");
+        a1.setHttpVerb("POST");
         a1.setScanStatus(false);
         attackset.add(a1);
         AttackableEndpoint a2 = new AttackableEndpoint();

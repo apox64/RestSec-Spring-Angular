@@ -27,21 +27,24 @@ public class Attackset {
     }
 
     public void add(AttackableEndpoint attackableEndpoint) {
-        UUID id = attackableEndpoint.getId();
-        if (getIndexForID(id) >= 0) {
-            logger.info("Endpoint already exists with id : " + id);
-            return;
+        if (!alreadyExists(attackableEndpoint)) {
+            UUID id = attackableEndpoint.getId();
+            if (getIndexForID(id) >= 0) {
+                logger.info("Endpoint already exists with id : " + id);
+                return;
+            }
+            logger.info("Adding \"" + id + " : " + attackableEndpoint.getEndpointURL() + "\" to Attackset.");
+            JSONObject attackableEndpointJSON = new JSONObject();
+            try {
+                attackableEndpointJSON.put("id", id.toString());
+                attackableEndpointJSON.put("httpVerb", attackableEndpoint.getHttpVerb());
+                attackableEndpointJSON.put("endpointURL", attackableEndpoint.getEndpointURL());
+                attackableEndpointJSON.put("scanStatus", attackableEndpoint.getScanStatus());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            attackSetJSON.put(attackableEndpointJSON);
         }
-        logger.info("Adding \"" + id + " : " + attackableEndpoint.getEndpointURL() + "\" to Attackset.");
-        JSONObject attackableEndpointJSON = new JSONObject();
-        try {
-            attackableEndpointJSON.put("id", id.toString());
-            attackableEndpointJSON.put("endpointURL", attackableEndpoint.getEndpointURL());
-            attackableEndpointJSON.put("scanStatus", attackableEndpoint.getScanStatus());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        attackSetJSON.put(attackableEndpointJSON);
     }
 
     public void remove(AttackableEndpoint attackableEndpoint) {
@@ -87,6 +90,21 @@ public class Attackset {
             }
         }
         return -1;
+    }
+
+    private boolean alreadyExists(AttackableEndpoint attackableEndpoint) {
+        for (int i = 0; i < attackSetJSON.length(); i++) {
+            try {
+                JSONObject jsonObject = (JSONObject) attackSetJSON.get(i);
+                if (jsonObject.get("endpointURL").equals(attackableEndpoint.getEndpointURL())) {
+                    logger.info("Already exists: " + attackableEndpoint.getId());
+                    return true;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
 }
