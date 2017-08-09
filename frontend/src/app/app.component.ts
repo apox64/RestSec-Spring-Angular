@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Http, Response, URLSearchParams } from '@angular/http';
-import * as angular from "angular";
+// import * as angular from "angular";
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,7 @@ export class AppComponent {
   constructor(private http: Http) { }
 
   targetURL = 'http://127.0.0.1:8080';
-  selectedTab = 2;
+  selectedTab = 0;
   isLoading = false;
 
   runAttack() {

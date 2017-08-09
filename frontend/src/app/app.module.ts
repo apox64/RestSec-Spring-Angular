@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { CdkTableModule } from '@angular/cdk';
 
 import { AppComponent } from './app.component';
 import { AttacksetComponent } from './attackset/attackset.component';
@@ -32,7 +33,8 @@ import 'hammerjs';
     FormsModule,
     MaterialModule,
     BrowserAnimationsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    CdkTableModule
   ],
   // exports: [
   //   MaterialModule

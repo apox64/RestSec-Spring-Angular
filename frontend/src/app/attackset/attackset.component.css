@@ -3,3 +3,37 @@ md-grid-tile {
   background: lightgray;
   /*color: white;*/
 }
+
+.example-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.example-header {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+  font-size: 20px;
+}
+
+.mat-table {
+  overflow: auto;
+}
+
+.mat-header-cell .mat-sort-header-sorted {
+  color: black;
+}
+
+md-table {
+  text-align: left;
+}
+
+md-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/*md-cell:hover {
+  background-color: #eeeeee;
+}*/

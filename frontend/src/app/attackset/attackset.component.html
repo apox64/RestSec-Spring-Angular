@@ -1,39 +1,67 @@
 <md-grid-list cols="4" rowHeight="2:1">
   <md-grid-tile colspan=1 rowspan=1>
-    <h2>Available Endpoints</h2>
-    <button md-fab (click)="getAttackset()" class="check-button">
-      <md-icon>refresh</md-icon>
-    </button>
+    <div fxLayout="column" fxLayoutAlign="space-around center">
+      <h2>Available Endpoints</h2>
+      <button md-fab (click)="getAttackset()" class="check-button">
+        <md-icon>refresh</md-icon>
+      </button>
+    </div>
   </md-grid-tile>
   <md-grid-tile colspan=3 rowspan=2>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>id</th>
-          <th>endpointURL</th>
-          <th>httpVerb</th>
-          <th>scanStatus</th>
-        </tr>
-      </thead>
-      <tbody *ngFor="let i of attackSet">
-        <tr>
-          <td>{{i.id}}</td>
-          <td>{{i.endpointURL}}</td>
-          <td>{{i.httpVerb}}</td>
-          <td><span class="badge">{{i.scanStatus}}</span></td>
-        </tr>
-      </tbody>
-    </table>
+    <div fxFill fxFlex class="example-container mat-elevation-z8">
+      <md-table #table [dataSource]="dataSource" mdSort>
+        <!-- ID Column -->
+        <ng-container cdkColumnDef="id">
+          <md-header-cell fxFlex="100px" *cdkHeaderCellDef md-sort-header> ID </md-header-cell>
+          <md-cell fxFlex="100px" *cdkCellDef="let row"> {{row.id}} </md-cell>
+        </ng-container>
+        <!-- EndpointURL Column -->
+        <ng-container cdkColumnDef="endpointUrl">
+          <md-header-cell *cdkHeaderCellDef md-sort-header> Endpoint </md-header-cell>
+          <md-cell *cdkCellDef="let row"> {{row.endpointUrl}} </md-cell>
+        </ng-container>
+        <!-- HTTP Verb Column -->
+        <ng-container cdkColumnDef="httpVerb">
+          <md-header-cell fxFlex="100px" *cdkHeaderCellDef md-sort-header> HTTP Verb </md-header-cell>
+          <md-cell fxFlex="100px" *cdkCellDef="let row"> {{row.httpVerb}} </md-cell>
+        </ng-container>
+        <!-- Scan Status Column -->
+        <ng-container cdkColumnDef="scanStatus">
+          <md-header-cell fxFlex="100px" *cdkHeaderCellDef md-sort-header> Scan Status </md-header-cell>
+          <md-cell fxFlex="100px" *cdkCellDef="let row"> {{row.scanStatus}} </md-cell>
+        </ng-container>
+
+        <!-- Delete Column -->
+        <ng-container cdkColumnDef="delete">
+          <md-header-cell fxFlex="100px" *cdkHeaderCellDef md-sort-header></md-header-cell>
+          <md-cell fxFlex="100px" *cdkCellDef="let row"> <button md-button (click)=removeEndpoint(row.id)><md-icon color=warn>cancel</md-icon></button> </md-cell>
+            <!-- <md-header-cell fxFlex="100px"> Actions </md-header-cell>
+            <md-cell fxFlex="100px" *cdkCellDef="let row"><button md-raised-button>Edit</button> </md-cell> -->
+        </ng-container>
+
+
+
+        <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
+        <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
+      </md-table>
+    </div>
   </md-grid-tile>
   <md-grid-tile colspan=1 rowspan=1>
-    <h3>Add new Endpoint</h3>
-    <md-input-container md-block>
-      <input mdInput type="url" placeholder="Endpoint URL" [(ngModel)]="hateoasUrl">
-    </md-input-container>
-    <md-select placeholder="HTTP Verb" [(ngModel)]="selectedHttpVerb" name="httpVerbs">
-      <md-option *ngFor="let httpVerb of httpVerbs" [value]="httpVerb">
-        {{httpVerb}}
-      </md-option>
-    </md-select>
+    <div fxLayout="column" fxLayoutAlign="space-around center">
+      <h3>Add new Endpoint</h3>
+      <div fxLayout="row" fxLayoutAlign="space-around center">
+        <div fxLayout="column" fxLayoutAlign="space-around center">
+          <md-input-container md-block>
+            <input mdInput type="url" placeholder="Endpoint URL" [(ngModel)]="endpointUrl">
+          </md-input-container>
+          <md-select placeholder="HTTP Verb" [(ngModel)]="httpVerb" name="httpVerbs">
+            <md-option *ngFor="let httpVerb of httpVerbs" [value]="httpVerb">
+              {{httpVerb}}
+            </md-option>
+          </md-select>
+        </div>
+        <button md-mini-fab (click)=addEndpoint()><md-icon>add</md-icon></button>
+      </div>
+    </div>
   </md-grid-tile>
 </md-grid-list>
