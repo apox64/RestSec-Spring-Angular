@@ -4,7 +4,7 @@ import { Http, Response } from '@angular/http';
 @Component({
   selector: 'attackset',
   templateUrl: './attackset.component.html',
-  styleUrls: ['../app.component.css']
+  styleUrls: ['./attackset.component.css']
 })
 
 export class AttacksetComponent {
@@ -23,6 +23,16 @@ export class AttacksetComponent {
       "id": "6f614de2-5bce-411e-8866-47b71bc78776"
     }
   ];
+
+  httpVerbs = [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'PATCH',
+    'UPDATE',
+    'HEAD'
+  ]
 
   id: number;
   name: string;

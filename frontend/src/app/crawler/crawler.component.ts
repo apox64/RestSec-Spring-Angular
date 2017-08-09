@@ -4,7 +4,7 @@ import { HttpParams, HttpHeaders } from '@angular/common/http';
 import { Http, Response, RequestOptions, URLSearchParams, Headers } from '@angular/http';
 import { HttpResponse } from '@angular/common/http';
 // import { HttpClient } from './crawler.http.service';
-import { map } from 'rxjs/operator/map';
+// import { map } from 'rxjs/operator/map';
 
 @Component({
   selector: 'crawler',

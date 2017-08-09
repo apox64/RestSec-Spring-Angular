@@ -1,0 +1,39 @@
+md-grid-tile {
+  /*background: lightslategray;*/
+  background: lightgray;
+  /*color: white;*/
+}
+
+.progress-card {
+  width: 600px;
+}
+
+.progress-spinner {
+  width: 52px;
+  margin: 0 auto;
+}
+
+.zap-labels {
+  color: grey;
+  margin: 5px;
+}
+
+.icon-done {
+  font-size: 50px;
+  align-items: center;
+  margin: 20px;
+  margin-left: 0px;
+  color: green;
+}
+
+/*not in use*/
+.scanner-labels {
+  border: 2px solid #303030;
+  background: #747474;
+  border-radius: 5px;
+  font-weight: bold;
+  padding: 5px 10px;
+  position: relative;
+  color: #cccccc;
+  margin: 5px;
+}

@@ -1,6 +1,7 @@
 md-grid-tile {
-  background: lightslategray;
-  color: white;
+  /*background: lightslategray;*/
+  background: lightgray;
+  /*color: white;*/
 }
 
 .upload-button {

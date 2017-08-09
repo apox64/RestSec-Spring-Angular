@@ -1,23 +1,39 @@
-  <h3>Available Endpoints</h3>
-  <button md-fab (click)="getAttackset()" class="check-button">
-    <md-icon>refresh</md-icon>
-  </button>
-
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>id</th>
-        <th>endpointURL</th>
-        <th>httpVerb</th>
-        <th>scanStatus</th>
-      </tr>
-    </thead>
-    <tbody *ngFor="let i of attackSet">
-      <tr>
-        <td>{{i.id}}</td>
-        <td>{{i.endpointURL}}</td>
-        <td>{{i.httpVerb}}</td>
-        <td><span class="badge">{{i.scanStatus}}</span></td>
-      </tr>
-    </tbody>
-  </table>
+<md-grid-list cols="4" rowHeight="2:1">
+  <md-grid-tile colspan=1 rowspan=1>
+    <h2>Available Endpoints</h2>
+    <button md-fab (click)="getAttackset()" class="check-button">
+      <md-icon>refresh</md-icon>
+    </button>
+  </md-grid-tile>
+  <md-grid-tile colspan=3 rowspan=2>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>endpointURL</th>
+          <th>httpVerb</th>
+          <th>scanStatus</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let i of attackSet">
+        <tr>
+          <td>{{i.id}}</td>
+          <td>{{i.endpointURL}}</td>
+          <td>{{i.httpVerb}}</td>
+          <td><span class="badge">{{i.scanStatus}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </md-grid-tile>
+  <md-grid-tile colspan=1 rowspan=1>
+    <h3>Add new Endpoint</h3>
+    <md-input-container md-block>
+      <input mdInput type="url" placeholder="Endpoint URL" [(ngModel)]="hateoasUrl">
+    </md-input-container>
+    <md-select placeholder="HTTP Verb" [(ngModel)]="selectedHttpVerb" name="httpVerbs">
+      <md-option *ngFor="let httpVerb of httpVerbs" [value]="httpVerb">
+        {{httpVerb}}
+      </md-option>
+    </md-select>
+  </md-grid-tile>
+</md-grid-list>

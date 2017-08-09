@@ -11,6 +11,8 @@ import { AppComponent } from './app.component';
 import { AttacksetComponent } from './attackset/attackset.component';
 import { CrawlerComponent } from './crawler/crawler.component';
 import { ScannerComponent } from './scanner/scanner.component';
+import { ReportingComponent } from './reporting/reporting.component';
+import { ResultsComponent } from './results/results.component';
 
 import 'hammerjs';
 
@@ -19,7 +21,9 @@ import 'hammerjs';
     AppComponent,
     AttacksetComponent,
     CrawlerComponent,
-    ScannerComponent
+    ScannerComponent,
+    ReportingComponent,
+    ResultsComponent
   ],
   imports: [
     BrowserModule,

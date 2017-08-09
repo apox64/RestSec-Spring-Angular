@@ -24,39 +24,36 @@
 
 <md-card class="settings-card">
   <md-tab-group [selectedIndex]="selectedTab">
-    <md-tab label="Crawler">
-      <crawler></crawler>
-    </md-tab>
     <md-tab label="Endpoints">
       <attackset></attackset>
+    </md-tab>
+    <md-tab label="Crawler">
+      <crawler></crawler>
     </md-tab>
     <md-tab label="Scanner">
       <scanner></scanner>
     </md-tab>
     <md-tab label="Reporting">
-      Customize Report Level
+      <reporting></reporting>
     </md-tab>
     <md-tab label="Results">
-      Counters + Links here
-      <button type="button" class="btn btn-info" (click)=downloadResults() id="downloadButton">
-        <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-      </button>
+      <results></results>
     </md-tab>
   </md-tab-group>
 </md-card>
 
-<md-card class="footer-card">
+<md-card class="fire-card">
   <div fxLayout="row" fxLayoutAlign="center center">
     <button class="fire-button" md-raised-button color="warn" (click)="runAttack()">
       <div [hidden]="!isLoading">
         <md-progress-spinner
-          class="progress-spinner"
+          class="fire-spinner"
           color = "accent"
           mode = "indeterminate">
         </md-progress-spinner>
       </div>
       <div [hidden]="isLoading">
-        FIRE
+        Fire
       </div>
     </button>
 

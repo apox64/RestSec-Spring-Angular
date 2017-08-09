@@ -1,93 +1,103 @@
-<md-card>
-  <form>
-    <md-select placeholder="HTTP Verb" [(ngModel)]="selectedHttpVerb" name="httpVerbs">
-      <md-option *ngFor="let httpVerb of httpVerbs" [value]="httpVerb">
-        {{httpVerb}}
-      </md-option>
-    </md-select>
-    <md-card-content>
-      <section class="example-section">
-        <md-checkbox class="example-margin" [checked]="addAllHttpVerbs">
-          All HTTP Verbs
-        </md-checkbox>
-      </section>
-    </md-card-content>
-    <!-- <p> Selected value: {{selectedHttpVerb}} </p> -->
-  </form>
-</md-card>
+<md-grid-list cols="4" rowHeight="2:1">
+  <md-grid-tile colspan=1 rowspan=1>
+    <h2>Scanning Options</h2>
+  </md-grid-tile>
 
-
-
-
-<h2>Customize the scanners</h2>
-
-          <p>Please choose what you want to check.</p>
-          <form>
-              <div class="checkbox">
-                  <label><input type="checkbox" value="">OWASP ZAP Proxy</label>
+  <md-grid-tile colspan=3 rowspan=2>
+    <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="25px">
+      <div fxLayout="row" fxLayoutAlign="space-around strech" fxLayoutGap="10px">
+        <md-card>
+          <md-card-header>
+            <md-card-title>OWASP ZAP Proxy</md-card-title>
+            <md-card-subtitle>-</md-card-subtitle>
+          </md-card-header>
+          <md-card-content>
+            <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap>
+              <div fxLayout="column" fxLayoutAlign="space-around center">
+                <div [hidden]="!isFinished.zapSpider">
+                  <md-icon class="icon-done">done</md-icon>
+                </div>
+                <div [hidden]="isFinished.zapSpider">
+                  <md-progress-spinner class="progress-spinner" color="progressSpinnerZap.color" mode="progressSpinnerZap.mode" [value]="spiderProgress"></md-progress-spinner>
+                </div>
+                <label class="zap-labels">Spider</label>
+                <label class="zap-labels">{{spiderProgress}}%</label>
               </div>
-              <div class="checkbox">
-                  <label><input type="checkbox" value="">SQLMap</label>
+              <div fxLayout="column" fxLayoutAlign="space-around center">
+                <div [hidden]="!isFinished.zapScanner">
+                  <md-icon class="icon-done">done</md-icon>
+                </div>
+                <div [hidden]="isFinished.zapScanner">
+                  <md-progress-spinner class="progress-spinner" color="progressSpinnerZap.color" mode="progressSpinnerZap.mode" [value]="scannerProgress"></md-progress-spinner>
+                </div>
+                <label class="zap-labels">Scanner</label>
+                <label class="zap-labels">{{scannerProgress}}%</label>
               </div>
-              <div class="checkbox">
-                  <label><input type="checkbox" value="">RestSec XSS Scanner</label>
+            </div>
+          </md-card-content>
+        </md-card>
+        <md-card>
+          <md-card-header>
+            <md-card-title>sqlmap</md-card-title>
+            <md-card-subtitle>-</md-card-subtitle>
+          </md-card-header>
+          <md-card-content>
+            <div fxLayout="column" fxLayoutAlign="space-around center">
+              <div [hidden]="!isFinished.sqlmap">
+                <md-icon class="icon-done">done</md-icon>
               </div>
-              <div class="checkbox">
-                  <label><input type="checkbox" value="">RestSec Security Header Scanner</label>
+              <div [hidden]="isFinished.sqlmap">
+                <md-progress-spinner class="progress-spinner" color="primary" mode="determinate" [value]="15"></md-progress-spinner>
               </div>
-              <button>check all</button>
-              <button>uncheck all</button>
-
-              <div class="checkbox">
-                  <label><input type="checkbox" value="">Brute Force (all HTTP Verbs (GET, POST, ...))</label>
+            </div>
+          </md-card-content>
+        </md-card>
+        <md-card>
+          <md-card-header>
+            <md-card-title>RestSec</md-card-title>
+            <md-card-subtitle>XSS Scanner</md-card-subtitle>
+          </md-card-header>
+          <md-card-content>
+            <div fxLayout="column" fxLayoutAlign="space-around center">
+              <div [hidden]="!isFinished.restsecXSS">
+                <md-icon class="icon-done">done</md-icon>
               </div>
+              <div [hidden]="isFinished.restsecXSS">
+                <md-progress-spinner class="progress-spinner" color="primary" mode="determinate" [value]="85"></md-progress-spinner>
+              </div>
+            </div>
+          </md-card-content>
+        </md-card>
+        <md-card>
+          <md-card-header>
+            <md-card-title>RestSec</md-card-title>
+            <md-card-subtitle>Security Header Scanner</md-card-subtitle>
+          </md-card-header>
+          <md-card-content>
+            <div fxLayout="column" fxLayoutAlign="space-around center">
+              <div [hidden]="!isFinished.restsecHeaders">
+                <md-icon class="icon-done">done</md-icon>
+              </div>
+              <div [hidden]="isFinished.restsecHeaders">
+                <md-progress-spinner class="progress-spinner" color="primary" mode="determinate" [value]="55"></md-progress-spinner>
+              </div>
+            </div>
+          </md-card-content>
+        </md-card>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="10px">
+        <button md-mini-fab class="check-button"><md-icon>done_all</md-icon></button>
+        <button md-mini-fab class="uncheck-button"><md-icon>cancel</md-icon></button>
+      </div>
+    </div>
+  </md-grid-tile>
 
-          </form>
+  <md-grid-tile colspan=1 rowspan=1>
+    <md-card>
+      <md-checkbox class="example-margin" [checked]="addAllHttpVerbs">
+        All HTTP Verbs
+      </md-checkbox>
+    </md-card>
+  </md-grid-tile>
 
-<div class="row">
-<div class="col-md-5">
-  <div class="pull-right">
-    URL <input type="text" [(ngModel)]="zapUrl">
-  </div>
-</div>
-<div class="col-md-5">
-  <div class="pull-left">
-    Status <span class="label label-default" id="onlineStatusLabel">{{zapOnlineStatus}}</span>
-  </div>
-</div>
-<div class="col-md-2">
-  <div class="pull-left">
-    <button type="button" class="btn btn-default" (click)=isZapOnline()>
-      <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-    </button>
-  </div>
-</div>
-</div>
-
-<div class="row">
-<div class="col-md-10">
-  <div class="container">
-    <table class="table">
-      <tbody>
-        <tr>
-          <td>Spider:</td>
-          <td><span class="label label-default">{{spiderStatus}}</span></td>
-          <td><span class="label label-default">({{spiderProgress}}%)</span></td>
-        </tr>
-        <tr>
-          <td>Scanner:</td>
-          <td><span class="label label-default">{{scannerStatus}}</span></td>
-          <td><span class="label label-default">({{scannerProgress}}%)</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-<div class="col-md-2">
-  <div class="pull-left">
-    <button type="button" class="btn btn-default" (click)=getZapStatus()>
-      <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-    </button>
-  </div>
-</div>
-</div>
+</md-grid-list>

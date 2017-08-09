@@ -9,10 +9,6 @@ h1 {
   font-size: 150%;
 }
 
-#fireButton {
-  font-size: 150%;
-}
-
 span.glyphicon-download {
     font-size: 200%;
 }
@@ -35,7 +31,7 @@ md-progress-spinner {
   padding-top: 0px;
 }
 
-.footer-card {
+.fire-card {
   background-color: #ffcccc;
   align-items: center;
 }
@@ -54,8 +50,9 @@ md-card {
   margin: 10px;
   font-size: 125%;
   font-weight: bold;
+  text-transform: uppercase;
 }
 
-.progress-spinner {
+.fire-spinner {
   margin: 0 auto;
 }
