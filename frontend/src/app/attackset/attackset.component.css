@@ -34,6 +34,22 @@ md-cell {
   text-overflow: ellipsis;
 }
 
+button {
+  text-transform: uppercase;
+}
+
 /*md-cell:hover {
   background-color: #eeeeee;
 }*/
+
+.button-add {
+  padding-left: 24px;
+}
+
+.button-clear-all {
+  padding-left: 10px;
+}
+
+.selector-http-verbs {
+  padding-top: 24px;
+}

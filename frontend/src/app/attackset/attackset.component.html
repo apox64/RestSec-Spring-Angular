@@ -1,10 +1,13 @@
 <md-grid-list cols="4" rowHeight="2:1">
   <md-grid-tile colspan=1 rowspan=1>
     <div fxLayout="column" fxLayoutAlign="space-around center">
-      <h2>Available Endpoints</h2>
-      <button md-fab (click)="getAttackset()" class="check-button">
+      <h2>Available Endpoints ({{numberOfEndpoints}})</h2>
+      <div>
+        <button md-raised-button color=accent (click)=removeAll()>Clear all<md-icon class="button-clear-all">clear_all</md-icon></button>
+      </div>
+      <!-- <button md-fab (click)="getAttackset()" class="check-button">
         <md-icon>refresh</md-icon>
-      </button>
+      </button> -->
     </div>
   </md-grid-tile>
   <md-grid-tile colspan=3 rowspan=2>
@@ -33,35 +36,33 @@
 
         <!-- Delete Column -->
         <ng-container cdkColumnDef="delete">
-          <md-header-cell fxFlex="100px" *cdkHeaderCellDef md-sort-header></md-header-cell>
-          <md-cell fxFlex="100px" *cdkCellDef="let row"> <button md-button (click)=removeEndpoint(row.id)><md-icon color=warn>cancel</md-icon></button> </md-cell>
+          <md-header-cell fxFlex="100px" *cdkHeaderCellDef md-sort-header><!--<button md-button (click)=removeAll()><md-icon color=warn>clear_all</md-icon></button>--></md-header-cell>
+          <md-cell fxFlex="100px" *cdkCellDef="let row"> <button md-button class="button-delete-endpoint"(click)=removeEndpoint(row.id)><md-icon color=warn>cancel</md-icon></button> </md-cell>
             <!-- <md-header-cell fxFlex="100px"> Actions </md-header-cell>
             <md-cell fxFlex="100px" *cdkCellDef="let row"><button md-raised-button>Edit</button> </md-cell> -->
         </ng-container>
-
-
-
         <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
         <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
       </md-table>
     </div>
   </md-grid-tile>
   <md-grid-tile colspan=1 rowspan=1>
-    <div fxLayout="column" fxLayoutAlign="space-around center">
-      <h3>Add new Endpoint</h3>
+      <md-card>
       <div fxLayout="row" fxLayoutAlign="space-around center">
-        <div fxLayout="column" fxLayoutAlign="space-around center">
+        <div fxLayout="column" fxLayoutAlign="start center">
           <md-input-container md-block>
             <input mdInput type="url" placeholder="Endpoint URL" [(ngModel)]="endpointUrl">
           </md-input-container>
-          <md-select placeholder="HTTP Verb" [(ngModel)]="httpVerb" name="httpVerbs">
+          <md-select placeholder="HTTP Verb" [(ngModel)]="httpVerb" name="httpVerbs" class="selector-http-verbs">
             <md-option *ngFor="let httpVerb of httpVerbs" [value]="httpVerb">
               {{httpVerb}}
             </md-option>
           </md-select>
         </div>
-        <button md-mini-fab (click)=addEndpoint()><md-icon>add</md-icon></button>
+        <div class="button-add">
+            <button md-mini-fab color=primary (click)=addEndpoint()><md-icon>add</md-icon></button>
+        </div>
       </div>
-    </div>
+      </md-card>
   </md-grid-tile>
 </md-grid-list>

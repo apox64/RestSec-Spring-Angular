@@ -19,23 +19,32 @@ export class AttacksetComponent {
   endpointDatabase = new EndpointDatabase();
   dataSource: EndpointDataSource | null;
 
+  numberOfEndpoints: number;
   endpointUrl: string; // = 'https://my.api.local/rest/';
   httpVerb = 'GET';
   httpVerbs = [ 'GET', 'POST', 'PUT', 'DELETE' ]
 
   @ViewChild(MdSort) sort: MdSort;
 
-  removeEndpoint(id: string) {
-    console.log("Removing Endpoint with ID = " + id)
+  removeEndpoint(id: number) {
+    console.log("Removing Endpoint with id = " + id);
     this.endpointDatabase.removeEndpoint(id);
+    this.numberOfEndpoints = this.endpointDatabase.getNumberOfEndpoints();
   }
 
   addEndpoint() {
     this.endpointDatabase.addEndpoint(this.endpointUrl, this.httpVerb);
+    this.numberOfEndpoints = this.endpointDatabase.getNumberOfEndpoints();
   }
 
   ngOnInit() {
     this.dataSource = new EndpointDataSource(this.endpointDatabase, this.sort);
+    this.numberOfEndpoints = this.endpointDatabase.getNumberOfEndpoints();
+  }
+
+  removeAll() {
+    this.endpointDatabase.removeAll();
+    this.numberOfEndpoints = this.endpointDatabase.getNumberOfEndpoints();
   }
 }
 
@@ -61,7 +70,7 @@ export class EndpointDatabase {
   }
 
   constructor() {
-    for (let i = 0; i < 10; i++) { this.addSampleEndpoints(); }
+    for (let i = 0; i < 5; i++) { this.addSampleEndpoints(); }
   }
 
   addSampleEndpoints() {
@@ -76,11 +85,28 @@ export class EndpointDatabase {
     this.dataChange.next(copiedData);
   }
 
-  removeEndpoint(id: string) {
+  getNumberOfEndpoints() {
+    const copiedData = this.data.slice();
+    return copiedData.length;
+  }
+
+  removeEndpoint(id: number) {
     const copiedData = this.data.slice();
     console.log(copiedData);
 
-    //remove something here
+    for (var endpoint of copiedData) {
+      if (Number(endpoint.id) == id) {
+        var index = copiedData.indexOf(endpoint);
+      }
+    }
+
+    copiedData.splice(index, 1);
+    this.dataChange.next(copiedData);
+  }
+
+  removeAll() {
+    const copiedData = [];
+    this.dataChange.next(copiedData);
   }
 
   private createNewRandomEndpoint() {
