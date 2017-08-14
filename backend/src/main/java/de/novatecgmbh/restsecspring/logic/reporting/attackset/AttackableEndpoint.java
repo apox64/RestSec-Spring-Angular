@@ -16,7 +16,7 @@ public class AttackableEndpoint {
 
     public AttackableEndpoint() {
         this.id = UUID.randomUUID();
-        logger.info("New AttackableEndpoint: " + this.id);
+//        logger.info("New AttackableEndpoint: " + this.id);
     }
 
     public UUID getId() {
@@ -37,7 +37,7 @@ public class AttackableEndpoint {
 
     public void setEndpointURL(String endpointURL) {
         this.endpointURL = endpointURL;
-        logger.info("endpointURL set: " + this.endpointURL);
+//        logger.info("endpointURL set: " + this.endpointURL);
     }
 
     public boolean getScanStatus() {
@@ -46,7 +46,7 @@ public class AttackableEndpoint {
 
     public void setScanStatus(boolean scanStatus) {
         this.scanStatus = scanStatus;
-        logger.info("scanStatus set: " + this.scanStatus);
+//        logger.info("scanStatus set: " + this.scanStatus);
 
     }
 

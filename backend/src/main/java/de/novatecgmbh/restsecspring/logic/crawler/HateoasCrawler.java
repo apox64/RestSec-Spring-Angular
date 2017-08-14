@@ -5,6 +5,7 @@ import de.novatecgmbh.restsecspring.logic.reporting.attackset.Attackset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -48,7 +49,11 @@ public class HateoasCrawler {
 
     public void crawl() {
         logger.info("Crawling " + url + " ...");
-        discoverLinks(url, targetAuthToken);
+        try {
+            discoverLinks(url, targetAuthToken);
+        } catch (ConnectException e) {
+            logger.warn(url + " not reachable.");
+        }
     }
 
     private void validateURL(String url, String authToken) {
@@ -66,7 +71,7 @@ public class HateoasCrawler {
         return numberOfEndpoints;
     }
 
-    private void discoverLinks(String entryResource, String authToken) {
+    private void discoverLinks(String entryResource, String authToken) throws ConnectException {
         Attackset attackSet = Attackset.getInstance();
 
         HashMap<String, Boolean> relevantURLs;

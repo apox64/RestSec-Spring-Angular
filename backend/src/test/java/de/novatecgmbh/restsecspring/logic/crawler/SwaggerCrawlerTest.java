@@ -8,7 +8,7 @@ class SwaggerCrawlerTest {
 
     @Test
     void crawl() {
-        SwaggerCrawler swaggerCrawler = new SwaggerCrawler();
+        /*SwaggerCrawler swaggerCrawler = new SwaggerCrawler();*/
     }
 
 }

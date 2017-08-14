@@ -30,10 +30,10 @@ public class Attackset {
         if (!alreadyExists(attackableEndpoint)) {
             UUID id = attackableEndpoint.getId();
             if (getIndexForID(id) >= 0) {
-                logger.info("Endpoint already exists with id : " + id);
+//                logger.info("Endpoint already exists with id : " + id);
                 return;
             }
-            logger.info("Adding \"" + id + " : " + attackableEndpoint.getEndpointURL() + "\" to Attackset.");
+            logger.info("+ " + id + " : " + attackableEndpoint.getEndpointURL() + " : " + attackableEndpoint.getHttpVerb());
             JSONObject attackableEndpointJSON = new JSONObject();
             try {
                 attackableEndpointJSON.put("id", id.toString());
@@ -97,7 +97,7 @@ public class Attackset {
             try {
                 JSONObject jsonObject = (JSONObject) attackSetJSON.get(i);
                 if (jsonObject.get("endpointURL").equals(attackableEndpoint.getEndpointURL())) {
-                    logger.info("Already exists: " + attackableEndpoint.getId());
+//                    logger.info("Already exists: " + attackableEndpoint.getId());
                     return true;
                 }
             } catch (JSONException e) {
