@@ -34,3 +34,13 @@ md-progress-spinner {
 .progress-spinner {
   margin: 0 auto;
 }
+
+.input-field {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+input[type="file"] {
+    display: none;
+}

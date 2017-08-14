@@ -12,7 +12,7 @@ export class AppComponent {
   constructor(private http: Http) { }
 
   targetURL = 'http://127.0.0.1:8080';
-  selectedTab = 0;
+  selectedTab = 1;
   isLoading = false;
 
   runAttack() {

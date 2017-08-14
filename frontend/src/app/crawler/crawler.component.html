@@ -29,23 +29,37 @@
     </md-radio-group>
   </md-grid-tile>
   <md-grid-tile colspan=2 rowspan=1>
+    <div fxFlex>
+
     <div *ngIf="selectedCrawlerType == 'Swagger'" class="selected-value">
-      <button md-raised-button color="primary" class="upload-button">Upload Swagger</button>
+      <!-- <button md-raised-button color="primary" class="upload-button" (change)="fileChange($event)" (click)="fileChange($event)">Upload Swagger</button> -->
+
+      <button md-raised-button color="primary" type="button" onclick="document.getElementById('fileToUpload').click()" class="upload-button">
+          Upload Swagger
+      </button>
+      <input id="fileToUpload" type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".yml, .yaml, .json" name="file">
+
     </div>
     <div *ngIf="selectedCrawlerType == 'HATEOAS'" class="selected-value">
-      <div fxLayout="row" fxLayoutAlign="space-between center">
+      <div class="md-card-hateoas">
         <md-card>
-          <md-input-container md-block>
-            <input mdInput type="url" placeholder="HATEOAS Entrypoint URL" [(ngModel)]="hateoasUrl">
-          </md-input-container>
+          <div fxLayout="column">
+            <md-input-container md-block>
+              <input mdInput class="input-field" type="url" placeholder="HATEOAS Entrypoint URL" [(ngModel)]="hateoasUrl">
+            </md-input-container>
+            <md-input-container md-block>
+              <input mdInput class="input-field" type="text" placeholder="Auth token" [value]="targetAuthToken">
+            </md-input-container>
+          </div>
         </md-card>
-        <md-card>
+        <!-- <md-card>
           <md-input-container md-block>
             <input mdInput type="text" placeholder="Auth token" [value]="targetAuthToken">
           </md-input-container>
-        </md-card>
+        </md-card> -->
         <!-- <button md-mini-fab (click)="addHateoasUrl()"><md-icon>add</md-icon></button> -->
       </div>
     </div>
+  </div>
   </md-grid-tile>
 </md-grid-list>
