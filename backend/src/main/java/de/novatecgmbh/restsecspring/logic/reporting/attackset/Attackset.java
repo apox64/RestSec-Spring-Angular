@@ -96,7 +96,8 @@ public class Attackset {
         for (int i = 0; i < attackSetJSON.length(); i++) {
             try {
                 JSONObject jsonObject = (JSONObject) attackSetJSON.get(i);
-                if (jsonObject.get("endpointURL").equals(attackableEndpoint.getEndpointURL())) {
+                if (jsonObject.get("endpointURL").equals(attackableEndpoint.getEndpointURL()) &&
+                        jsonObject.get("httpVerb").equals(attackableEndpoint.getHttpVerb())) {
 //                    logger.info("Already exists: " + attackableEndpoint.getId());
                     return true;
                 }

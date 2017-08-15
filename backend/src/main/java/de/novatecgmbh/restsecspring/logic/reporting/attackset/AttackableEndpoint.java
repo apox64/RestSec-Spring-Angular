@@ -16,7 +16,7 @@ public class AttackableEndpoint {
 
     public AttackableEndpoint() {
         this.id = UUID.randomUUID();
-//        logger.info("New AttackableEndpoint: " + this.id);
+        logger.info("New AttackableEndpoint: " + this.id);
     }
 
     public UUID getId() {

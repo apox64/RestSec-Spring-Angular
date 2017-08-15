@@ -26,39 +26,20 @@ public class SwaggerCrawler {
     private int numberOfEndpoints = 0;
     private static Logger logger = LoggerFactory.getLogger(SwaggerCrawler.class);
 
-    private Attackset attackset;
-    private File file;
+    public SwaggerCrawler() {
 
-    public SwaggerCrawler(File file) {
-        this.file = file;
-        crawlJSON(file);
-//            crawl();
     }
 
-    private void crawl() throws JSONException {
-        logger.info("Crawling a file ...");
-        attackset = Attackset.getInstance();
-        AttackableEndpoint attackableEndpoint = new AttackableEndpoint();
-        attackableEndpoint.setEndpointURL("http://test.local");
-        attackableEndpoint.setScanStatus(false);
-        attackset.add(attackableEndpoint);
-        // do some file magic here ...
-//        this.numberOfEndpoints = getNumberOfEndpoints();
-    }
-
-
-    //TODO: Continue here
-    private void crawlJSON(File file) {
+    public void crawlJSON(File file) {
 
         ObjectMapper mapper = new ObjectMapper();
-        String json = "";
+        String json;
         Map<String, Object> map = null;
 
         try {
             json = new Scanner(file).useDelimiter("\\Z").next();
             map = mapper.readValue(json, new TypeReference<Map<String, Object>>() {
             });
-            System.out.println(map);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -78,55 +59,55 @@ public class SwaggerCrawler {
 
         while (it.hasNext()) {
             String currentPath = it.next();
-//            logger.info("Checking path: \t\t" + currentPath);
             JSONObject httpVerbsObject = null;
             try {
                 httpVerbsObject = (JSONObject) pathsObject.get(currentPath);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            JSONArray jsonArray = new JSONArray();
 
             Iterator<String> iterator = httpVerbsObject.keys();
             while (iterator.hasNext()) {
+                AttackableEndpoint attackableEndpoint = new AttackableEndpoint();
+                attackableEndpoint.setEndpointURL(currentPath);
                 String s = iterator.next();
                 switch (s) {
                     case "get":
-                        AttackableEndpoint attackableEndpoint = new AttackableEndpoint();
                         attackableEndpoint.setHttpVerb("GET");
-                        attackableEndpoint.setEndpointURL(currentPath);
                         attackset.add(attackableEndpoint);
                         attackCounter++;
+                        break;
                     case "post":
-                        AttackableEndpoint attackableEndpoint2 = new AttackableEndpoint();
-                        attackableEndpoint2.setHttpVerb("POST");
-                        attackableEndpoint2.setEndpointURL(currentPath);
-                        attackset.add(attackableEndpoint2);
+                        attackableEndpoint.setHttpVerb("POST");
+                        attackset.add(attackableEndpoint);
                         attackCounter++;
+                        break;
                     case "patch":
-                        AttackableEndpoint attackableEndpoint3 = new AttackableEndpoint();
-                        attackableEndpoint3.setHttpVerb("PATCH");
-                        attackableEndpoint3.setEndpointURL(currentPath);
-                        attackset.add(attackableEndpoint3);
+                        attackableEndpoint.setHttpVerb("PATCH");
+                        attackset.add(attackableEndpoint);
                         attackCounter++;
+                        break;
                     case "put":
-                        AttackableEndpoint attackableEndpoint4 = new AttackableEndpoint();
-                        attackableEndpoint4.setHttpVerb("PUT");
-                        attackableEndpoint4.setEndpointURL(currentPath);
-                        attackset.add(attackableEndpoint4);
+                        attackableEndpoint.setHttpVerb("PUT");
+                        attackset.add(attackableEndpoint);
                         attackCounter++;
+                        break;
                     case "delete":
-                        AttackableEndpoint attackableEndpoint5 = new AttackableEndpoint();
-                        attackableEndpoint5.setHttpVerb("DELETE");
-                        attackableEndpoint5.setEndpointURL(currentPath);
-                        attackset.add(attackableEndpoint5);
+                        attackableEndpoint.setHttpVerb("DELETE");
+                        attackset.add(attackableEndpoint);
                         attackCounter++;
+                        break;
                 }
+                attackset.add(attackableEndpoint);
             }
 
         }
         logger.info("" + attackCounter + " attackable endpoints found.");
-        logger.info("AttackSet counter = " + attackset.getAttackSet().length());
+        this.numberOfEndpoints = attackCounter;
+        logger.info("AttackSet.length : " + attackset.getAttackSet().length());
     }
 
+    public int getNumberOfEndpoints() {
+        return numberOfEndpoints;
+    }
 }

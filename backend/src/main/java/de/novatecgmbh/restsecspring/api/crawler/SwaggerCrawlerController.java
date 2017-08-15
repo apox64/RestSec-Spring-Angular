@@ -1,16 +1,15 @@
 package de.novatecgmbh.restsecspring.api.crawler;
 
 import de.novatecgmbh.restsecspring.logic.crawler.SwaggerCrawler;
+import de.novatecgmbh.restsecspring.logic.reporting.attackset.Attackset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +19,6 @@ public class SwaggerCrawlerController {
 
     private static Logger logger = LoggerFactory.getLogger(SwaggerCrawlerController.class);
 
-    //TODO: Save Swagger File and then parse it.
     @CrossOrigin
     @RequestMapping(value = "/upload", method = RequestMethod.POST)//, headers = "content-type=multipart/form-data")
     public String handleFileUpload(@RequestParam ("uploadFile") MultipartFile multipartFile){
@@ -46,8 +44,12 @@ public class SwaggerCrawlerController {
                 BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File("src/main/resources/uploads/"+fileName)));
                 bos.write(bytes);
                 bos.close();
-                SwaggerCrawler swaggerCrawler = new SwaggerCrawler(new File("src/main/resources/uploads/"+fileName));
-                return "Upload successful. " + fileName + " --> " + fileName;
+                SwaggerCrawler swaggerCrawler = new SwaggerCrawler();
+                swaggerCrawler.crawlJSON(new File("src/main/resources/uploads/"+fileName));
+                logger.info("Sending: " + String.valueOf(swaggerCrawler.getNumberOfEndpoints()));
+//                Attackset attackset = Attackset.getInstance();
+//                return attackset.getAttackSet().toString();
+                return String.valueOf(swaggerCrawler.getNumberOfEndpoints());
             } catch (Exception e) {
                 return "Upload failed. " + fileName + " : " + e.getMessage();
             }
@@ -55,13 +57,5 @@ public class SwaggerCrawlerController {
             return "Upload failed. File is empty.";
         }
     }
-
-    public File multipartToFile(MultipartFile multipart) throws IllegalStateException, IOException
-    {
-        File convFile = new File( multipart.getOriginalFilename());
-        multipart.transferTo(convFile);
-        return convFile;
-    }
-
 
 }
