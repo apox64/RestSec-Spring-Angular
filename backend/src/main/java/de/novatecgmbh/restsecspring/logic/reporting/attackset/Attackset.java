@@ -53,6 +53,20 @@ public class Attackset {
         attackSetJSON.remove(getIndexForID(id));
     }
 
+    public void remove(UUID attackableEndpointID) {
+        logger.info("Removing \"" + attackableEndpointID + "\" from Attackset.");
+        attackSetJSON.remove(getIndexForID(attackableEndpointID));
+    }
+
+    public boolean contains(UUID attackableEndpointID) {
+        try {
+            getAttackSet().get(getIndexForID(attackableEndpointID));
+            return true;
+        } catch (JSONException e) {
+            return false;
+        }
+    }
+
     public void setScannedTrue(AttackableEndpoint attackableEndpoint) {
         UUID id = attackableEndpoint.getId();
         logger.info("Setting scanStatus = true for " + id);
