@@ -9,7 +9,7 @@ public class AttackableEndpoint {
 
     private UUID id;
     private String httpVerb = "GET";
-    private String endpointURL = "";
+    private String endpointUrl = "";
     private boolean scanStatus = false;
 
     private static Logger logger = LoggerFactory.getLogger(AttackableEndpoint.class);
@@ -24,7 +24,7 @@ public class AttackableEndpoint {
     }
 
     public String getEndpointURL() {
-        return endpointURL;
+        return endpointUrl;
     }
 
     public String getHttpVerb() {
@@ -35,8 +35,8 @@ public class AttackableEndpoint {
         this.httpVerb = httpVerb;
     }
 
-    public void setEndpointURL(String endpointURL) {
-        this.endpointURL = endpointURL;
+    public void setEndpointURL(String endpointUrl) {
+        this.endpointUrl = endpointUrl;
 //        logger.info("endpointURL set: " + this.endpointURL);
     }
 

@@ -38,7 +38,7 @@ public class Attackset {
             try {
                 attackableEndpointJSON.put("id", id.toString());
                 attackableEndpointJSON.put("httpVerb", attackableEndpoint.getHttpVerb());
-                attackableEndpointJSON.put("endpointURL", attackableEndpoint.getEndpointURL());
+                attackableEndpointJSON.put("endpointUrl", attackableEndpoint.getEndpointURL());
                 attackableEndpointJSON.put("scanStatus", attackableEndpoint.getScanStatus());
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -110,7 +110,7 @@ public class Attackset {
         for (int i = 0; i < attackSetJSON.length(); i++) {
             try {
                 JSONObject jsonObject = (JSONObject) attackSetJSON.get(i);
-                if (jsonObject.get("endpointURL").equals(attackableEndpoint.getEndpointURL()) &&
+                if (jsonObject.get("endpointUrl").equals(attackableEndpoint.getEndpointURL()) &&
                         jsonObject.get("httpVerb").equals(attackableEndpoint.getHttpVerb())) {
 //                    logger.info("Already exists: " + attackableEndpoint.getId());
                     return true;

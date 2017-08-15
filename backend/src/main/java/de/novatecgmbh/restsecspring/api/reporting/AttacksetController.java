@@ -19,6 +19,7 @@ public class AttacksetController {
     @ResponseBody
     public String attackset() {
         Attackset attackset = Attackset.getInstance();
+        logger.info("Returning current Attackset ...");
         return String.valueOf(attackset.getAttackSet());
     }
 
