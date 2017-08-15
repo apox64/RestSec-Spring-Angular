@@ -3,6 +3,7 @@ import { HttpParams, HttpHeaders, HttpClient, HttpResponse } from '@angular/comm
 import { Http, Response, RequestOptions, URLSearchParams, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { HttpClientModule } from '@angular/common/http';
+import { MdSnackBar } from '@angular/material';
 // import { HttpClient } from './crawler.http.service';
 // import { map } from 'rxjs/operator/map';
 
@@ -14,7 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 export class CrawlerComponent {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, public snackBar: MdSnackBar) { }
 
   selectedCrawlerType = 'Swagger';
   targetAuthToken = 'fd0847dbb559752d932dd3c1ac34ff98d27b11fe2fea5a864f44740cd7919ad08d27b11fe2fea5a864f44740cd7919ad045234523451f';
@@ -31,7 +32,7 @@ export class CrawlerComponent {
   addToAttackset() {
     this.isLoading = true;
     if (this.selectedCrawlerType == "Swagger") {
-      this.swaggerCrawler();
+      console.log("doing nothing ... Swagger scans on upload.");
     } else if (this.selectedCrawlerType == "HATEOAS") {
       this.hateoasCrawler();
     }
@@ -41,7 +42,7 @@ export class CrawlerComponent {
     );
   }
 
-  fileChange(event) {
+  swaggerCrawler(event): void {
     let fileList: FileList = event.target.files;
     console.log("Number of files to upload: " + fileList.length)
     if(fileList.length > 0) {
@@ -55,21 +56,21 @@ export class CrawlerComponent {
         let options = new RequestOptions({ headers: headers });
         this.http.post('crawler/swagger/upload', formData, options)
             .map(res => res.json())
-            // .catch(error => Observable.throw(error))
             .subscribe(
-                data => console.log('success'),
+                data => {
+                  console.log(data),
+                  this.numberOfAttackPointsFound = data;
+                  this.snackBar.open("Number of AttackPoints found: " + this.numberOfAttackPointsFound, "OK", {
+                    duration: 5000
+                  });
+                },
                 error => console.log(error)
             )
     }
   }
 
-  swaggerCrawler(): void {
-
-  }
-
   hateoasCrawler(): void {
     console.log('url: ' + this.hateoasUrl + "; targetAuthToken: " + this.targetAuthToken)
-
 
     let data = {
       'url' : this.hateoasUrl,
@@ -83,6 +84,9 @@ export class CrawlerComponent {
     .subscribe(
       (res: any) => {
         this.numberOfAttackPointsFound = res;
+        this.snackBar.open("Number of AttackPoints found: " + this.numberOfAttackPointsFound, "OK", {
+          duration: 5000
+        });
         console.log(res);
     });
 

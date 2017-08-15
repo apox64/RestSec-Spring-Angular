@@ -6,7 +6,7 @@
     </div>
   </md-grid-tile>
   <md-grid-tile colspan=1 rowspan=2>
-    <div class="check">
+    <div *ngIf="selectedCrawlerType == 'HATEOAS'" class="check">
       <button md-fab (click)="addToAttackset()" class="check-button">
         <div [hidden]="isLoading">
           <md-icon>check</md-icon>
@@ -35,9 +35,9 @@
       <!-- <button md-raised-button color="primary" class="upload-button" (change)="fileChange($event)" (click)="fileChange($event)">Upload Swagger</button> -->
 
       <button md-raised-button color="primary" type="button" onclick="document.getElementById('fileToUpload').click()" class="upload-button">
-          Upload Swagger
+          <span mdTooltip="Upload a Swagger File (.json, .yaml, .yml) to detect attackable Endpoints automatically!">Upload Swagger</span>
       </button>
-      <input id="fileToUpload" type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".yml, .yaml, .json" name="file">
+      <input id="fileToUpload" type="file" (change)="swaggerCrawler($event)" placeholder="Upload file" accept=".yml, .yaml, .json" name="file">
 
     </div>
     <div *ngIf="selectedCrawlerType == 'HATEOAS'" class="selected-value">
