@@ -9,8 +9,10 @@ import { Http, Response, URLSearchParams } from '@angular/http';
 })
 
 export class AppComponent {
+
   constructor(private http: Http) { }
 
+  darkMode: boolean;
   targetURL = 'http://127.0.0.1:8080';
   selectedTab = 1;
   isLoading = false;

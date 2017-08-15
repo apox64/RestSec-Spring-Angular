@@ -5,19 +5,30 @@
       <div>
         <button md-raised-button color=accent (click)=removeAll()>Clear all<md-icon class="button-clear-all">clear_all</md-icon></button>
       </div>
-      <!-- <button md-fab (click)="getAttackset()" class="check-button">
-        <md-icon>refresh</md-icon>
-      </button> -->
+      <!-- BEGIN TEMP -->
+      <md-card>
+        <div>
+          <button md-mini-fab (click)="getAttackset()" class="check-button">
+            <md-icon>refresh</md-icon>
+          </button>
+          <input [(ngModel)]=endpointToDelete/>
+          <button md-mini-fab color=warn (click)="deleteByID(endpointToDelete)" class="check-button">
+            <md-icon>delete</md-icon>
+          </button>
+        </div>
+      </md-card>
+      <!-- END TEMP -->
     </div>
   </md-grid-tile>
   <md-grid-tile colspan=3 rowspan=2>
     <div fxFill fxFlex class="example-container mat-elevation-z8">
+      {{getData}}
       <md-table #table [dataSource]="dataSource" mdSort>
         <!-- ID Column -->
-        <ng-container cdkColumnDef="id">
+        <!-- <ng-container cdkColumnDef="id">
           <md-header-cell fxFlex="100px" *cdkHeaderCellDef md-sort-header> ID </md-header-cell>
           <md-cell fxFlex="100px" *cdkCellDef="let row"> {{row.id}} </md-cell>
-        </ng-container>
+        </ng-container> -->
         <!-- EndpointURL Column -->
         <ng-container cdkColumnDef="endpointUrl">
           <md-header-cell *cdkHeaderCellDef md-sort-header> Endpoint </md-header-cell>

@@ -20,12 +20,14 @@
   <md-card-subtitle>
     <h3>Automated REST API scanner for developers.</h3>
   </md-card-subtitle>
+  <md-slide-toggle [(ngModel)]="darkMode">Dark Mode</md-slide-toggle>
 </md-card>
 
 <md-card class="settings-card">
   <md-tab-group [selectedIndex]="selectedTab">
     <md-tab label="Endpoints">
-      <attackset></attackset>
+      <!-- <attackset></attackset> -->
+      <attackset-alternative></attackset-alternative>
     </md-tab>
     <md-tab label="Crawler">
       <crawler></crawler>
@@ -56,7 +58,6 @@
         Fire
       </div>
     </button>
-
   </div>
 </md-card>
 

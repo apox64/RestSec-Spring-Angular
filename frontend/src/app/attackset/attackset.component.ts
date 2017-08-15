@@ -4,6 +4,10 @@ import { DataSource } from '@angular/cdk';
 import { MdSort } from '@angular/material';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+// import { AttacksetService } from './attackset.service';
+// import { Attackset } from './attackset';
+// import { OnInit } from '@angular/core';
+// import { AttackableEndpoint } from './attackableEndpoint';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
@@ -12,10 +16,11 @@ import 'rxjs/add/operator/map';
   selector: 'attackset',
   templateUrl: './attackset.component.html',
   styleUrls: ['./attackset.component.css'],
+  // providers: [ AttacksetService ]
 })
 
 export class AttacksetComponent {
-  displayedColumns = ['id', 'endpointUrl', 'httpVerb', 'scanStatus', 'delete'];
+  displayedColumns = [ 'endpointUrl', 'httpVerb', 'scanStatus', 'delete' ];
   endpointDatabase = new EndpointDatabase();
   dataSource: EndpointDataSource | null;
 
@@ -25,6 +30,15 @@ export class AttacksetComponent {
   httpVerbs = [ 'GET', 'POST', 'PUT', 'DELETE' ]
 
   @ViewChild(MdSort) sort: MdSort;
+
+  // public attackset: AttackableEndpoint[];
+
+  // constructor(private _attacksetService: AttacksetService) {}
+
+  // getAttackset() {
+    // this._attacksetService.getAttackset().then((attackset: AttackableEndpoint[]) => this.attackset = attackset);
+  // }
+
 
   removeEndpoint(id: number) {
     console.log("Removing Endpoint with id = " + id);
@@ -93,13 +107,11 @@ export class EndpointDatabase {
   removeEndpoint(id: number) {
     const copiedData = this.data.slice();
     console.log(copiedData);
-
     for (var endpoint of copiedData) {
       if (Number(endpoint.id) == id) {
         var index = copiedData.indexOf(endpoint);
       }
     }
-
     copiedData.splice(index, 1);
     this.dataChange.next(copiedData);
   }
