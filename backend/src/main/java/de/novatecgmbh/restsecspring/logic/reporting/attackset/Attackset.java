@@ -14,7 +14,7 @@ public class Attackset {
     public static Attackset instance = null;
 
     private static final Logger logger = LoggerFactory.getLogger(Attackset.class);
-    private final JSONArray attackSetJSON = new JSONArray();
+    private JSONArray attackSetJSON = new JSONArray();
 
     private Attackset() {
         logger.info("New Attackset created.");
@@ -49,13 +49,18 @@ public class Attackset {
 
     public void remove(AttackableEndpoint attackableEndpoint) {
         UUID id = attackableEndpoint.getId();
-        logger.info("Removing \"" + id + "\" from Attackset.");
+        logger.info("- " + id + " : " + attackableEndpoint.getEndpointURL() + " : " + attackableEndpoint.getHttpVerb());
         attackSetJSON.remove(getIndexForID(id));
     }
 
     public void remove(UUID attackableEndpointID) {
-        logger.info("Removing \"" + attackableEndpointID + "\" from Attackset.");
+        logger.info("- " + attackableEndpointID + "");
         attackSetJSON.remove(getIndexForID(attackableEndpointID));
+    }
+
+    public void removeAll() {
+        logger.info("- Attackset (complete)");
+        attackSetJSON = new JSONArray();
     }
 
     public boolean contains(UUID attackableEndpointID) {
