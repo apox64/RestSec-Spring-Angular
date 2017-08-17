@@ -4,8 +4,6 @@ import { Http, Response, RequestOptions, URLSearchParams, Headers } from '@angul
 import { Observable } from 'rxjs/Observable';
 import { HttpClientModule } from '@angular/common/http';
 import { MdSnackBar } from '@angular/material';
-// import { HttpClient } from './crawler.http.service';
-// import { map } from 'rxjs/operator/map';
 
 @Component({
   selector: 'crawler',
@@ -20,27 +18,15 @@ export class CrawlerComponent {
   selectedCrawlerType = 'Swagger';
   targetAuthToken = 'fd0847dbb559752d932dd3c1ac34ff98d27b11fe2fea5a864f44740cd7919ad08d27b11fe2fea5a864f44740cd7919ad045234523451f';
 
-  isLoading = false;
   hateoasUrl = "http://localhost:10001/albums"
   numberOfAttackPointsFound = 0;
+  uploadInProgress = false;
+  hateoasInProgress = false;
 
   crawlerTypes = [
     'Swagger',
     'HATEOAS',
   ]
-
-  addToAttackset() {
-    this.isLoading = true;
-    if (this.selectedCrawlerType == "Swagger") {
-      console.log("doing nothing ... Swagger scans on upload.");
-    } else if (this.selectedCrawlerType == "HATEOAS") {
-      this.hateoasCrawler();
-    }
-    setTimeout(
-      () => this.isLoading = false,
-      3000
-    );
-  }
 
   swaggerCrawler(event): void {
     let fileList: FileList = event.target.files;
@@ -54,17 +40,21 @@ export class CrawlerComponent {
         // headers.append('Content-Type', 'multipart/form-data');
         headers.append('Accept', 'application/json');
         let options = new RequestOptions({ headers: headers });
+        this.uploadInProgress = true;
         this.http.post('crawler/swagger/upload', formData, options)
             .map(res => res.json())
             .subscribe(
                 data => {
+                  this.uploadInProgress = false;
                   console.log(data),
                   this.numberOfAttackPointsFound = data;
                   this.snackBar.open("Number of AttackPoints found: " + this.numberOfAttackPointsFound, "OK", {
                     duration: 5000
                   });
                 },
-                error => console.log(error)
+                error => {
+                  console.log(error)
+                }
             )
     }
   }
@@ -80,16 +70,22 @@ export class CrawlerComponent {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
+    this.hateoasInProgress = true;
     this.http.post('crawler/hateoas', JSON.stringify(data), {headers: headers})
+    .map(res => res.json())
     .subscribe(
-      (res: any) => {
-        this.numberOfAttackPointsFound = res;
+      data => {
+        this.hateoasInProgress = false;
+        this.numberOfAttackPointsFound = data;
         this.snackBar.open("Number of AttackPoints found: " + this.numberOfAttackPointsFound, "OK", {
           duration: 5000
         });
-        console.log(res);
-    });
-
+        console.log(data);
+      },
+      error => {
+          console.log(error)
+      }
+    )
   }
 
 }

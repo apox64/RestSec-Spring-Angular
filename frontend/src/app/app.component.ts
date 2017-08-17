@@ -1,20 +1,23 @@
 import { Component } from '@angular/core';
-import { Http, Response, URLSearchParams } from '@angular/http';
+import { Http } from '@angular/http';
+import { AttacksetComponent } from './attackset/attackset.component';
+import { AttacksetService } from './attackset/attackset.service';
 // import * as angular from "angular";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [AttacksetComponent, AttacksetService]
 })
 
 export class AppComponent {
 
-  constructor(private http: Http) { }
+  constructor(private attacksetComponent : AttacksetComponent) { }
 
   darkMode: boolean;
   targetURL = 'http://127.0.0.1:8080';
-  selectedTab = 1;
+  selectedIndex = 0;
   isLoading = false;
 
   runAttack() {
@@ -23,6 +26,12 @@ export class AppComponent {
       () => this.isLoading = false,
       3000
     );
+  }
+
+  onSelect() {
+    if (this.selectedIndex == 0) {
+      this.attacksetComponent.getAttackset();
+    }
   }
 
   title = 'app';

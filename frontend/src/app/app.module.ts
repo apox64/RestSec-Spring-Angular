@@ -9,8 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { CdkTableModule } from '@angular/cdk';
 
 import { AppComponent } from './app.component';
-// import { AttacksetComponent } from './attackset/attackset.component';
-import { AttacksetComponent } from './attackset/attackset-alternative.component';
+import { AttacksetComponent } from './attackset/attackset.component';
 import { CrawlerComponent } from './crawler/crawler.component';
 import { ScannerComponent } from './scanner/scanner.component';
 import { ReportingComponent } from './reporting/reporting.component';
@@ -37,9 +36,6 @@ import 'hammerjs';
     FlexLayoutModule,
     CdkTableModule
   ],
-  // exports: [
-  //   MaterialModule
-  // ],
   providers: [],
   bootstrap: [AppComponent]
 })

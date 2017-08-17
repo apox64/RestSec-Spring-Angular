@@ -7,11 +7,11 @@
   </md-grid-tile>
   <md-grid-tile colspan=1 rowspan=2>
     <div *ngIf="selectedCrawlerType == 'HATEOAS'" class="check">
-      <button md-fab (click)="addToAttackset()" class="check-button">
-        <div [hidden]="isLoading">
-          <md-icon>check</md-icon>
+      <button md-fab (click)="hateoasCrawler()" class="check-button">
+        <div [hidden]="hateoasInProgress">
+          <md-icon>search</md-icon>
         </div>
-        <div [hidden]="!isLoading">
+        <div [hidden]="!hateoasInProgress">
           <md-progress-spinner
             class="progress-spinner"
             color = 'default'
@@ -35,7 +35,8 @@
       <!-- <button md-raised-button color="primary" class="upload-button" (change)="fileChange($event)" (click)="fileChange($event)">Upload Swagger</button> -->
 
       <button md-raised-button color="primary" type="button" onclick="document.getElementById('fileToUpload').click()" class="upload-button">
-          <span mdTooltip="Upload a Swagger File (.json, .yaml, .yml) to detect attackable Endpoints automatically!">Upload Swagger</span>
+          <span [hidden]='uploadInProgress' mdTooltip="Upload a Swagger File (.json, .yaml, .yml) to detect attackable Endpoints automatically!">Upload Swagger</span>
+          <span [hidden]='!uploadInProgress'><md-progress-spinner class="loading-spinner" color=accent mode=indeterminate></md-progress-spinner></span>
       </button>
       <input id="fileToUpload" type="file" (change)="swaggerCrawler($event)" placeholder="Upload file" accept=".yml, .yaml, .json" name="file">
 
