@@ -12,13 +12,9 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AttacksetService {
 
-  // endpointDatabase = new EndpointDatabase();
-  // dataSource: EndpointDataSource | null;
-
   constructor (private _http: Http) {}
 
   getAll() {
-    console.log("attackset.service : getAll()")
     return this._http.get('reporting/attackset')
       .map(res => res.json());
   }
@@ -48,12 +44,7 @@ export class AttacksetService {
 
 }
 
-export interface EndpointData {
-  id: string;
-  endpointUrl: string;
-  httpVerb: string;
-  scanStatus: boolean;
-}
+
 
 /*
 export class EndpointDatabase {

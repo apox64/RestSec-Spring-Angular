@@ -2,27 +2,13 @@
   <md-grid-tile colspan=1 rowspan=1>
     <div fxLayout="column" fxLayoutAlign="space-around center">
       <h2>Available Endpoints ({{numberOfEndpoints}})</h2>
-      <div>
-        <button md-raised-button color=accent (click)=removeAll()>Clear all<md-icon class="button-clear-all">clear_all</md-icon></button>
-      </div>
-      <!-- BEGIN TEMP -->
-      <md-card>
-        <div>
-          <button md-mini-fab (click)="getAttackset()" class="check-button">
-            <md-icon>refresh</md-icon>
-          </button>
-          <input [(ngModel)]=endpointToDelete/>
-          <button md-mini-fab color=warn (click)="remove(endpointToDelete)" class="check-button">
-            <md-icon>delete</md-icon>
-          </button>
-        </div>
-      </md-card>
-      <!-- END TEMP -->
+      <button md-mini-fab (click)="getAttackset()" class="check-button" style="margin-top: 10px;">
+        <md-icon>refresh</md-icon>
+      </button>
     </div>
   </md-grid-tile>
   <md-grid-tile colspan=3 rowspan=2>
     <div fxFill fxFlex class="example-container mat-elevation-z8">
-      {{getData}}
       <md-table #table [dataSource]="dataSource" mdSort>
         <!-- ID Column -->
         <!-- <ng-container cdkColumnDef="id">
@@ -47,10 +33,8 @@
 
         <!-- Delete Column -->
         <ng-container cdkColumnDef="delete">
-          <md-header-cell fxFlex="100px" *cdkHeaderCellDef md-sort-header><!--<button md-button (click)=removeAll()><md-icon color=warn>clear_all</md-icon></button>--></md-header-cell>
-          <md-cell fxFlex="100px" *cdkCellDef="let row"> <button md-button class="button-delete-endpoint"(click)=removeEndpoint(row.id)><md-icon color=warn>cancel</md-icon></button> </md-cell>
-            <!-- <md-header-cell fxFlex="100px"> Actions </md-header-cell>
-            <md-cell fxFlex="100px" *cdkCellDef="let row"><button md-raised-button>Edit</button> </md-cell> -->
+          <md-header-cell fxFlex="100px" *cdkHeaderCellDef><button md-button mdTooltip="Delete all! ({{numberOfEndpoints}})" (click)=removeAll()><md-icon color=warn>delete_sweep</md-icon></button></md-header-cell>
+          <md-cell fxFlex="100px" *cdkCellDef="let row"> <button md-button class="button-delete-endpoint"(click)=remove(row.id)><md-icon color=warn>remove_circle</md-icon></button> </md-cell>
         </ng-container>
         <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
         <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>

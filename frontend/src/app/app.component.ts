@@ -17,7 +17,7 @@ export class AppComponent {
 
   darkMode: boolean;
   targetURL = 'http://127.0.0.1:8080';
-  selectedIndex = 0;
+  selectedIndex = 2;
   isLoading = false;
 
   runAttack() {
@@ -29,9 +29,9 @@ export class AppComponent {
   }
 
   onSelect() {
-    if (this.selectedIndex == 0) {
-      this.attacksetComponent.getAttackset();
-    }
+    // if (this.selectedIndex == 0) {
+    //   this.attacksetComponent.getAttackset();
+    // }
   }
 
   title = 'app';

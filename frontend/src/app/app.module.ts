@@ -7,6 +7,7 @@ import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CdkTableModule } from '@angular/cdk';
+import { MdSortModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { AttacksetComponent } from './attackset/attackset.component';
@@ -14,6 +15,8 @@ import { CrawlerComponent } from './crawler/crawler.component';
 import { ScannerComponent } from './scanner/scanner.component';
 import { ReportingComponent } from './reporting/reporting.component';
 import { ResultsComponent } from './results/results.component';
+
+import { AttacksetService } from './attackset/attackset.service';
 
 import 'hammerjs';
 
@@ -34,9 +37,14 @@ import 'hammerjs';
     MaterialModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
-    CdkTableModule
+    CdkTableModule,
+    MdSortModule
   ],
-  providers: [],
+  exports: [
+    //MdSortModule
+  ],
+  providers: [AttacksetService],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
