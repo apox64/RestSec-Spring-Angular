@@ -21,6 +21,13 @@ export class ScannerComponent {
   scanInProgress = 'no attack running';
   addAllHttpVerbs: boolean;
 
+  checkedScanners = {
+    'checkedZap': false,
+    'checkedSqlmap': false,
+    'checkedRestsecXss': false,
+    'checkedRestsecHeader': false
+  }
+
   isFinished = {
     'zapSpider': false,
     'zapScanner': false,
@@ -43,6 +50,18 @@ export class ScannerComponent {
     'RestSec XSS Scanner',
     'RestSec Security Header Scanner'
   ]
+
+  checkAll() {
+    for (var scanner in this.checkedScanners) {
+      this.checkedScanners[scanner] = true;
+    }
+  }
+
+  uncheckAll() {
+    for (var scanner in this.checkedScanners) {
+      this.checkedScanners[scanner] = false;
+    }
+  }
 
   isZapOnline() {
     this.http.get('/scanner/zap', { params: { "zapUrl": this.zapUrl } })
