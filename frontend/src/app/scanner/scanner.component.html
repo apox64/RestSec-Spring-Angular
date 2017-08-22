@@ -6,7 +6,7 @@
   <md-grid-tile colspan=3 rowspan=2>
     <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="25px">
       <div fxLayout="row" fxLayoutAlign="space-around strech" fxLayoutGap="10px">
-        <md-card>
+        <md-card [ngClass]="scanners.zap.checked ? 'scanner-card-white' : 'scanner-card-grey'">
           <md-card-header>
             <md-card-title>OWASP ZAP Proxy</md-card-title>
             <md-card-subtitle>-</md-card-subtitle>
@@ -14,86 +14,86 @@
           <md-card-content>
             <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="10px">
               <div fxLayout="column" fxLayoutAlign="space-around center">
-                <div [hidden]="!isFinished.zapSpider">
+                <div [hidden]="!scanners.zap.spider.finished">
                   <md-icon class="icon-done">done</md-icon>
                 </div>
-                <div [hidden]="isFinished.zapSpider">
-                  <md-progress-spinner class="progress-spinner" color="progressSpinnerZap.color" mode="progressSpinnerZap.mode" [value]="spiderProgress"></md-progress-spinner>
+                <div [hidden]="scanners.zap.spider.finished">
+                  <md-progress-spinner class="progress-spinner" color="progressSpinnerZap.color" mode="progressSpinnerZap.mode" [value]="scanners.zap.spider.progress"></md-progress-spinner>
                 </div>
                 <label class="zap-labels">Spider</label>
-                <label class="zap-labels">{{spiderProgress}}%</label>
+                <label class="zap-labels">{{scanners.zap.spider.progress}}%</label>
               </div>
               <div fxLayout="column" fxLayoutAlign="space-around center">
-                <div [hidden]="!isFinished.zapScanner">
+                <div [hidden]="!scanners.zap.scanner.finished">
                   <md-icon class="icon-done">done</md-icon>
                 </div>
-                <div [hidden]="isFinished.zapScanner">
-                  <md-progress-spinner class="progress-spinner" color="progressSpinnerZap.color" mode="progressSpinnerZap.mode" [value]="scannerProgress"></md-progress-spinner>
+                <div [hidden]="scanners.zap.scanner.finished">
+                  <md-progress-spinner class="progress-spinner" color="progressSpinnerZap.color" mode="progressSpinnerZap.mode" [value]="scanners.zap.scanner.progress"></md-progress-spinner>
                 </div>
                 <label class="zap-labels">Scanner</label>
-                <label class="zap-labels">{{scannerProgress}}%</label>
+                <label class="zap-labels">{{scanners.zap.scanner.progress}}%</label>
               </div>
             </div>
           </md-card-content>
           <md-card-actions>
-            <md-checkbox class="checkbox" [(ngModel)]="checkedScanners.checkedZap"></md-checkbox>
+            <md-checkbox class="checkbox" [(ngModel)]="scanners.zap.checked"></md-checkbox>
           </md-card-actions>
         </md-card>
-        <md-card>
+        <md-card [ngClass]="scanners.sqlmap.checked ? 'scanner-card-white' : 'scanner-card-grey'">
           <md-card-header>
             <md-card-title>sqlmap</md-card-title>
             <md-card-subtitle>-</md-card-subtitle>
           </md-card-header>
           <md-card-content>
             <div fxLayout="column" fxLayoutAlign="space-around center">
-              <div [hidden]="!isFinished.sqlmap">
+              <div [hidden]="!scanners.sqlmap.finished">
                 <md-icon class="icon-done">done</md-icon>
               </div>
-              <div [hidden]="isFinished.sqlmap">
+              <div [hidden]="scanners.sqlmap.finished">
                 <md-progress-spinner class="progress-spinner" color="primary" mode="determinate" [value]="15"></md-progress-spinner>
               </div>
             </div>
           </md-card-content>
           <md-card-actions>
-            <md-checkbox class="checkbox" [(ngModel)]="checkedScanners.checkedSqlmap"></md-checkbox>
+            <md-checkbox class="checkbox" [(ngModel)]="scanners.sqlmap.checked"></md-checkbox>
           </md-card-actions>
         </md-card>
-        <md-card>
+        <md-card [ngClass]="scanners.restsec.xss.checked ? 'scanner-card-white' : 'scanner-card-grey'">
           <md-card-header>
             <md-card-title>RestSec</md-card-title>
             <md-card-subtitle>XSS Scanner</md-card-subtitle>
           </md-card-header>
           <md-card-content>
             <div fxLayout="column" fxLayoutAlign="space-around center">
-              <div [hidden]="!isFinished.restsecXSS">
+              <div [hidden]="!scanners.restsec.xss.finished">
                 <md-icon class="icon-done">done</md-icon>
               </div>
-              <div [hidden]="isFinished.restsecXSS">
+              <div [hidden]="scanners.restsec.xss.finished">
                 <md-progress-spinner class="progress-spinner" color="primary" mode="determinate" [value]="85"></md-progress-spinner>
               </div>
             </div>
           </md-card-content>
           <md-card-actions>
-            <md-checkbox class="checkbox" [(ngModel)]="checkedScanners.checkedRestsecXss"></md-checkbox>
+            <md-checkbox class="checkbox" [(ngModel)]="scanners.restsec.xss.checked"></md-checkbox>
           </md-card-actions>
         </md-card>
-        <md-card>
+        <md-card [ngClass]="scanners.restsec.headers.checked ? 'scanner-card-white' : 'scanner-card-grey'">
           <md-card-header>
             <md-card-title>RestSec</md-card-title>
             <md-card-subtitle>Security Header Scanner</md-card-subtitle>
           </md-card-header>
           <md-card-content>
             <div fxLayout="column" fxLayoutAlign="space-around center">
-              <div [hidden]="!isFinished.restsecHeaders">
+              <div [hidden]="!scanners.restsec.headers.finished">
                 <md-icon class="icon-done">done</md-icon>
               </div>
-              <div [hidden]="isFinished.restsecHeaders">
+              <div [hidden]="scanners.restsec.headers.finished">
                 <md-progress-spinner class="progress-spinner" color="primary" mode="determinate" [value]="55"></md-progress-spinner>
               </div>
             </div>
           </md-card-content>
           <md-card-actions>
-            <md-checkbox class="checkbox" [(ngModel)]="checkedScanners.checkedRestsecHeader"></md-checkbox>
+            <md-checkbox class="checkbox" [(ngModel)]="scanners.restsec.headers.checked"></md-checkbox>
           </md-card-actions>
         </md-card>
       </div>

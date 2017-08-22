@@ -16,51 +16,53 @@ export class ScannerComponent {
 
   zapUrl = 'http://127.0.0.1:8081';
   targetURL = 'http://127.0.0.1:8080';
-  spiderProgress = 35;
-  scannerProgress = 66;
   scanInProgress = 'no attack running';
   addAllHttpVerbs: boolean;
 
-  checkedScanners = {
-    'checkedZap': false,
-    'checkedSqlmap': false,
-    'checkedRestsecXss': false,
-    'checkedRestsecHeader': false
-  }
-
-  isFinished = {
-    'zapSpider': false,
-    'zapScanner': false,
-    'sqlmap': false,
-    'restsecXSS': false,
-    'restsecHeaders': false
-  };
-
-  progressSpinnerZap = {
-    'mode': 'determinate',
-    'color': 'primary'
-  };
-
-  primaryScanners = [
-    'OWASP Zap Proxy',
-    'sqlmap'
-  ]
-
-  restsecScanners = [
-    'RestSec XSS Scanner',
-    'RestSec Security Header Scanner'
-  ]
+	scanners = {
+		'zap': {
+			'checked': true,
+      'spider': {
+        'finished': false,
+        'progress': 89
+      },
+      'scanner': {
+        'finished': false,
+        'progress': 66
+      },
+      'spinner': {
+        'mode': 'determinate',
+        'color': 'primary'
+      }
+		},
+		'sqlmap': {
+			'checked': true,
+			'finished': false
+		},
+		'restsec': {
+			'xss': {
+				'checked': true,
+				'finished': false
+			},
+			'headers': {
+				'checked': true,
+				'finished': false
+			}
+		}
+	}
 
   checkAll() {
-    for (var scanner in this.checkedScanners) {
-      this.checkedScanners[scanner] = true;
-    }
+    this.scanners.zap.checked = true;
+    this.scanners.sqlmap.checked = true;
+    this.scanners.restsec.xss.checked = true;
+    this.scanners.restsec.headers.checked = true;
   }
 
   uncheckAll() {
-    for (var scanner in this.checkedScanners) {
-      this.checkedScanners[scanner] = false;
-    }
+    this.scanners.zap.checked = false;
+    this.scanners.sqlmap.checked = false;
+    this.scanners.restsec.xss.checked = false;
+    this.scanners.restsec.headers.checked = false;
   }
 
   isZapOnline() {
@@ -69,12 +71,6 @@ export class ScannerComponent {
       (res: Response) => {
         const statusOnline = res.json();
         console.log(statusOnline);
-        // this.zapOnlineStatus = statusOnline.zap;
-        // if (this.zapOnlineStatus == 'online') {
-        //   document.getElementById("onlineStatusLabel").className = "label label-success"
-        // } else {
-        //   document.getElementById("onlineStatusLabel").className = "label label-danger"
-        // }
       }
       )
   }
@@ -106,7 +102,7 @@ export class ScannerComponent {
         var highest = Object.keys(spiderStatus.spider).sort().pop();
         console.log("Accessing element " + highest + " in spider status Object");
         // this.spiderStatus = spiderStatus.spider[highest].state;
-        this.spiderProgress = spiderStatus.spider[highest].progress;
+        this.scanners.zap.spider.progress = spiderStatus.spider[highest].progress;
       }
       );
 
@@ -118,7 +114,7 @@ export class ScannerComponent {
         var highest = Object.keys(scannerStatus.ascan).sort().pop();
         console.log("Accessing element " + highest + " in scanner status Object");
         // this.scannerStatus = scannerStatus.ascan[highest].state;
-        this.scannerProgress = scannerStatus.ascan[highest].progress;
+        this.scanners.zap.scanner.progress = scannerStatus.ascan[highest].progress;
       }
       );
   }

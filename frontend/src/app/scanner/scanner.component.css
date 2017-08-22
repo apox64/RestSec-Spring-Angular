@@ -4,6 +4,14 @@ md-grid-tile {
   /*color: white;*/
 }
 
+.scanner-card-white {
+  background-color: white;
+}
+
+.scanner-card-grey {
+  background-color: lightgrey;
+}
+
 .progress-card {
   width: 600px;
 }
