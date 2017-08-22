@@ -4,4 +4,27 @@
 /*@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";*/
 /*@import "~@angular/material/prebuilt-themes/purple-green.css";*/
 
-@import "./styles/custom.scss";
+// @import "./styles/custom.scss";
+
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+@import 'styles/light-theme.scss';
+@import 'styles/dark-theme.scss';
+
+.light-theme {
+  @include angular-material-theme($light-theme);
+  background-color: #00BCD4;
+  md-grid-tile { background: lightgray; };
+  .scanner-card.selected { background: white; }
+  .scanner-card.not-selected { background: lightgray; }
+}
+
+.dark-theme {
+  @include angular-material-theme($dark-theme);
+  background-color: black;
+  md-grid-tile { background: gray; };
+  .scanner-card.selected { background: lightgray; color: black; }
+  .scanner-card.not-selected { background: gray; }
+}

@@ -1,15 +1,5 @@
 md-grid-tile {
-  /*background: lightslategray;*/
-  background: lightgray;
-  /*color: white;*/
-}
-
-.scanner-card-white {
-  background-color: white;
-}
-
-.scanner-card-grey {
-  background-color: lightgrey;
+  /*background: lightgray;*/
 }
 
 .progress-card {
@@ -31,7 +21,6 @@ md-grid-tile {
   align-items: center;
   margin: 20px;
   margin-left: 0px;
-  color: green;
 }
 
 /*not in use*/

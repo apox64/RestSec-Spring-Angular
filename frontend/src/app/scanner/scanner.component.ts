@@ -37,16 +37,19 @@ export class ScannerComponent {
 		},
 		'sqlmap': {
 			'checked': true,
-			'finished': false
+			'finished': false,
+      'progress': 'running'
 		},
 		'restsec': {
 			'xss': {
 				'checked': true,
-				'finished': false
+				'finished': false,
+        'progress': 'running'
 			},
 			'headers': {
 				'checked': true,
-				'finished': false
+				'finished': false,
+        'progress': 'running'
 			}
 		}
 	}
@@ -63,6 +66,14 @@ export class ScannerComponent {
     this.scanners.sqlmap.checked = false;
     this.scanners.restsec.xss.checked = false;
     this.scanners.restsec.headers.checked = false;
+  }
+
+  finishedTest() {
+    this.scanners.zap.spider.finished = !this.scanners.zap.spider.finished;
+    this.scanners.zap.scanner.finished = !this.scanners.zap.scanner.finished;
+    this.scanners.sqlmap.finished = !this.scanners.sqlmap.finished;
+    this.scanners.restsec.xss.finished = !this.scanners.restsec.xss.finished;
+    this.scanners.restsec.headers.finished = !this.scanners.restsec.headers.finished;
   }
 
   isZapOnline() {

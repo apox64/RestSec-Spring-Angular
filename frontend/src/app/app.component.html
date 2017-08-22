@@ -1,51 +1,38 @@
-<head>
-  <meta charset="utf-8">
-  <title>RestSec Vulnerability Scanner</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
-</head>
+<div class="main-cards" [class.dark-theme]="darkMode">
 
-<!-- <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script> -->
-<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
+  <md-card class="header-card">
+    <md-card-title>
+      <h2>RestSec Vulnerability Scanner</h2>
+    </md-card-title>
+    <md-card-subtitle>
+      <h3>Automated REST API scanner for developers.</h3>
+    </md-card-subtitle>
+    <md-slide-toggle [(ngModel)]="darkMode" color=primary></md-slide-toggle>
+  </md-card>
 
-<div class="main-cards">
+  <md-card class="settings-card">
+    <md-tab-group (selectChange)="onSelect($event)" [(selectedIndex)]="selectedIndex">
+      <md-tab label="Endpoints">
+        <attackset></attackset>
+      </md-tab>
+      <md-tab label="Crawler">
+        <crawler></crawler>
+      </md-tab>
+      <md-tab label="Scanner">
+        <scanner></scanner>
+      </md-tab>
+      <md-tab label="Reporting">
+        <reporting></reporting>
+      </md-tab>
+      <md-tab label="Results">
+        <results></results>
+      </md-tab>
+    </md-tab-group>
+  </md-card>
 
-<md-card class="header-card">
-  <md-card-title>
-    <h2>RestSec Vulnerability Scanner</h2>
-  </md-card-title>
-  <md-card-subtitle>
-    <h3>Automated REST API scanner for developers.</h3>
-  </md-card-subtitle>
-  <md-slide-toggle [(ngModel)]="darkMode" color=primary disabled>Dark Mode</md-slide-toggle>
-</md-card>
-
-<md-card class="settings-card">
-  <md-tab-group (selectChange)="onSelect($event)" [(selectedIndex)]="selectedIndex">
-    <md-tab label="Endpoints">
-      <attackset></attackset>
-    </md-tab>
-    <md-tab label="Crawler">
-      <crawler></crawler>
-    </md-tab>
-    <md-tab label="Scanner">
-      <scanner></scanner>
-    </md-tab>
-    <md-tab label="Reporting">
-      <reporting></reporting>
-    </md-tab>
-    <md-tab label="Results">
-      <results></results>
-    </md-tab>
-  </md-tab-group>
-</md-card>
-
-<md-card class="fire-card">
-  <div fxLayout="row" fxLayoutAlign="center center">
-    <button class="fire-button" md-raised-button color="warn" (click)="runAttack()">
+  <md-card class="fire-card">
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <button class="fire-button" md-raised-button color="warn" (click)="runAttack()">
       <div [hidden]="!isLoading">
         <md-progress-spinner
           class="fire-spinner"
@@ -57,7 +44,7 @@
         Fire
       </div>
     </button>
-  </div>
-</md-card>
+    </div>
+  </md-card>
 
 </div>
