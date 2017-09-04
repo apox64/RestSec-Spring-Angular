@@ -23,7 +23,7 @@
 
 .dark-theme {
   @include angular-material-theme($dark-theme);
-  background-color: black;
+  background-color: #000000;
   md-grid-tile { background: gray; };
   .scanner-card.selected { background: lightgray; color: black; }
   .scanner-card.not-selected { background: gray; }

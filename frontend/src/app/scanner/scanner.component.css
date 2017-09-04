@@ -11,6 +11,28 @@ md-grid-tile {
   margin: 0 auto;
 }
 
+.isReachable {
+  border: 1px solid green;
+  border-radius: 5px;
+  font-size: 10px;
+  color: green;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.isNotReachable {
+  border: 1px solid red;
+  border-radius: 5px;
+  font-size: 10px;
+  color: red;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 .zap-labels {
   color: grey;
   margin: 5px;

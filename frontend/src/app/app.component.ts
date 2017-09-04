@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
-import { Http } from '@angular/http';
-import { AttacksetComponent } from './attackset/attackset.component';
-import { AttacksetService } from './attackset/attackset.service';
+import { Component, Input, ViewChild } from '@angular/core';
+import { Http, Response } from '@angular/http';
+import { ScannerComponent } from './scanner/scanner.component';
 
 @Component({
   selector: 'body',
@@ -11,12 +10,14 @@ import { AttacksetService } from './attackset/attackset.service';
     "[class.dark-theme]": "darkMode",
     "[class.light-theme]": "!darkMode"
   },
-  providers: [AttacksetComponent, AttacksetService]
 })
 
 export class AppComponent {
 
-  constructor(private attacksetComponent : AttacksetComponent) { }
+  @ViewChild(ScannerComponent)
+  private scannerComponent: ScannerComponent;
+
+  constructor(private _http: Http) { }
 
   "darkMode": boolean = false;
   targetURL = 'http://127.0.0.1:8080';
@@ -24,11 +25,9 @@ export class AppComponent {
   isLoading = false;
 
   runAttack() {
-    this.isLoading = true;
-    setTimeout(
-      () => this.isLoading = false,
-      3000
-    );
+    // this.isLoading = true;
+    this.scannerComponent.runAllSelected()
+    // this.isLoading = false;
   }
 
   onSelect() {
@@ -36,6 +35,8 @@ export class AppComponent {
     //   this.attacksetComponent.getAttackset();
     // }
   }
+
+
 
   title = 'app';
 }
