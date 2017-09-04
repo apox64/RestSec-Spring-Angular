@@ -38,6 +38,11 @@ public class ZapGateway {
 
     //@JsonSerialize(using = DateSerializer.class)
     public String getStatus(String type) {
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         RestTemplate restTemplate = new RestTemplate();
         String spiderStatusURL = ZAP_URL + "/JSON/" + type + "/view/scans/?zapapiformat=JSON&formMethod=GET";
         JSONObject jsonObject = new JSONObject();
@@ -96,16 +101,20 @@ public class ZapGateway {
             }
         }
 
-        JSONObject status = new JSONObject();
+        logger.info("Scanner finished.");
 
-        try {
-            status.put("spider", "finished");
-            status.put("gateway", "finished");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        return "{\"status\" : \"OK\"}";
 
-        return status.toString();
+//        JSONObject status = new JSONObject();
+//
+//        try {
+//            status.put("spider", "finished");
+//            status.put("gateway", "finished");
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return status.toString();
 
     }
 
