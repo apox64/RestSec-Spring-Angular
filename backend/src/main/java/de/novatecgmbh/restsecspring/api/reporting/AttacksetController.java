@@ -1,6 +1,5 @@
 package de.novatecgmbh.restsecspring.api.reporting;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.novatecgmbh.restsecspring.logic.reporting.attackset.AttackableEndpoint;
 import de.novatecgmbh.restsecspring.logic.reporting.attackset.Attackset;
@@ -27,17 +26,27 @@ public class AttacksetController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json; charset=utf-8", consumes = "application/json")
-    public @ResponseBody
-    String addAttackableEndpoint(@RequestBody String requestBody) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        AttackableEndpoint attackableEndpoint;
+    @ResponseBody
+    public String addAttackableEndpoint(@RequestBody String requestBody) {
         try {
-            attackableEndpoint = objectMapper.readValue(requestBody, AttackableEndpoint.class);
+            AttackableEndpoint attackableEndpoint = new ObjectMapper().readValue(requestBody, AttackableEndpoint.class);
             Attackset attackset = Attackset.getInstance();
             attackset.add(attackableEndpoint);
             return "{ \"status\" : \"OK\"}";
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        return "{ \"status\" : \"Failed\"}";
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.DELETE, produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String deleteAll() {
+        Attackset attackset = Attackset.getInstance();
+        logger.info("Deleting current Attackset ...");
+        attackset.removeAll();
+        if (attackset.getAttackSet().length() == 0) {
+            return "{ \"status\" : \"OK\"}";
         }
         return "{ \"status\" : \"Failed\"}";
     }
@@ -55,19 +64,6 @@ public class AttacksetController {
         Attackset attackset = Attackset.getInstance();
         if (attackset.contains(id)) {
             attackset.remove(id);
-            return "{ \"status\" : \"OK\"}";
-        }
-
-        return "{ \"status\" : \"Failed\"}";
-    }
-
-    @RequestMapping(value = "", method = RequestMethod.DELETE, produces = "application/json; charset=utf-8")
-    @ResponseBody
-    public String deleteAll() {
-        Attackset attackset = Attackset.getInstance();
-        logger.info("Deleting current Attackset ...");
-        attackset.removeAll();
-        if (attackset.getAttackSet().length() == 0) {
             return "{ \"status\" : \"OK\"}";
         }
         return "{ \"status\" : \"Failed\"}";

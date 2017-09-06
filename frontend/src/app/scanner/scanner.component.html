@@ -6,7 +6,7 @@
   <md-grid-tile colspan=3 rowspan=2>
     <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="25px">
       <div fxLayout="row" fxLayoutAlign="space-around stretch" fxLayoutGap="10px">
-        <md-card [ngClass]="scanners.zap.checked ? 'scanner-card selected' : 'scanner-card not-selected'" fxLayout="column" fxLayoutAlign="space-around center" (click)="scanners.zap.checked = !scanners.zap.checked">
+        <md-card [ngClass]="scanners.zap.checked ? 'scanner-card selected' : 'scanner-card not-selected'" fxLayout="column" fxLayoutAlign="space-around center" (click)="scanners.zap.checked = !scanners.zap.checked; isZapOnline()">
           <md-card-header>
             <md-card-title>OWASP ZAP Proxy</md-card-title>
             <md-card-subtitle><span [ngClass]="zapReachable ? 'isReachable' : 'isNotReachable'">{{zapOnlineStatus}}</span></md-card-subtitle>
@@ -36,7 +36,7 @@
             </div>
           </md-card-content>
           <md-card-actions>
-            <md-checkbox class="checkbox" [(ngModel)]="scanners.zap.checked"></md-checkbox>
+            <md-checkbox class="checkbox" [(ngModel)]="scanners.zap.checked" (change)=isZapOnline()></md-checkbox>
           </md-card-actions>
         </md-card>
         <md-card [ngClass]="scanners.sqlmap.checked ? 'scanner-card selected' : 'scanner-card not-selected'" fxLayout="column" fxLayoutAlign="space-between center" (click)="scanners.sqlmap.checked = !scanners.sqlmap.checked">
@@ -108,7 +108,7 @@
       <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="10px">
         <button md-mini-fab class="check-button" (click)="checkAll()"><md-icon>done_all</md-icon></button>
         <button md-mini-fab class="uncheck-button" (click)="uncheckAll()"><md-icon>close</md-icon></button>
-        <button md-mini-fab color='primary' class="finished-button" (click)="finishedMock()"><md-icon>play_arrow</md-icon></button>
+        <button md-mini-fab color='primary' class="finished-button" (click)="finishedMock()" mdTooltip="MOCK! (FAST FORWARD)"><md-icon>play_arrow</md-icon></button>
       </div>
     </div>
   </md-grid-tile>

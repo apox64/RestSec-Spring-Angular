@@ -22,7 +22,7 @@ public class ZapController {
         }
         logger.info("ZAP_URL set to : " + ZAP_URL);
         ZapGateway zapGateway = new ZapGateway(ZAP_URL);
-        if (zapGateway.isOnline()){
+        if (zapGateway.isOnline(ZAP_URL)){
             return "{\"zap\" : \"online\"}";
         } else {
             return "{\"zap\" : \"offline\"}";

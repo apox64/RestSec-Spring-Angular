@@ -16,21 +16,22 @@ public class ZapGateway {
 
     private static Logger logger = LoggerFactory.getLogger(ZapGateway.class);
     private static String ZAP_URL = "http://127.0.0.1:8081";
+    private static String TARGET_URL = "http://192.168.99.100:32768";
 
     public ZapGateway(String url) {
         ZapGateway.ZAP_URL = url;
     }
 
-    public boolean isOnline() {
+    public boolean isOnline(String url) {
         try {
-            HttpURLConnection connection = (HttpURLConnection) new URL(ZAP_URL).openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             int responseCode = connection.getResponseCode();
             if (responseCode == 200) {
-                logger.info("Zap is online.");
+                logger.info(url + " is online.");
                 return true;
             }
         } catch (IOException e) {
-            logger.info("Zap is offline.");
+            logger.info(url + " is offline.");
             return false;
         }
         return false;
@@ -72,7 +73,7 @@ public class ZapGateway {
             logger.info("Spider not started.");
         }
 
-        while (!hasSpiderFinished()) {
+        while (!hasSpiderFinished() && isOnline(TARGET_URL)) {
             logger.info("Spider is still running ...");
             try {
                 Thread.sleep(2000);
@@ -92,7 +93,7 @@ public class ZapGateway {
             logger.info("Scanner not started.");
         }
 
-        while (!hasScannerFinished()) {
+        while (!hasScannerFinished() && isOnline(TARGET_URL)) {
             logger.info("Scanner is still running ...");
             try {
                 Thread.sleep(5000);

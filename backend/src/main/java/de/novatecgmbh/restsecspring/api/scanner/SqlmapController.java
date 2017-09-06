@@ -14,13 +14,13 @@ public class SqlmapController {
     @RequestMapping(value = "start", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     @ResponseBody
     public String startAttack(String requestBody) {
-        logger.info("RestSec XSS Scanner started.");
+        logger.info("sqlmap started.");
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        logger.info("RestSec XSS Scanner finished.");
+        logger.info("sqlmap finished.");
         return "{ \"status\" : \"OK\"}";
     }
 }

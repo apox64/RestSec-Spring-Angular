@@ -27,7 +27,7 @@ export class ScannerComponent {
 
   scanners = {
     'zap': {
-      'checked': true,
+      'checked': false,
       'spider': {
         'finished': false,
         'progress': 0
@@ -38,18 +38,18 @@ export class ScannerComponent {
       }
     },
     'sqlmap': {
-      'checked': true,
+      'checked': false,
       'finished': false,
       'running': false
     },
     'restsec': {
       'xss': {
-        'checked': true,
+        'checked': false,
         'finished': false,
         'running': false
       },
       'headers': {
-        'checked': true,
+        'checked': false,
         'finished': false,
         'running': false
       }
@@ -70,10 +70,6 @@ export class ScannerComponent {
     this.scanners.restsec.headers.checked = false;
   }
 
-  // getScanners() {
-  //   return this.scanners;
-  // }
-
   finishedMock() {
     this.scanners.zap.spider.finished = !this.scanners.zap.spider.finished;
     this.scanners.zap.scanner.finished = !this.scanners.zap.scanner.finished;
@@ -91,7 +87,11 @@ export class ScannerComponent {
 
   runZap() {
     this.isZapOnline();
-    this.startZapSpiderScanner();
+    if (this.zapReachable) {
+      this.startZapSpiderScanner();
+    } else {
+      console.log("zap not reachable");
+    }
   }
 
   runSqlmap() {
@@ -166,6 +166,7 @@ export class ScannerComponent {
   }
 
   startZapSpiderScanner() {
+    console.log("starting zap spider and scanner ...")
     this.scanners.zap.spider.progress = 0;
     this.scanners.zap.scanner.progress = 0;
     let parameters = new URLSearchParams();
@@ -182,28 +183,32 @@ export class ScannerComponent {
         }
       }
       );
-    Observable.interval(1000)
-      .takeWhile(() => !this.scanners.zap.spider.finished)
-      .subscribe(i => this.getZapSpiderStatus())
 
-    Observable.interval(1000)
+    Observable.interval(2000)
+      .takeWhile(() => !this.scanners.zap.spider.finished)
+      .subscribe(() => this.getZapSpiderStatus()
+      )
+
+    Observable.interval(2000)
       .takeWhile(() => !this.scanners.zap.scanner.finished)
-      .subscribe(i => this.getZapScannerStatus())
+      .subscribe(() => this.getZapScannerStatus()
+      )
   }
 
   getZapSpiderStatus() {
     this.http.get('/scanner/zap/status', { params: { "type": "spider" } })
       .subscribe(
-      (res: Response) => {
-        const spiderStatus = res.json();
+      data => {
+        const spiderStatus = data.json();
         var highest = Object.keys(spiderStatus.spider).sort().pop();
         // console.log(spiderStatus.spider[highest].progress)
         this.scanners.zap.spider.progress = spiderStatus.spider[highest].progress;
         if (this.scanners.zap.spider.progress == 100) {
           this.scanners.zap.spider.finished = true;
         }
-      }
-      );
+      },
+      error => console.log("something went wrong")
+      )
   }
 
   getZapScannerStatus() {
