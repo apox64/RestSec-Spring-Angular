@@ -24,6 +24,7 @@ public class SwaggerCrawlerController {
         String fileName = multipartFile.getOriginalFilename();
         logger.info("File received : " + fileName + " (size: " + multipartFile.getSize() + ")");
 
+        // accepts .json, .yaml, .yml, filename has to be at least one char before the "."
         Pattern allowedFiles = Pattern.compile("([^\\s]+(\\.(?i)(json|ya?ml))$)");
         Matcher matcher = allowedFiles.matcher(fileName);
 
@@ -40,7 +41,7 @@ public class SwaggerCrawlerController {
                 bos.close();
                 SwaggerCrawler swaggerCrawler = new SwaggerCrawler();
                 swaggerCrawler.crawl("src/main/resources/uploads/"+fileName);
-                return "{\"found\":" + String.valueOf(swaggerCrawler.getNumberOfEndpoints() + "}");
+                return "{\"numberOfEndpointsFound\":\"" + String.valueOf(swaggerCrawler.getNumberOfEndpoints() + "\"}");
             } catch (Exception e) {
                 return "Upload failed. " + fileName + " : " + e.getMessage();
             }

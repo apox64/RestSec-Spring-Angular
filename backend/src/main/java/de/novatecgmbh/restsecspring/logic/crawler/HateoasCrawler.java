@@ -1,6 +1,7 @@
 package de.novatecgmbh.restsecspring.logic.crawler;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.novatecgmbh.restsecspring.logic.HttpUtils;
 import de.novatecgmbh.restsecspring.logic.reporting.attackset.AttackableEndpoint;
 import de.novatecgmbh.restsecspring.logic.reporting.attackset.Attackset;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ import static io.restassured.RestAssured.given;
 
 import io.restassured.http.Header;
 
-public class HateoasCrawler {
+public class HateoasCrawler implements Crawler {
 
     private static Logger logger = LoggerFactory.getLogger(HateoasCrawler.class);
     private int numberOfEndpoints = 0;
@@ -29,46 +30,31 @@ public class HateoasCrawler {
     @JsonProperty("targetAuthToken")
     private String targetAuthToken;
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        logger.info("url set to: " + url);
-        this.url = url;
-    }
-
-    public String getTargetAuthToken() {
-        return targetAuthToken;
-    }
-
-    public void setTargetAuthToken(String targetAuthToken) {
-        logger.info("targetAuthToken set to: " + targetAuthToken);
-        this.targetAuthToken = targetAuthToken;
-    }
-
     public HateoasCrawler() {
-
     }
 
     public void crawl() {
-        logger.info("Crawling " + url + " ...");
+        crawl(url);
+    }
+
+    @Override
+    public void crawl(String entryPoint) {
+        logger.info("Crawling " + entryPoint + " ...");
         try {
+            validateURL(url, targetAuthToken);
             discoverLinks(url, targetAuthToken);
         } catch (ConnectException e) {
             logger.warn(url + " not reachable.");
-        }
-    }
-
-    private void validateURL(String url, String authToken) {
-        logger.info("Checking pattern of URL: \"" + url + "\" ...");
-        try {
-            URL myUrl = new URL(url);
-            logger.info("URL (" + myUrl + ") seems good.");
-            this.targetAuthToken = authToken;
         } catch (MalformedURLException e) {
             logger.warn("Malformed URL.");
         }
+    }
+
+    private void validateURL(String url, String authToken) throws MalformedURLException {
+        logger.info("Checking pattern of URL: \"" + url + "\" ...");
+        URL myUrl = new URL(url);
+        logger.info("URL (" + myUrl + ") seems good.");
+        this.targetAuthToken = authToken;
     }
 
     public int getNumberOfEndpoints() {
@@ -138,6 +124,24 @@ public class HateoasCrawler {
         sameOriginURLsOnly.put(resource, true);
 
         return sameOriginURLsOnly;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        logger.info("url set to: " + url);
+        this.url = url;
+    }
+
+    public String getTargetAuthToken() {
+        return targetAuthToken;
+    }
+
+    public void setTargetAuthToken(String targetAuthToken) {
+        logger.info("targetAuthToken set to: " + targetAuthToken);
+        this.targetAuthToken = targetAuthToken;
     }
 
     private HashMap<String, Boolean> mergeHashMaps(HashMap<String, Boolean> map1, HashMap<String, Boolean> map2) {

@@ -20,7 +20,8 @@ public class HateoasCrawlerController {
     private static Logger logger = LoggerFactory.getLogger(HateoasCrawlerController.class);
 
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json; charset=utf-8", consumes = "application/json")
-    public @ResponseBody int startHateoasCrawler(@RequestBody String requestBody){
+    public @ResponseBody
+    int startHateoasCrawler(@RequestBody String requestBody) {
 
         ObjectMapper objectMapper = new ObjectMapper();
         HateoasCrawler hateoasCrawler = new HateoasCrawler();

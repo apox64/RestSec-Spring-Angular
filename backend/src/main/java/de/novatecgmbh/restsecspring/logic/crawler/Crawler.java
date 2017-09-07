@@ -2,6 +2,6 @@ package de.novatecgmbh.restsecspring.logic.crawler;
 
 public interface Crawler {
 
-    void crawl();
+    void crawl(String entryPoint);
 
 }

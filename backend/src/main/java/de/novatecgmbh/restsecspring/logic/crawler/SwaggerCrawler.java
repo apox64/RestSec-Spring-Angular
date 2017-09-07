@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class SwaggerCrawler {
+public class SwaggerCrawler implements Crawler {
 
     private int numberOfEndpoints = 0;
     private static Logger logger = LoggerFactory.getLogger(SwaggerCrawler.class);
@@ -27,37 +27,25 @@ public class SwaggerCrawler {
         return numberOfEndpoints;
     }
 
+    @Override
     public void crawl(String fileLocation) {
         Swagger swagger = new SwaggerParser().read(fileLocation);
         Map<String, Path> paths = swagger.getPaths();
-
-        for (Map.Entry<String, Path> entry : paths.entrySet()) {
-            Path path = entry.getValue();
-            List list = getHttpVerbsForPath(path);
-            appendEndpointsToAttackset(entry.getKey(), list);
-            this.numberOfEndpoints += list.size();
-        }
-
-        Attackset attackset = Attackset.getInstance();
-        logger.info("AttackSet.length : " + attackset.getAttackSet().length());
-    }
-
-
-    //TODO: refactor methods
-    private void appendEndpointsToAttackset(String path, List endpoints) {
-        Attackset attackset = Attackset.getInstance();
-        for (Object endpoint : endpoints) {
-            attackset.add(new AttackableEndpoint(path, endpoint.toString()));
+        for (Map.Entry<String, Path> path : paths.entrySet()) {
+            List<String> endpoints = getHttpVerbsForPath(path.getValue());
+            appendEndpointsToAttackset(path.getKey(), endpoints);
+            this.numberOfEndpoints += endpoints.size();
         }
     }
 
-    private List getHttpVerbsForPath(Path path) {
+    private void appendEndpointsToAttackset(String path, List<String> endpoints) {
+        endpoints.forEach(endpoint -> Attackset.getInstance().add(new AttackableEndpoint(path, endpoint)));
+    }
+
+    private List<String> getHttpVerbsForPath(Path path) {
         Map<HttpMethod, Operation> operationMap = path.getOperationMap();
         List<String> httpVerbs = new ArrayList<>();
-        for (Map.Entry operation : operationMap.entrySet()) {
-            httpVerbs.add(operation.getKey().toString());
-        }
+        operationMap.forEach((httpMethod, operation) -> httpVerbs.add(httpMethod.name()));
         return httpVerbs;
     }
-
 }
