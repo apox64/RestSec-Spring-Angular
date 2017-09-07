@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class Attackset {
 
-    public static Attackset instance = null;
+    private static Attackset instance = null;
 
     private static final Logger logger = LoggerFactory.getLogger(Attackset.class);
     private JSONArray attackSetJSON = new JSONArray();
@@ -47,12 +47,6 @@ public class Attackset {
         }
     }
 
-    public void remove(AttackableEndpoint attackableEndpoint) {
-        UUID id = attackableEndpoint.getId();
-        logger.info("- " + id + " : " + attackableEndpoint.getEndpointURL() + " : " + attackableEndpoint.getHttpVerb());
-        attackSetJSON.remove(getIndexForID(id));
-    }
-
     public void remove(UUID attackableEndpointID) {
         logger.info("- " + attackableEndpointID + "");
         attackSetJSON.remove(getIndexForID(attackableEndpointID));
@@ -61,6 +55,10 @@ public class Attackset {
     public void removeAll() {
         logger.info("- Attackset (complete)");
         attackSetJSON = new JSONArray();
+    }
+
+    public JSONArray getAttackSet() {
+        return attackSetJSON;
     }
 
     public boolean contains(UUID attackableEndpointID) {
@@ -72,29 +70,20 @@ public class Attackset {
         }
     }
 
-    public void setScannedTrue(AttackableEndpoint attackableEndpoint) {
+    void remove(AttackableEndpoint attackableEndpoint) {
+        UUID id = attackableEndpoint.getId();
+        logger.info("- " + id + " : " + attackableEndpoint.getEndpointURL() + " : " + attackableEndpoint.getHttpVerb());
+        attackSetJSON.remove(getIndexForID(id));
+    }
+
+    void setScannedTrue(AttackableEndpoint attackableEndpoint) {
         UUID id = attackableEndpoint.getId();
         logger.info("Setting scanStatus = true for " + id);
         attackableEndpoint.setScanStatus(true);
     }
 
-    public boolean getScanStatus(AttackableEndpoint attackableEndpoint) {
+    boolean getScanStatus(AttackableEndpoint attackableEndpoint) {
         return attackableEndpoint.getScanStatus();
-    }
-
-//    public AttackableEndpoint getAttackableEndpoint(UUID id) {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        AttackableEndpoint attackableEndpoint = null;
-//        try {
-//            attackableEndpoint = objectMapper.readValue(attackSetJSON.get(getIndexForID(id)).toString(), AttackableEndpoint.class);
-//        } catch (IOException | JSONException e) {
-//            e.printStackTrace();
-//        }
-//        return attackableEndpoint;
-//    }
-
-    public JSONArray getAttackSet() {
-        return attackSetJSON;
     }
 
     private int getIndexForID(UUID id) {

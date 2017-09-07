@@ -9,18 +9,30 @@ import java.util.UUID;
 public class AttackableEndpoint {
 
     private UUID id;
+
     @JsonProperty("httpVerb")
     private String httpVerb = "GET";
+
     @JsonProperty("endpointUrl")
     private String endpointUrl = "";
+
     @JsonProperty("scanStatus")
     private boolean scanStatus = false;
 
     private static Logger logger = LoggerFactory.getLogger(AttackableEndpoint.class);
 
+    //TODO: remove default constructor
     public AttackableEndpoint() {
         this.id = UUID.randomUUID();
-        logger.info("New AttackableEndpoint: " + this.id);
+//        logger.info("New AttackableEndpoint: " + this.id);
+    }
+
+    public AttackableEndpoint(String endpointUrl, String httpVerb) {
+        this.id = UUID.randomUUID();
+        this.endpointUrl = endpointUrl;
+        this.httpVerb = httpVerb;
+        this.scanStatus = false;
+//        logger.info("New AttackableEndpoint: " + this.id);
     }
 
     public UUID getId() {
@@ -35,8 +47,8 @@ public class AttackableEndpoint {
         return httpVerb;
     }
 
-    public void setHttpVerb(String httpVerb) {
-        this.httpVerb = httpVerb;
+    public boolean getScanStatus() {
+        return scanStatus;
     }
 
     public void setEndpointURL(String endpointUrl) {
@@ -44,8 +56,8 @@ public class AttackableEndpoint {
 //        logger.info("endpointURL set: " + this.endpointURL);
     }
 
-    public boolean getScanStatus() {
-        return scanStatus;
+    public void setHttpVerb(String httpVerb) {
+        this.httpVerb = httpVerb;
     }
 
     public void setScanStatus(boolean scanStatus) {
@@ -53,6 +65,5 @@ public class AttackableEndpoint {
 //        logger.info("scanStatus set: " + this.scanStatus);
 
     }
-
 
 }
