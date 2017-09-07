@@ -23,8 +23,7 @@ public class HateoasCrawlerController {
     public @ResponseBody int startHateoasCrawler(@RequestBody String requestBody){
 
         ObjectMapper objectMapper = new ObjectMapper();
-
-        HateoasCrawler hateoasCrawler = null;
+        HateoasCrawler hateoasCrawler = new HateoasCrawler();
 
         try {
             hateoasCrawler = objectMapper.readValue(requestBody, HateoasCrawler.class);
