@@ -8,7 +8,7 @@ info:
   termsOfService: 'http://swagger.io/terms/'
   license:
     name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    entrypointUrl: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 host: 'localhost:8080'
 basePath: /
 tags:
@@ -18,7 +18,7 @@ tags:
       attackable endpoints.
     externalDocs:
       description: Find out more
-      url: 'http://swagger.io'
+      entrypointUrl: 'http://swagger.io'
   - name: scanner
     description: >-
       OWASP Zap Proxy; sqlmap; RestSec XSS Scanner; RestSec Security Header
@@ -360,4 +360,4 @@ definitions:
         type: string
 externalDocs:
   description: GitHub
-  url: 'https://github.com/apox64/RestSec-Spring-Angular'
+  entrypointUrl: 'https://github.com/apox64/RestSec-Spring-Angular'

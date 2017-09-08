@@ -4,4 +4,6 @@ public interface Crawler {
 
     void crawl(String entryPoint);
 
+    int getNumberOfEndpoints();
+
 }

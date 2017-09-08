@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.novatecgmbh.restsecspring.logic.HttpUtils;
 import de.novatecgmbh.restsecspring.logic.reporting.attackset.AttackableEndpoint;
 import de.novatecgmbh.restsecspring.logic.reporting.attackset.Attackset;
+import io.restassured.RestAssured;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.ConnectException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,115 +24,119 @@ public class HateoasCrawler implements Crawler {
     private static Logger logger = LoggerFactory.getLogger(HateoasCrawler.class);
     private int numberOfEndpoints = 0;
 
-    @JsonProperty("url")
-    private String url;
+    @JsonProperty("entrypointUrl")
+    private String entrypointUrl;
 
     @JsonProperty("targetAuthToken")
     private String targetAuthToken;
 
+    private HttpUtils httpUtils = new HttpUtils();
+
     public HateoasCrawler() {
+        this.entrypointUrl = "";
+        this.targetAuthToken = "";
     }
 
     public void crawl() {
-        crawl(url);
-    }
-
-    @Override
-    public void crawl(String entryPoint) {
-        logger.info("Crawling " + entryPoint + " ...");
-        try {
-            validateURL(url, targetAuthToken);
-            discoverLinks(url, targetAuthToken);
-        } catch (ConnectException e) {
-            logger.warn(url + " not reachable.");
-        } catch (MalformedURLException e) {
-            logger.warn("Malformed URL.");
-        }
-    }
-
-    private void validateURL(String url, String authToken) throws MalformedURLException {
-        logger.info("Checking pattern of URL: \"" + url + "\" ...");
-        URL myUrl = new URL(url);
-        logger.info("URL (" + myUrl + ") seems good.");
-        this.targetAuthToken = authToken;
+        crawl(entrypointUrl);
     }
 
     public int getNumberOfEndpoints() {
         return numberOfEndpoints;
     }
 
-    private void discoverLinks(String entryResource, String authToken) throws ConnectException {
-        Attackset attackSet = Attackset.getInstance();
+    @Override
+    public void crawl(String entryPoint) {
+        logger.info("Crawling " + entryPoint + " ...");
+        if (httpUtils.isOnline(entryPoint)) {
+            discoverLinks(entryPoint);
+        }
+    }
 
-        HashMap<String, Boolean> relevantURLs;
-        relevantURLs = getLinksForResource(entryResource, "");
+//    private class Endpoint {
+//        private String url;
+//        private boolean isAlreadyVisited;
+//    }
+
+    //PROTOTYPE
+    private void scanRecursively() {
+        //Map<entrypointUrl, isAlreadyVisited>
+        Map<String, Boolean> endpoints = new HashMap<>();
+
+        //as long as there are unscanned endpoints ...
+
+    }
+
+    private void discoverLinks(String entryResource) {
+        Map<String, Boolean> relevantURLs = getLinksForResource(entryResource);
         relevantURLs.put(entryResource, true);
 
         while (relevantURLs.containsValue(false)) {
             for (Object o : relevantURLs.entrySet()) {
-                Map.Entry pair = (Map.Entry) o;
-                if (!Boolean.parseBoolean(pair.getValue().toString())) {
-                    HashMap<String, Boolean> temp;
-                    temp = getLinksForResource(pair.getKey().toString(), "");
-                    relevantURLs = mergeHashMaps(relevantURLs, temp);
-                }
+                Map.Entry<String, Boolean> pair = (Map.Entry<String, Boolean>) o;
+                if (!pair.getValue())
+                    if (!Boolean.parseBoolean(pair.getValue().toString())) {
+                        Map<String, Boolean> temp;
+                        temp = getLinksForResource(pair.getKey().toString());
+                        relevantURLs = mergeHashMaps(relevantURLs, temp);
+                    }
             }
         }
 
         numberOfEndpoints = relevantURLs.keySet().size();
 
+        Attackset attackSet = Attackset.getInstance();
         for (String url : relevantURLs.keySet()) {
             AttackableEndpoint attackableEndpoint = new AttackableEndpoint();
-            attackableEndpoint.setEndpointURL(url.toString());
+            attackableEndpoint.setEndpointURL(url);
             attackSet.add(attackableEndpoint);
         }
 
     }
 
-    private HashMap<String, Boolean> getLinksForResource(String resource, String authToken) {
+    //TODO: change to List<String> instead of Map<String, Boolean>
+    private Map<String, Boolean> getLinksForResource(String resource) {
+        logger.info("Looking for Links on: " + resource);
 
-        Pattern patternFullURL = Pattern.compile("https?://(www\\.)?[a-zA-Z0-9@:%._+-~#=]{2,256}/([a-zA-Z0-9@:%_+-.~#?&/=]*)");
-        Pattern patternHostAndPortOnly = Pattern.compile("https?://(www\\.)?[a-zA-Z0-9@:%._+-~#=]{2,256}(:?\\d+)/");
-        String responseBody =
-                given().header(new Header("Authorization", "Bearer " + "")).
-                        get(resource).asString();
+        String responseBody = given().header(new Header("Authorization", "Bearer " + this.targetAuthToken)).get(resource).asString();
 
+        List<String> allUrls = getAllUrlsForGivenResponseBody(responseBody);
+        List<String> sameOriginUrls = getSameOriginUrlsForGivenUrlList(allUrls);
+
+        Map<String, Boolean> res = new HashMap<>();
+        sameOriginUrls.forEach(url -> res.put(url, false));
+        return res;
+    }
+
+    private List<String> getAllUrlsForGivenResponseBody(String responseBody) {
+        List<String> allUrls = new ArrayList<>();
+        Pattern patternFullURL = Pattern.compile("https?://(www\\.)?[a-zA-Z0-9@:%._+-~#=]{2,256}/([a-zA-Z0-9@:%._+-~#=?&/]*)");
         Matcher matcherFullURL = patternFullURL.matcher(responseBody);
-        Matcher matcherHostAndPortOnly = patternHostAndPortOnly.matcher(resource);
-
-        HashMap<String, Boolean> sameOriginURLsOnly = new HashMap<>();
-        HashMap<String, Boolean> allURLsInResponse = new HashMap<>();
-
         while (matcherFullURL.find()) {
-            allURLsInResponse.put(matcherFullURL.group(), false);
+            allUrls.add(matcherFullURL.group());
         }
+        return allUrls;
+    }
 
-        //Return only the URLs that are on the same host as the given resource
-        matcherHostAndPortOnly.find();
-        String entryResourceDomainAndPortOnly = matcherHostAndPortOnly.group();
-
-        for (Object o : allURLsInResponse.entrySet()) {
-            Map.Entry url = (Map.Entry) o;
-            Matcher m = patternHostAndPortOnly.matcher(url.getKey().toString());
-            while (m.find()) {
-                if (m.group().equals(entryResourceDomainAndPortOnly)) {
-                    sameOriginURLsOnly.put(url.getKey().toString(), false);
-                }
+    private List<String> getSameOriginUrlsForGivenUrlList(List<String> urls) {
+        List<String> sameOriginUrls = new ArrayList<>();
+        Pattern patternHostAndPortOnly = Pattern.compile("https?://(www\\.)?[a-zA-Z0-9@:%._+-~#=]{2,256}(:?\\d+)/");
+        urls.forEach(url -> {
+            Matcher matcher = patternHostAndPortOnly.matcher(url);
+            if (matcher.find()) {
+                sameOriginUrls.add(matcher.group());
             }
-        }
-
-        sameOriginURLsOnly.put(resource, true);
-
-        return sameOriginURLsOnly;
+        });
+        return sameOriginUrls;
     }
 
-    public String getUrl() {
-        return url;
+    public String getEntrypointUrl() {
+        return entrypointUrl;
     }
 
-    public void setUrl(String url) {
-        logger.info("url set to: " + url);
-        this.url = url;
+    public void setEntrypointUrl(String entrypointUrl) {
+        logger.info("entrypointUrl set to: " + entrypointUrl);
+        this.entrypointUrl = entrypointUrl;
     }
 
     public String getTargetAuthToken() {
@@ -144,11 +148,13 @@ public class HateoasCrawler implements Crawler {
         this.targetAuthToken = targetAuthToken;
     }
 
-    private HashMap<String, Boolean> mergeHashMaps(HashMap<String, Boolean> map1, HashMap<String, Boolean> map2) {
-        HashMap<String, Boolean> resultMap = new HashMap<>();
+    private Map<String, Boolean> mergeHashMaps(Map<String, Boolean> map1, Map<String, Boolean> map2) {
+        Map<String, Boolean> resultMap = new HashMap<>();
         resultMap.putAll(map1);
         resultMap.putAll(map2);
         return resultMap;
     }
 
 }
+
+
