@@ -15,7 +15,7 @@ public class HttpUtils {
     public HttpUtils() {
     }
 
-    public boolean isOnline(String url) {
+    public boolean checkIfOnline(String url) {
         logger.info("Connecting to : \"" + url + "\"");
         try {
             new URL(url).openStream().close();

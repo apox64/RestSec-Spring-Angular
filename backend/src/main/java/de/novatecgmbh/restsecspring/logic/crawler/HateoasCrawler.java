@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.novatecgmbh.restsecspring.logic.HttpUtils;
 import de.novatecgmbh.restsecspring.logic.reporting.attackset.AttackableEndpoint;
 import de.novatecgmbh.restsecspring.logic.reporting.attackset.Attackset;
-import io.restassured.RestAssured;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 
 import io.restassured.http.Header;
@@ -45,88 +47,101 @@ public class HateoasCrawler implements Crawler {
         return numberOfEndpoints;
     }
 
+    private void setNumberOfEndpoints(int numberOfEndpoints) {
+        this.numberOfEndpoints = numberOfEndpoints;
+    }
+
     @Override
     public void crawl(String entryPoint) {
         logger.info("Crawling " + entryPoint + " ...");
-        if (httpUtils.isOnline(entryPoint)) {
+        if (httpUtils.checkIfOnline(entryPoint)) {
             discoverLinks(entryPoint);
+            urls.forEach((url, isVisited) -> Attackset.getInstance().add(new AttackableEndpoint(url, "GET")));
         }
     }
 
-//    private class Endpoint {
-//        private String url;
-//        private boolean isAlreadyVisited;
-//    }
-
-    //PROTOTYPE
-    private void scanRecursively() {
-        //Map<entrypointUrl, isAlreadyVisited>
-        Map<String, Boolean> endpoints = new HashMap<>();
-
-        //as long as there are unscanned endpoints ...
-
-    }
+    private Map<String, Boolean> urls = new HashMap<>();
 
     private void discoverLinks(String entryResource) {
-        Map<String, Boolean> relevantURLs = getLinksForResource(entryResource);
-        relevantURLs.put(entryResource, true);
+        List<String> initLinks = getSameOriginUrlsForUrl(entryResource);
+        urls.put(entryResource, true);
 
-        while (relevantURLs.containsValue(false)) {
-            for (Object o : relevantURLs.entrySet()) {
-                Map.Entry<String, Boolean> pair = (Map.Entry<String, Boolean>) o;
-                if (!pair.getValue())
-                    if (!Boolean.parseBoolean(pair.getValue().toString())) {
-                        Map<String, Boolean> temp;
-                        temp = getLinksForResource(pair.getKey().toString());
-                        relevantURLs = mergeHashMaps(relevantURLs, temp);
-                    }
-            }
+        initLinks.forEach(url -> urls.put(url, false));
+
+        while (urls.containsValue(false)) {
+            urls.forEach((url, isVisited) -> {
+                if (!isVisited) {
+                    List<String> linksList = getSameOriginUrlsForUrl(url);
+                    Map<String, Boolean> linksMap = markAllAsNotVisited(linksList);
+                    urls.put(url, true);
+                    urls = mergeHashMaps(urls, linksMap);
+                }
+            });
         }
 
-        numberOfEndpoints = relevantURLs.keySet().size();
+        urls.forEach((url, isVisited) -> logger.info(url + " : " + isVisited));
+        setNumberOfEndpoints(urls.size());
+        logger.info(String.valueOf(urls.size()));
+    }
 
-        Attackset attackSet = Attackset.getInstance();
-        for (String url : relevantURLs.keySet()) {
-            AttackableEndpoint attackableEndpoint = new AttackableEndpoint();
-            attackableEndpoint.setEndpointURL(url);
-            attackSet.add(attackableEndpoint);
+    Map<String, Boolean> markAllAsNotVisited(List<String> list) {
+        Map<String, Boolean> map = new HashMap<>();
+        list.forEach(entry -> map.put(entry, false));
+        return map;
+    }
+
+    List<String> getSameOriginUrlsForUrl(String url) {
+        logger.info("Looking for Urls on: " + url);
+
+        String responseBody = given().header(new Header("Authorization", "Bearer " + this.targetAuthToken)).get(url).asString();
+
+        List<String> allUrls = matchAllUrlsInString(responseBody);
+        List<String> sameOriginUrls;
+        try {
+            sameOriginUrls = matchSameOriginUrlsInList(allUrls, new URL(url));
+        } catch (MalformedURLException e) {
+            //e.printStackTrace();
+            logger.info("Malformed URL.");
+            return new ArrayList<>();
         }
-
+        return sameOriginUrls;
     }
 
-    //TODO: change to List<String> instead of Map<String, Boolean>
-    private Map<String, Boolean> getLinksForResource(String resource) {
-        logger.info("Looking for Links on: " + resource);
-
-        String responseBody = given().header(new Header("Authorization", "Bearer " + this.targetAuthToken)).get(resource).asString();
-
-        List<String> allUrls = getAllUrlsForGivenResponseBody(responseBody);
-        List<String> sameOriginUrls = getSameOriginUrlsForGivenUrlList(allUrls);
-
-        Map<String, Boolean> res = new HashMap<>();
-        sameOriginUrls.forEach(url -> res.put(url, false));
-        return res;
-    }
-
-    private List<String> getAllUrlsForGivenResponseBody(String responseBody) {
+    List<String> matchAllUrlsInString(String responseBody) {
         List<String> allUrls = new ArrayList<>();
+        //Pattern matches all URLs.
         Pattern patternFullURL = Pattern.compile("https?://(www\\.)?[a-zA-Z0-9@:%._+-~#=]{2,256}/([a-zA-Z0-9@:%._+-~#=?&/]*)");
         Matcher matcherFullURL = patternFullURL.matcher(responseBody);
         while (matcherFullURL.find()) {
             allUrls.add(matcherFullURL.group());
         }
+        logger.info(allUrls.size() + " found.");
         return allUrls;
     }
 
-    private List<String> getSameOriginUrlsForGivenUrlList(List<String> urls) {
+    List<String> matchSameOriginUrlsInList(List<String> allUrls, URL originUrl) {
+        logger.info("Matching only same-origin URLs from all URLs found on " + originUrl + " (size: " + allUrls.size() + ") ...");
         List<String> sameOriginUrls = new ArrayList<>();
-        Pattern patternHostAndPortOnly = Pattern.compile("https?://(www\\.)?[a-zA-Z0-9@:%._+-~#=]{2,256}(:?\\d+)/");
-        urls.forEach(url -> {
-            Matcher matcher = patternHostAndPortOnly.matcher(url);
-            if (matcher.find()) {
-                sameOriginUrls.add(matcher.group());
+        //Pattern matches Host and Port only to determine same-origin.
+        Pattern pattern = Pattern.compile("https?://(www\\.)?[a-zA-Z0-9@:%._+-~#=]{2,256}(:?\\d+)/");
+        Matcher matcher = pattern.matcher(originUrl.toString());
+
+        String originUrlHostAndPortOnly = "";
+        if (matcher.find()) {
+            originUrlHostAndPortOnly = matcher.group();
+        }
+
+        String finalOriginUrlHostAndPortOnly = originUrlHostAndPortOnly;
+
+        allUrls.forEach(url -> {
+            Matcher m = pattern.matcher(url);
+            if (m.find()) {
+                if (m.group().equals(finalOriginUrlHostAndPortOnly)) {
+                    sameOriginUrls.add(url);
+                }
             }
         });
+        logger.info(sameOriginUrls.size() + " found.");
         return sameOriginUrls;
     }
 
@@ -148,10 +163,10 @@ public class HateoasCrawler implements Crawler {
         this.targetAuthToken = targetAuthToken;
     }
 
-    private Map<String, Boolean> mergeHashMaps(Map<String, Boolean> map1, Map<String, Boolean> map2) {
+    private Map<String, Boolean> mergeHashMaps(Map<String, Boolean> existingMap, Map<String, Boolean> newMap) {
         Map<String, Boolean> resultMap = new HashMap<>();
-        resultMap.putAll(map1);
-        resultMap.putAll(map2);
+        resultMap.putAll(newMap);
+        resultMap.putAll(existingMap);
         return resultMap;
     }
 

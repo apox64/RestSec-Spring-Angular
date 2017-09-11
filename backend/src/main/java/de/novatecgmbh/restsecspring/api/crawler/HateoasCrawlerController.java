@@ -5,6 +5,8 @@ import de.novatecgmbh.restsecspring.logic.crawler.HateoasCrawler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -20,20 +22,18 @@ public class HateoasCrawlerController {
     private static Logger logger = LoggerFactory.getLogger(HateoasCrawlerController.class);
 
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json; charset=utf-8", consumes = "application/json")
-    public @ResponseBody
-    int startHateoasCrawler(@RequestBody String requestBody) {
+    @ResponseBody
+    public ResponseEntity<String> startHateoasCrawler(@RequestBody String requestBody) {//@RequestBody String requestBody) {
 
-        ObjectMapper objectMapper = new ObjectMapper();
         HateoasCrawler hateoasCrawler = new HateoasCrawler();
 
         try {
-            hateoasCrawler = objectMapper.readValue(requestBody, HateoasCrawler.class);
+            hateoasCrawler = new ObjectMapper().readValue(requestBody, HateoasCrawler.class);
             hateoasCrawler.crawl();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return hateoasCrawler.getNumberOfEndpoints();
-
+        return new ResponseEntity<>("{\"numberOfEndpoints\" : " + hateoasCrawler.getNumberOfEndpoints() + "}", HttpStatus.OK);//"test");//, new HttpHeaders(), HttpStatus.ACCEPTED);
     }
 }
