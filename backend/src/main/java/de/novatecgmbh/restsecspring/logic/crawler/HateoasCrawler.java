@@ -53,7 +53,7 @@ public class HateoasCrawler implements Crawler {
 
     @Override
     public void crawl(String entryPoint) {
-        logger.info("Crawling " + entryPoint + " ...");
+        logger.info("Crawling for HATEOAS Links on \"" + entryPoint + "\" ...");
         if (httpUtils.checkIfOnline(entryPoint)) {
             discoverLinks(entryPoint);
             urls.forEach((url, isVisited) -> Attackset.getInstance().add(new AttackableEndpoint(url, "GET")));
@@ -79,19 +79,19 @@ public class HateoasCrawler implements Crawler {
             });
         }
 
-        urls.forEach((url, isVisited) -> logger.info(url + " : " + isVisited));
+        //urls.forEach((url, isVisited) -> logger.info(url + " : " + isVisited));
         setNumberOfEndpoints(urls.size());
-        logger.info(String.valueOf(urls.size()));
+        logger.info("Number of HATEOAS Links found for " + entryResource + " : " + String.valueOf(urls.size()));
     }
 
-    Map<String, Boolean> markAllAsNotVisited(List<String> list) {
+    private Map<String, Boolean> markAllAsNotVisited(List<String> list) {
         Map<String, Boolean> map = new HashMap<>();
         list.forEach(entry -> map.put(entry, false));
         return map;
     }
 
     List<String> getSameOriginUrlsForUrl(String url) {
-        logger.info("Looking for Urls on: " + url);
+        //logger.info("Looking for Urls on: " + url);
 
         String responseBody = given().header(new Header("Authorization", "Bearer " + this.targetAuthToken)).get(url).asString();
 
@@ -115,12 +115,12 @@ public class HateoasCrawler implements Crawler {
         while (matcherFullURL.find()) {
             allUrls.add(matcherFullURL.group());
         }
-        logger.info(allUrls.size() + " found.");
+        //logger.info(allUrls.size() + " found.");
         return allUrls;
     }
 
     List<String> matchSameOriginUrlsInList(List<String> allUrls, URL originUrl) {
-        logger.info("Matching only same-origin URLs from all URLs found on " + originUrl + " (size: " + allUrls.size() + ") ...");
+        logger.info("Looking for same-origin URLs in " + allUrls.size() + " URLs found on " + originUrl + " ...");
         List<String> sameOriginUrls = new ArrayList<>();
         //Pattern matches Host and Port only to determine same-origin.
         Pattern pattern = Pattern.compile("https?://(www\\.)?[a-zA-Z0-9@:%._+-~#=]{2,256}(:?\\d+)/");
@@ -141,7 +141,7 @@ public class HateoasCrawler implements Crawler {
                 }
             }
         });
-        logger.info(sameOriginUrls.size() + " found.");
+        //logger.info(sameOriginUrls.size() + " found.");
         return sameOriginUrls;
     }
 
@@ -166,6 +166,7 @@ public class HateoasCrawler implements Crawler {
     private Map<String, Boolean> mergeHashMaps(Map<String, Boolean> existingMap, Map<String, Boolean> newMap) {
         Map<String, Boolean> resultMap = new HashMap<>();
         resultMap.putAll(newMap);
+        //overwrite false values with existing true values
         resultMap.putAll(existingMap);
         return resultMap;
     }

@@ -1,8 +1,8 @@
 package de.novatecgmbh.restsecspring.logic.crawler;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +28,10 @@ class HateoasCrawlerTest {
     void tearDown() {
     }
 
-    @Disabled("Integration Test")
     @Test
     void getSameOriginUrlsForUrl() {
         List<String> sameOriginUrls = this.hateoasCrawler.getSameOriginUrlsForUrl(HATEOAS_TARGET);
-        assertEquals(6, sameOriginUrls.size());
+        Assert.assertTrue(sameOriginUrls.size() >= 6);
     }
 
     @Test
