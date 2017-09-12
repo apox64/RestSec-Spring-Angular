@@ -13,12 +13,9 @@ class AttacksetTest {
 
     @BeforeEach
     void setUp() {
-        //attackset = Attackset.getInstance();
-        endpoint1 = new AttackableEndpoint();
-        endpoint1.setEndpointURL("http://127.0.0.1.local/rest/1");
+        endpoint1 = new AttackableEndpoint("http://127.0.0.1.local/rest/1", "GET");
         endpoint1.setScanStatus(false);
-        endpoint2 = new AttackableEndpoint();
-        endpoint2.setEndpointURL("http://127.0.0.1.local/rest/2");
+        endpoint2 = new AttackableEndpoint("http://127.0.0.1.local/rest/2", "POST");
         endpoint2.setScanStatus(false);
     }
 
@@ -32,7 +29,7 @@ class AttacksetTest {
     void remove() {
         attackset.add(endpoint1);
         attackset.add(endpoint2);
-        attackset.remove(endpoint1);
+        attackset.removeByAttackableEndpoint(endpoint1);
 //        assertTrue(attackset.getAttackSet().length() == 1);
     }
 

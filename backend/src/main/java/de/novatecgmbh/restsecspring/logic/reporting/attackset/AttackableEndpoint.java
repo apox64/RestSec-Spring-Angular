@@ -21,18 +21,11 @@ public class AttackableEndpoint {
 
     private static Logger logger = LoggerFactory.getLogger(AttackableEndpoint.class);
 
-    //TODO: remove default constructor
-    public AttackableEndpoint() {
-        this.id = UUID.randomUUID();
-//        logger.info("New AttackableEndpoint: " + this.id);
-    }
-
     public AttackableEndpoint(String endpointUrl, String httpVerb) {
         this.id = UUID.randomUUID();
         this.endpointUrl = endpointUrl;
         this.httpVerb = httpVerb;
         this.scanStatus = false;
-//        logger.info("New AttackableEndpoint: " + this.id);
     }
 
     public UUID getId() {

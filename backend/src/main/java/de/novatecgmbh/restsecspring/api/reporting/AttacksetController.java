@@ -62,8 +62,8 @@ public class AttacksetController {
         }
 
         Attackset attackset = Attackset.getInstance();
-        if (attackset.contains(id)) {
-            attackset.remove(id);
+        if (attackset.containsId(id)) {
+            attackset.removeById(id);
             return "{ \"status\" : \"OK\"}";
         }
         return "{ \"status\" : \"Failed\"}";

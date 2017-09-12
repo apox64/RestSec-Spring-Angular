@@ -30,7 +30,6 @@ public class Attackset {
         if (!alreadyExists(attackableEndpoint)) {
             UUID id = attackableEndpoint.getId();
             if (getIndexForID(id) >= 0) {
-//                logger.info("Endpoint already exists with id : " + id);
                 return;
             }
             logger.info("+ " + id + " : " + attackableEndpoint.getEndpointURL() + " : " + attackableEndpoint.getHttpVerb());
@@ -47,7 +46,7 @@ public class Attackset {
         }
     }
 
-    public void remove(UUID attackableEndpointID) {
+    public void removeById(UUID attackableEndpointID) {
         logger.info("- " + attackableEndpointID + "");
         attackSetJSON.remove(getIndexForID(attackableEndpointID));
     }
@@ -61,7 +60,7 @@ public class Attackset {
         return attackSetJSON;
     }
 
-    public boolean contains(UUID attackableEndpointID) {
+    public boolean containsId(UUID attackableEndpointID) {
         try {
             getAttackSet().get(getIndexForID(attackableEndpointID));
             return true;
@@ -70,7 +69,7 @@ public class Attackset {
         }
     }
 
-    void remove(AttackableEndpoint attackableEndpoint) {
+    void removeByAttackableEndpoint(AttackableEndpoint attackableEndpoint) {
         UUID id = attackableEndpoint.getId();
         logger.info("- " + id + " : " + attackableEndpoint.getEndpointURL() + " : " + attackableEndpoint.getHttpVerb());
         attackSetJSON.remove(getIndexForID(id));
