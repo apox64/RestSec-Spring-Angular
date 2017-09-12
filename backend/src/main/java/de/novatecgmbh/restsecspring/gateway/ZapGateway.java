@@ -1,129 +1,137 @@
 package de.novatecgmbh.restsecspring.gateway;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.client.RestTemplate;
+import org.zaproxy.clientapi.core.*;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ZapGateway {
 
-    //TODO: use zap-clientapi 1.3.0
+    private static final Logger logger = LoggerFactory.getLogger(ZapGateway.class);
 
-    private static Logger logger = LoggerFactory.getLogger(ZapGateway.class);
-    private static String ZAP_URL = "http://127.0.0.1:8081";
-    private static String TARGET_URL = "http://192.168.99.100:32768";
+    private static final String ZAP_ADDRESS = "localhost";
+    private static final int ZAP_PORT = 8081;
+    private static final String ZAP_API_KEY = null;
 
-    public ZapGateway(String url) {
-        ZapGateway.ZAP_URL = url;
+    private static ClientApi clientApi = null;
+    private URL targetUrl = null;
+
+    public ZapGateway() {
+        clientApi = new ClientApi(ZAP_ADDRESS, ZAP_PORT, ZAP_API_KEY);
+        if (isReachable()) {
+            logger.info("ZapGateway created.");
+        } else {
+            logger.info("ZapGateway could not be created.");
+        }
     }
 
-    public boolean isOnline(String url) {
+    public boolean isReachable() {
         try {
-            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-            int responseCode = connection.getResponseCode();
-            if (responseCode == 200) {
-                logger.info(url + " is online.");
+            HttpURLConnection connection = (HttpURLConnection) new URL("http://" + ZAP_ADDRESS + ":" + ZAP_PORT).openConnection();
+            if (connection.getResponseCode() == 200) {
                 return true;
             }
-        } catch (IOException e) {
-            logger.info(url + " is offline.");
+        } catch (Exception e) {
             return false;
         }
         return false;
     }
 
-    //@JsonSerialize(using = DateSerializer.class)
-    public String getStatus(String type) {
+    public void runAll() {
         try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
+            runSpider();
+            Thread.sleep(2000);
+            runActiveScan();
+
+            logger.info("Alerts:");
+            logger.info(new String(clientApi.core.xmlreport()));
+
+        } catch (Exception e) {
+            logger.info("Exception : " + e.getMessage());
             e.printStackTrace();
         }
-        RestTemplate restTemplate = new RestTemplate();
-        String spiderStatusURL = ZAP_URL + "/JSON/" + type + "/view/scans/?zapapiformat=JSON&formMethod=GET";
-        JSONObject jsonObject = new JSONObject();
+    }
+
+    public String runSpider() {
+        logger.info("Starting Spider : " + targetUrl);
+        ApiResponse resp = null;
         try {
-            jsonObject = new JSONObject(restTemplate.getForObject(spiderStatusURL, String.class));
-            jsonObject.put(type, jsonObject.remove("scans"));
-        } catch (JSONException e) {
+            resp = clientApi.spider.scan(targetUrl.toString(), null, null, null, null);
+        } catch (ClientApiException e) {
             e.printStackTrace();
         }
-
-        logger.info(jsonObject.toString());
-
-        return jsonObject.toString();
+        return ((ApiResponseElement) resp).getValue();
     }
 
-    public String startAttack(String TARGET_URL) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        logger.info("TARGET_URL: " + TARGET_URL);
-
-        // Starting Spider
-        String spiderStartURL = ZAP_URL + "/JSON/spider/action/scan/?zapapiformat=JSON&formMethod=GET&url=" + TARGET_URL + "&maxChildren=&recurse=&contextName=&subtreeOnly=";
-        restTemplate.getForObject(spiderStartURL, String.class);
-        if (!getStatus("spider").equals("{\"spider\":[]}")) {
-            logger.info("Spider started.");
-        } else {
-            logger.info("Spider not started.");
+    public int getSpiderProgress(String scanId) {
+        int progress = 0;
+        try {
+            progress = Integer.parseInt(((ApiResponseElement) clientApi.spider.status(scanId)).getValue());
+        } catch (ClientApiException e) {
+            e.printStackTrace();
         }
-
-        while (!hasSpiderFinished() && isOnline(TARGET_URL)) {
-            logger.info("Spider is still running ...");
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        logger.info("Spider finished.");
-
-        // Starting Active Scan
-        String scanStartURL = ZAP_URL + "/JSON/ascan/action/scan/?zapapiformat=JSON&formMethod=GET&url=" + TARGET_URL + "&maxChildren=&recurse=&contextName=&subtreeOnly=";
-        restTemplate.getForObject(scanStartURL, String.class);
-        if (!getStatus("ascan").equals("{\"ascan\":[]}")) {
-            logger.info("Scanner started.");
-        } else {
-            logger.info("Scanner not started.");
-        }
-
-        while (!hasScannerFinished() && isOnline(TARGET_URL)) {
-            logger.info("Scanner is still running ...");
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        logger.info("Scanner finished.");
-
-        return "{\"status\" : \"OK\"}";
-
-//        JSONObject status = new JSONObject();
-//
-//        try {
-//            status.put("spider", "finished");
-//            status.put("gateway", "finished");
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return status.toString();
-
+        logger.info("Spider progress : " + progress + "%");
+        return progress;
     }
 
-    private boolean hasSpiderFinished() {
-        return !getStatus("spider").contains("RUNNING");
+
+    public String runActiveScan() {
+        logger.info("Active scan : " + targetUrl);
+        ApiResponse resp = null;
+        try {
+            resp = clientApi.ascan.scan(targetUrl.toString(), "True", "False", null, null, null);
+        } catch (ClientApiException e) {
+            e.printStackTrace();
+        }
+        return ((ApiResponseElement) resp).getValue();
     }
 
-    private boolean hasScannerFinished() {
-        return !getStatus("ascan").contains("RUNNING");
+    public int getActiveScanProgress(String scanId) {
+        int progress = 0;
+        try {
+            progress = Integer.parseInt(((ApiResponseElement) clientApi.ascan.status(scanId)).getValue());
+        } catch (ClientApiException e) {
+            e.printStackTrace();
+        }
+        logger.info("Active Scan progress : " + progress + "%");
+        return progress;
+    }
+
+    public void clearSession() {
+        try {
+            clientApi.core.newSession("","");
+            ApiResponseList apiResponse = (ApiResponseList) clientApi.core.sites();
+            logger.info("Session cleared. " + apiResponse.getItems().size() + " sites in new session.");
+        } catch (ClientApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getXmlReport() {
+        String report = "";
+        try {
+            report = new String(clientApi.core.xmlreport());
+        } catch (ClientApiException e) {
+            e.printStackTrace();
+        }
+        return report;
+    }
+
+    public String getHtmlReport() {
+        String report = "";
+        try {
+            report = new String(clientApi.core.htmlreport());
+        } catch (ClientApiException e) {
+            e.printStackTrace();
+        }
+        return report;
+    }
+
+    public String getStatus(String type) { return ""; }
+
+    public void setTargetUrl(URL targetUrl) {
+        this.targetUrl = targetUrl;
     }
 }

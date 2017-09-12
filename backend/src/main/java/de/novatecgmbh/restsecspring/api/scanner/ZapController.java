@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
 
 @RestController
@@ -13,34 +15,37 @@ import java.util.Map;
 public class ZapController {
 
     private static Logger logger = LoggerFactory.getLogger(ZapController.class);
-    private String ZAP_URL = "http://localhost:8081";
 
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public String zapOnline(@RequestParam Map<String, String> requestParams) {
-        if (requestParams.get("zapUrl") != null) {
-            ZAP_URL = requestParams.get("zapUrl");
-        }
-        logger.info("ZAP_URL set to : " + ZAP_URL);
-        ZapGateway zapGateway = new ZapGateway(ZAP_URL);
-        if (zapGateway.isOnline(ZAP_URL)){
+    public String zapOnline() {
+        ZapGateway zapGateway = new ZapGateway();
+        if (zapGateway.isReachable()) {
             return "{\"zap\" : \"online\"}";
         } else {
             return "{\"zap\" : \"offline\"}";
         }
     }
 
-    @RequestMapping(path = "/status", method = RequestMethod.GET)
+    @RequestMapping(path = "status", method = RequestMethod.GET)
     public String zapStatus(@RequestParam Map<String, String> requestParams) {
-        ZapGateway zapGateway = new ZapGateway(ZAP_URL);
+        ZapGateway zapGateway = new ZapGateway();
         logger.info("type: " + requestParams.get("type"));
         return zapGateway.getStatus(requestParams.get("type"));
     }
 
-    @RequestMapping(path = "/start", method = RequestMethod.POST)
+    @RequestMapping(path = "start", method = RequestMethod.POST)
     public String zapStart(@RequestParam Map<String, String> requestParams) {
-        ZapGateway zapGateway = new ZapGateway(ZAP_URL);
-        logger.info("url: " + requestParams.get("url"));
-        return zapGateway.startAttack(requestParams.get("url"));
+        ZapGateway zapGateway = new ZapGateway();
+        URL targetUrl = null;
+        try {
+            targetUrl = new URL(requestParams.get("targetUrl"));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        logger.info("targetUrl: " + targetUrl.toString());
+        zapGateway.setTargetUrl(targetUrl);
+        zapGateway.runAll();
+        return "not yet implemented";
     }
 
 }

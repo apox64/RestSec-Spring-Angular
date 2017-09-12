@@ -1,25 +1,76 @@
 package de.novatecgmbh.restsecspring.gateway;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 class ZapGatewayTest {
 
-    private String ZAP_URL = "http://localhost:8081";
+    private ZapGateway zapGateway;
 
-    @Test
-    void getStatus() {
-        ZapGateway zapGateway = new ZapGateway(ZAP_URL);
-        System.out.println(zapGateway.getStatus("spider"));
-        System.out.println(zapGateway.getStatus("ascan"));
+    @BeforeEach
+    void setUp() {
+        zapGateway = new ZapGateway();
+        URL targetUrl = null;
+        try {
+            targetUrl = new URL("http://192.168.99.100:32768/");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        zapGateway.setTargetUrl(targetUrl);
+    }
+
+    @AfterEach
+    void tearDown() {
     }
 
     @Test
-    void startAttack() {
-        ZapGateway zapGateway = new ZapGateway(ZAP_URL);
-        System.out.println(zapGateway.startAttack("http://127.0.0.1:8080"));
+    void run() {
+        zapGateway.runAll();
     }
 
-    //TODO: Get number of alerts
+    @Test
+    void runSpider() {
+        String scanID = zapGateway.runSpider();
+        while (true) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (zapGateway.getSpiderProgress(scanID) >= 100) break;
+        }
+    }
+
+    @Test
+    void runActiveScan() {
+        String scanID = zapGateway.runActiveScan();
+        while (true) {
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (zapGateway.getActiveScanProgress(scanID) >= 100) break;
+        }
+    }
+
+    @Test
+    void clearSession() {
+        zapGateway.clearSession();
+    }
+
+    @Test
+    void getReports() {
+        System.out.println("------------------------------------------------------");
+        System.out.println(zapGateway.getXmlReport());
+        System.out.println("------------------------------------------------------");
+        System.out.println(zapGateway.getHtmlReport());
+        System.out.println("------------------------------------------------------");
+    }
 
     //TODO: clear session
 
