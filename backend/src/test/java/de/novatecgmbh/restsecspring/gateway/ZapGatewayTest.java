@@ -64,11 +64,9 @@ class ZapGatewayTest {
     }
 
     @Test
-    void getReports() {
+    void getXmlReport() {
         System.out.println("------------------------------------------------------");
         System.out.println(zapGateway.getXmlReport());
-        System.out.println("------------------------------------------------------");
-        System.out.println(zapGateway.getHtmlReport());
         System.out.println("------------------------------------------------------");
     }
 
