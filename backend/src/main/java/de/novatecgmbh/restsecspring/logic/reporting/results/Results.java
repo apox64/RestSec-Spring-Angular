@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.*;
@@ -35,13 +38,25 @@ public class Results {
             e.printStackTrace();
         }
         logger.info("New Results created.");
-        printDocument(resultSet, System.out);
     }
 
     //Singleton
     public static Results getInstance() {
         if (instance == null) instance = new Results();
         return instance;
+    }
+
+    public AlertItemDTO xmlStringToAlertItem(String xmlString) {
+        AlertItemDTO alert = new AlertItemDTO();
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(AlertItemDTO.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            StringReader reader = new StringReader(xmlString);
+            alert = (AlertItemDTO) unmarshaller.unmarshal(reader);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return alert;
     }
 
     public void append(String xmlString) {
