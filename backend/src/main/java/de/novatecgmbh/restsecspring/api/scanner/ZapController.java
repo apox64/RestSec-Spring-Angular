@@ -3,6 +3,9 @@ package de.novatecgmbh.restsecspring.api.scanner;
 import de.novatecgmbh.restsecspring.gateway.ZapGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.MalformedURLException;
@@ -34,7 +37,7 @@ public class ZapController {
     }
 
     @RequestMapping(path = "start", method = RequestMethod.POST)
-    public String zapStart(@RequestParam Map<String, String> requestParams) {
+    public ResponseEntity zapStart(@RequestParam Map<String, String> requestParams) {
         ZapGateway zapGateway = new ZapGateway();
         URL targetUrl = null;
         try {
@@ -45,7 +48,7 @@ public class ZapController {
         logger.info("targetUrl: " + targetUrl.toString());
         zapGateway.setTargetUrl(targetUrl);
         zapGateway.runAll();
-        return "not yet implemented";
+        return new ResponseEntity<String> ("not yet implemented", new HttpHeaders(), HttpStatus.OK);
     }
 
 }

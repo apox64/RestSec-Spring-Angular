@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zaproxy.clientapi.core.*;
 
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 

@@ -1,9 +1,14 @@
 package de.novatecgmbh.restsecspring.logic.reporting.results;
 
 import de.novatecgmbh.restsecspring.gateway.ZapGateway;
+import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 
 class ResultsTest {
+    @Test
+    void getZAPStatistics() {
+        ZapReportDTO zapReportDTO = Results.getInstance().getZAPReport();
+    }
 
     @Test
     void xmlStringToAlertItem() {

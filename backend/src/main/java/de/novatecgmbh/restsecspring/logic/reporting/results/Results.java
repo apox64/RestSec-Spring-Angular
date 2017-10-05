@@ -17,8 +17,11 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class Results {
 
@@ -193,6 +196,37 @@ public class Results {
 
     //TODO: offer download of html reports
 
+    public JSONObject getZAPStatistics() {
+
+        JSONObject jsonObject = new JSONObject();
+        JSONObject alertFrequencies = new JSONObject();
+        try {
+            alertFrequencies.put("high", "0");
+            alertFrequencies.put("medium", "0");
+            alertFrequencies.put("low", "0");
+            jsonObject.put("OWASPZAPReport", alertFrequencies);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return  jsonObject;
+    }
+
+    public ZapReportDTO getZAPReport() {
+        ZapReportDTO zapReportDTO = new ZapReportDTO();
+        try {
+            File fXmlFile = new File("src/test/resources/sample-report-owaspzapproxy.xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fXmlFile);
+            JAXBContext jaxbContext = JAXBContext.newInstance(ZapReportDTO.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            StringReader reader = new StringReader(doc.toString());
+            zapReportDTO = (ZapReportDTO) unmarshaller.unmarshal(reader);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return zapReportDTO;
+    }
 
     public static class ResultEntry {
         String getName() { return "http://mysite/rest/api/user"; }
@@ -200,5 +234,3 @@ public class Results {
     }
 
 }
-
-
