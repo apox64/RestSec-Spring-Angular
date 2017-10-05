@@ -47,7 +47,8 @@ export class CrawlerComponent {
                 data => {
                   this.uploadInProgress = false;
                   console.log(data),
-                  this.numberOfAttackPointsFound = data;
+                  this.numberOfAttackPointsFound = data['numberOfEndpointsFound'];
+                  console.log(this.numberOfAttackPointsFound);
                   this.snackBar.open("Number of AttackPoints found: " + this.numberOfAttackPointsFound, "OK", {
                     duration: 5000
                   });

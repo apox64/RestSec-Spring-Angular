@@ -1,5 +1,31 @@
 <md-grid-list cols=4 rowHeight="2:1">
   <md-grid-tile rowspan=2 colspan=4>
-    <button md-fab><md-icon>file_download</md-icon></button>
+    <div fxFill class="example-container mat-elevation-z8">
+      <md-table #table [dataSource]="dataSource">
+
+        <ng-container cdkColumnDef="type">
+          <md-header-cell *cdkHeaderCellDef> Type </md-header-cell>
+          <md-cell *cdkCellDef="let element" style="text-align: left"> {{element.type}} </md-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="low">
+          <md-header-cell *cdkHeaderCellDef> Low </md-header-cell>
+          <md-cell *cdkCellDef="let element" class="low"> {{element.low}} </md-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="mid">
+          <md-header-cell *cdkHeaderCellDef> Mid </md-header-cell>
+          <md-cell *cdkCellDef="let element" class="mid"> {{element.mid}} </md-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="high">
+          <md-header-cell *cdkHeaderCellDef> High </md-header-cell>
+          <md-cell *cdkCellDef="let element" class="high"> {{element.high}} </md-cell>
+        </ng-container>
+
+        <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
+        <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
+      </md-table>
+    </div>
   </md-grid-tile>
 </md-grid-list>

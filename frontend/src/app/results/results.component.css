@@ -1,3 +1,27 @@
 md-grid-tile {
   /*background: lightgray;*/
 }
+
+.low {
+  border: solid 2px;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 10px;
+  color: #228b22;
+}
+
+.mid {
+  border: solid 2px;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 10px;
+  color: #ffa500;
+}
+
+.high {
+  border: solid 2px;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 10px;
+  color: #dc143c;
+}

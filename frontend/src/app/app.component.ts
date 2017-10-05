@@ -21,7 +21,7 @@ export class AppComponent {
 
   "darkMode": boolean = false;
   targetURL = 'http://127.0.0.1:8080';
-  selectedIndex = 2;
+  selectedIndex = 4;
   isLoading = false;
 
   runAttack() {
