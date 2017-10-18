@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Map;
 
 @RestController
@@ -46,14 +44,6 @@ public class ZapController {
     @RequestMapping(path = "start", method = RequestMethod.POST)
     public ResponseEntity zapStart(@RequestParam Map<String, String> requestParams) {
         ZapGateway zapGateway = new ZapGateway();
-//        URL targetUrl = null;
-//        try {
-//            targetUrl = new URL(requestParams.get("targetUrl"));
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        }
-//        logger.info("targetUrl: " + targetUrl.toString());
-//        zapGateway.setTargetUrl(targetUrl);
         zapGateway.runAll();
         return new ResponseEntity<String>("{\"status\" : \"done\"}", new HttpHeaders(), HttpStatus.OK);
     }

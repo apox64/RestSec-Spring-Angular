@@ -1,13 +1,16 @@
 package de.novatecgmbh.restsecspring.api.reporting;
 
 import de.novatecgmbh.restsecspring.gateway.ZapGateway;
+import de.novatecgmbh.restsecspring.logic.reporting.results.ResultsZap;
 import jdk.internal.util.xml.impl.Input;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.protocol.HTTP;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,34 +26,17 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 @RestController
-@RequestMapping(value = "/reporting/results")
+@RequestMapping(value = "/reporting/results", produces = "application/json; charset=utf-8")
 public class ResultsController {
 
-    @RequestMapping(value = "/zap", method = RequestMethod.GET)
-    public void getZapReportHtml(HttpServletResponse response) {
-        try {
-            ZapGateway zapGateway = new ZapGateway();
-            String htmlReport = zapGateway.getHtmlReport();
-
-            String fileName = "test.txt";
-
-            //response.setContentType("application/pdf");
-            response.addHeader("Content-Disposition", "attachment; filename=" + fileName);
-
-//            String source = "This is the source of my input stream";
-//            InputStream in = IOUtils.toInputStream(source, "UTF-8");
-
-            InputStream inputStream = new ByteArrayInputStream(htmlReport.getBytes(StandardCharsets.UTF_8.name()));
-            IOUtils.copy(inputStream, response.getOutputStream());
-            response.flushBuffer();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @RequestMapping(value = "/zap/simple", method = RequestMethod.GET)
+    public ResponseEntity getZapScoresSimple(HttpServletResponse response) {
+        ResultsZap resultsZap = new ResultsZap();
+        return new ResponseEntity<String>(resultsZap.getSimpleScores(), new HttpHeaders(), HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/zap/2", method = RequestMethod.GET)
-    public ResponseEntity<InputStreamResource> downloadPDFFile()
-            throws IOException {
+    @RequestMapping(path = "/zap/full", method = RequestMethod.GET)
+    public ResponseEntity<InputStreamResource> downloadZapResults() throws IOException {
 
         ZapGateway zapGateway = new ZapGateway();
         InputStream inputStream = new ByteArrayInputStream(zapGateway.getHtmlReport().getBytes());

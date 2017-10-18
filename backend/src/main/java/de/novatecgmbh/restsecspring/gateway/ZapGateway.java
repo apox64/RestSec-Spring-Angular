@@ -144,7 +144,6 @@ public class ZapGateway {
         return progress;
     }
 
-
     public String runActiveScan() {
         logger.info("Active scan : " + targetUrl);
         ApiResponse resp = null;
