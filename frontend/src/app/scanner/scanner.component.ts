@@ -178,10 +178,10 @@ export class ScannerComponent {
       .subscribe(
       (res: Response) => {
         const response = res.json();
-        // console.log("Answer from /scanner/zap/start")
-        // console.log(response);
-        if (response["status"] != "OK") {
-          console.log("something went wrong on the backend (zap).")
+        console.log("Answer from /scanner/zap/start")
+        console.log(response);
+        if (response["status"] != "done") {
+          console.log("something went wrong on the backend (zap)?")
         }
       }
       );

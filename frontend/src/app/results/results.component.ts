@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Http, Response } from '@angular/http';
 import { DataSource } from '@angular/cdk';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -12,8 +12,31 @@ import 'rxjs/add/observable/of';
 
 export class ResultsComponent {
   displayedColumns = ['type', 'low', 'mid', 'high'];
-  dataSource = new ExampleDataSource();
-  constructor(private http: HttpClient) { }
+  dataSource = new SimpleScoresDataSource();
+  constructor(private http: Http) { }
+
+  refresh() {
+    console.log("refreshing the latest report values ...");
+    this.http.get('reporting/results/zap/simple')
+    .subscribe(
+      data => {
+        const res = data.json();
+        console.log(res);
+        // access values of "data" here ... ?
+        for (let e of scores) {
+          if (e.type == "OWASP Zap Proxy") {
+            e.low = res.riskLow;
+            e.mid = res.riskMedium;
+            e.low = res.riskLow;
+          }
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
 }
 
 export interface Element {
@@ -23,18 +46,16 @@ export interface Element {
   high: number;
 }
 
-const data: Element[] = [
+const scores: Element[] = [
   { type: 'OWASP Zap Proxy', low: 0, mid: 0, high: 0 },
   { type: 'sqlmap', low: 0, mid: 0, high: 0 },
   { type: 'RestSec XSS Scanner', low: 0, mid: 0, high: 0 },
   { type: 'RestSec Security Header Scanner', low: 0, mid: 0, high: 0 },
 ];
 
-export class ExampleDataSource extends DataSource<any> {
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
+export class SimpleScoresDataSource extends DataSource<any> {
   connect(): Observable<Element[]> {
-    return Observable.of(data);
+    return Observable.of(scores);
   }
-
   disconnect() { }
 }

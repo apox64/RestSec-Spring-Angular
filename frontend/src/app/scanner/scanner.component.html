@@ -37,7 +37,7 @@
           </md-card-content>
           <md-card-actions>
             <md-checkbox class="checkbox" [(ngModel)]="scanners.zap.checked" (change)=isZapOnline()></md-checkbox>
-            <button md-mini-fab class="uncheck-button" (click)="clearZapSessions()"><md-icon>refresh</md-icon></button>
+            <button md-mini-fab class="refresh-button" (click)="clearZapSessions()"><md-icon>refresh</md-icon></button>
           </md-card-actions>
         </md-card>
         <md-card [ngClass]="scanners.sqlmap.checked ? 'scanner-card selected' : 'scanner-card not-selected'" fxLayout="column" fxLayoutAlign="space-between center" (click)="scanners.sqlmap.checked = !scanners.sqlmap.checked">
