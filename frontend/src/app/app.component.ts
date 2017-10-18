@@ -39,7 +39,7 @@ export class AppComponent {
     if (this.selectedIndex == 0) {
       this.attacksetComponent.getAttackset();
     }
-    if (this.selectedIndex == 4) {
+    if (this.selectedIndex == 3) {
        this.resultsComponent.refresh();
     }
   }

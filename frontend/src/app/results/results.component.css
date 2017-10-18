@@ -3,25 +3,28 @@ md-grid-tile {
 }
 
 .low {
-  border: solid 2px;
+  /*border: solid 2px;
   border-radius: 5px;
   padding: 5px;
-  margin: 10px;
+  margin: 10px;*/
   color: #228b22;
+  font-size: 25px;
 }
 
 .mid {
-  border: solid 2px;
+  /*border: solid 2px;
   border-radius: 5px;
   padding: 5px;
-  margin: 10px;
+  margin: 10px;*/
   color: #ffa500;
+  font-size: 25px;
 }
 
 .high {
-  border: solid 2px;
+  /*border: solid 2px;
   border-radius: 5px;
   padding: 5px;
-  margin: 10px;
+  margin: 10px;*/
   color: #dc143c;
+  font-size: 25px;
 }
