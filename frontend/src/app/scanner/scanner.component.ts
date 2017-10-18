@@ -156,6 +156,8 @@ export class ScannerComponent {
         console.log(statusOnline);
         if (res.json()["zap"] == "online") {
           this.zapReachable = true;
+          this.getZapSpiderStatus();
+          this.getZapScannerStatus();
           this.zapOnlineStatus = "ONLINE";
         } else {
           this.zapReachable = false;
@@ -200,9 +202,8 @@ export class ScannerComponent {
       .subscribe(
       data => {
         const spiderStatus = data.json();
-        var highest = Object.keys(spiderStatus.spider).sort().pop();
-        // console.log(spiderStatus.spider[highest].progress)
-        this.scanners.zap.spider.progress = spiderStatus.spider[highest].progress;
+        console.log(spiderStatus);
+        this.scanners.zap.spider.progress = spiderStatus.spider;
         if (this.scanners.zap.spider.progress == 100) {
           this.scanners.zap.spider.finished = true;
         }
@@ -216,14 +217,22 @@ export class ScannerComponent {
       .subscribe(
       (res: Response) => {
         const scannerStatus = res.json();
-        var highest = Object.keys(scannerStatus.ascan).sort().pop();
-        // console.log(scannerStatus.ascan[highest].progress)
-        this.scanners.zap.scanner.progress = scannerStatus.ascan[highest].progress;
+        this.scanners.zap.scanner.progress = scannerStatus.ascan;
         if (this.scanners.zap.scanner.progress == 100) {
           this.scanners.zap.scanner.finished = true;
         }
       }
       );
+  }
+
+  clearZapSessions() {
+    this.http.get('/scanner/zap/clear')
+    .subscribe(
+      (res: Response) => {
+        const status = res.json();
+        console.log("clearZapSessions() : " + status);
+      }
+    )
   }
 
 }
