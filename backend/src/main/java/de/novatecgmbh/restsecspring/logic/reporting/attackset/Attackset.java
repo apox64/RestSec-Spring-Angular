@@ -75,7 +75,7 @@ public class Attackset {
         attackSetJSON.remove(getIndexForID(id));
     }
 
-    void setScannedTrue(AttackableEndpoint attackableEndpoint) {
+    public void setScannedTrue(AttackableEndpoint attackableEndpoint) {
         UUID id = attackableEndpoint.getId();
         logger.info("Setting scanStatus = true for " + id);
         attackableEndpoint.setScanStatus(true);

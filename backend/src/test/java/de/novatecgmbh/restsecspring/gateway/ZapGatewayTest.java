@@ -41,7 +41,7 @@ class ZapGatewayTest {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (zapGateway.getSpiderProgress(scanID) >= 100) break;
+            if (zapGateway.getTotalSpiderProgress() >= 100) break;
         }
     }
 
@@ -54,7 +54,7 @@ class ZapGatewayTest {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (zapGateway.getActiveScanProgress(scanID) >= 100) break;
+            if (zapGateway.getAverageScannerProgress() >= 100) break;
         }
     }
 

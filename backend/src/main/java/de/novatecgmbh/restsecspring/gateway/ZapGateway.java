@@ -52,6 +52,10 @@ public class ZapGateway {
 
         Attackset attackset = Attackset.getInstance();
 
+        if (attackset.getAttackSet().length() == 0) {
+            return;
+        }
+
         logger.info("Running Spider and Scanner for each entry (" + attackset.getAttackSet().length() + ") in current Attackset.");
 
         for (int i = 0; i < attackset.getAttackSet().length(); i++) {
@@ -87,18 +91,22 @@ public class ZapGateway {
         return ((ApiResponseElement) resp).getValue();
     }
 
-    public int getSpiderProgress(String scanId) {
-        int progress = 0;
+    public String runActiveScan() {
+        logger.info("Active scan : " + targetUrl);
+        ApiResponse resp = null;
         try {
-            progress = Integer.parseInt(((ApiResponseElement) clientApi.spider.status(scanId)).getValue());
+            resp = clientApi.ascan.scan(targetUrl.toString(), "True", "False", null, null, null);
         } catch (ClientApiException e) {
             e.printStackTrace();
         }
-        logger.info("Spider progress : " + progress + "%");
-        return progress;
+        return ((ApiResponseElement) resp).getValue();
     }
 
-    public int getAverageSpiderProgress() {
+    public int getTotalSpiderProgress() {
+        return getAverageSpiderProgress();
+    }
+
+    private int getAverageSpiderProgress() {
         int progress = 0;
         try {
             ApiResponse apiResponse = clientApi.spider.scans();
@@ -144,18 +152,18 @@ public class ZapGateway {
         return progress;
     }
 
-    public String runActiveScan() {
-        logger.info("Active scan : " + targetUrl);
-        ApiResponse resp = null;
+    private int getSpiderProgress(String scanId) {
+        int progress = 0;
         try {
-            resp = clientApi.ascan.scan(targetUrl.toString(), "True", "False", null, null, null);
+            progress = Integer.parseInt(((ApiResponseElement) clientApi.spider.status(scanId)).getValue());
         } catch (ClientApiException e) {
             e.printStackTrace();
         }
-        return ((ApiResponseElement) resp).getValue();
+        logger.info("Spider progress : " + progress + "%");
+        return progress;
     }
 
-    public int getActiveScanProgress(String scanId) {
+    private int getActiveScanProgress(String scanId) {
         int progress = 0;
         try {
             progress = Integer.parseInt(((ApiResponseElement) clientApi.ascan.status(scanId)).getValue());

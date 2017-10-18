@@ -34,7 +34,7 @@ public class ZapController {
         logger.info("Status for : " + requestParams.get("type"));
         switch (type) {
             case "spider":
-                return "{ \"spider\" : \"" + String.valueOf(zapGateway.getAverageSpiderProgress()) + "\" }";
+                return "{ \"spider\" : \"" + String.valueOf(zapGateway.getTotalSpiderProgress()) + "\" }";
             case "ascan":
                 return "{ \"ascan\" : \"" + String.valueOf(zapGateway.getAverageScannerProgress()) + "\" }";
         }
