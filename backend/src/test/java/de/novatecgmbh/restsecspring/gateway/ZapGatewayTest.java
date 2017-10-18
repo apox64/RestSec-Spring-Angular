@@ -70,8 +70,6 @@ class ZapGatewayTest {
         System.out.println("------------------------------------------------------");
     }
 
-    //TODO: clear session
-
     //TODO: add recurse button
 
 }

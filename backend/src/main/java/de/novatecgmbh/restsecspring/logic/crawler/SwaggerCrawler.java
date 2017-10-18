@@ -49,7 +49,7 @@ public class SwaggerCrawler implements Crawler {
     }
 
     private void appendEndpointsToAttackset(String path, List<String> endpoints) {
-        endpoints.forEach(endpoint -> Attackset.getInstance().add(new AttackableEndpoint(hostAndBasePath + path, endpoint)));
+        endpoints.forEach(endpoint -> Attackset.getInstance().add(new AttackableEndpoint("https://" + hostAndBasePath + path, endpoint)));
     }
 
     private List<String> getHttpVerbsForPath(Path path) {

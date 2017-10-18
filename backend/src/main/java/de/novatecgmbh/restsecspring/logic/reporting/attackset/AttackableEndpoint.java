@@ -1,6 +1,7 @@
 package de.novatecgmbh.restsecspring.logic.reporting.attackset;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,10 @@ public class AttackableEndpoint {
     private boolean scanStatus = false;
 
     private static Logger logger = LoggerFactory.getLogger(AttackableEndpoint.class);
+
+    public AttackableEndpoint() {
+        this.id = UUID.randomUUID();
+    }
 
     public AttackableEndpoint(String endpointUrl, String httpVerb) {
         this.id = UUID.randomUUID();

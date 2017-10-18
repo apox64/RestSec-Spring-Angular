@@ -32,23 +32,37 @@ public class ZapController {
     @RequestMapping(path = "status", method = RequestMethod.GET)
     public String zapStatus(@RequestParam Map<String, String> requestParams) {
         ZapGateway zapGateway = new ZapGateway();
-        logger.info("type: " + requestParams.get("type"));
-        return zapGateway.getStatus(requestParams.get("type"));
+        String type = requestParams.get("type");
+        logger.info("Status for : " + requestParams.get("type"));
+        switch (type) {
+            case "spider":
+                return "{ \"spider\" : \"" + String.valueOf(zapGateway.getAverageSpiderProgress()) + "\" }";
+            case "ascan":
+                return "{ \"ascan\" : \"" + String.valueOf(zapGateway.getAverageScannerProgress()) + "\" }";
+        }
+        return "{\"error\" : \"unknown type\"}";
     }
 
     @RequestMapping(path = "start", method = RequestMethod.POST)
     public ResponseEntity zapStart(@RequestParam Map<String, String> requestParams) {
         ZapGateway zapGateway = new ZapGateway();
-        URL targetUrl = null;
-        try {
-            targetUrl = new URL(requestParams.get("targetUrl"));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        logger.info("targetUrl: " + targetUrl.toString());
-        zapGateway.setTargetUrl(targetUrl);
+//        URL targetUrl = null;
+//        try {
+//            targetUrl = new URL(requestParams.get("targetUrl"));
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        }
+//        logger.info("targetUrl: " + targetUrl.toString());
+//        zapGateway.setTargetUrl(targetUrl);
         zapGateway.runAll();
-        return new ResponseEntity<String> ("not yet implemented", new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<String>("{\"status\" : \"done\"}", new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "clear", method = RequestMethod.GET)
+    public ResponseEntity zapClear() {
+        ZapGateway zapGateway = new ZapGateway();
+        zapGateway.clearSession();
+        return new ResponseEntity<String>("{\"status\" : \"cleared\"}", new HttpHeaders(), HttpStatus.OK);
     }
 
 }
