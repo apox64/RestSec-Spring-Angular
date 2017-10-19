@@ -1,6 +1,9 @@
 <md-grid-list cols="4" rowHeight="2:1">
   <md-grid-tile colspan=1 rowspan=1>
-    <h2>Scanning Options</h2>
+    <div fxLayout="column" fxLayoutAlign="space-around center">
+      <h2>Scanning Options</h2>
+      <h3>Click scanners to turn on / off.</h3>
+    </div>
   </md-grid-tile>
 
   <md-grid-tile colspan=3 rowspan=2>
@@ -36,7 +39,7 @@
             </div>
           </md-card-content>
           <md-card-actions>
-            <md-checkbox class="checkbox" [(ngModel)]="scanners.zap.checked" (change)=isZapOnline()></md-checkbox>
+            <!-- <md-checkbox class="checkbox" [(ngModel)]="scanners.zap.checked" (change)=isZapOnline()></md-checkbox> -->
             <button md-mini-fab class="refresh-button" (click)="clearZapSessions()"><md-icon>refresh</md-icon></button>
           </md-card-actions>
         </md-card>
@@ -58,13 +61,13 @@
             </div>
           </md-card-content>
           <md-card-actions>
-            <md-checkbox class="checkbox" [(ngModel)]="scanners.sqlmap.checked"></md-checkbox>
+            <!-- <md-checkbox class="checkbox" [(ngModel)]="scanners.sqlmap.checked"></md-checkbox> -->
           </md-card-actions>
         </md-card>
         <md-card [ngClass]="scanners.restsec.xss.checked ? 'scanner-card selected' : 'scanner-card not-selected'" fxLayout="column" fxLayoutAlign="space-between center" (click)="scanners.restsec.xss.checked = !scanners.restsec.xss.checked">
           <md-card-header>
-            <md-card-title>RestSec</md-card-title>
-            <md-card-subtitle>XSS Scanner</md-card-subtitle>
+            <md-card-title>RestSec XSS Scanner</md-card-title>
+            <md-card-subtitle><span class="inbuilt-badge">BUILT-IN</span></md-card-subtitle>
           </md-card-header>
           <md-card-content>
             <div fxLayout="column" fxLayoutAlign="space-around center">
@@ -79,14 +82,14 @@
             </div>
           </md-card-content>
           <md-card-actions>
-            <md-checkbox class="checkbox" [(ngModel)]="scanners.restsec.xss.checked"></md-checkbox>
+            <!-- <md-checkbox class="checkbox" [(ngModel)]="scanners.restsec.xss.checked"></md-checkbox> -->
           </md-card-actions>
         </md-card>
         <!-- <div fxLayout="column" fxLayoutAlign="space-between center"> -->
         <md-card [ngClass]="scanners.restsec.headers.checked ? 'scanner-card selected' : 'scanner-card not-selected'" fxLayout="column" fxLayoutAlign="space-between center" (click)="scanners.restsec.headers.checked = !scanners.restsec.headers.checked">
           <md-card-header>
-            <md-card-title>RestSec</md-card-title>
-            <md-card-subtitle>Security Header Scanner</md-card-subtitle>
+            <md-card-title>RestSec Security Header Scanner</md-card-title>
+            <md-card-subtitle><span class="inbuilt-badge">BUILT-IN</span></md-card-subtitle>
           </md-card-header>
           <md-card-content>
             <div fxLayout="column" fxLayoutAlign="space-around center">
@@ -101,23 +104,23 @@
             </div>
           </md-card-content>
           <md-card-actions>
-            <md-checkbox class="checkbox" [(ngModel)]="scanners.restsec.headers.checked"></md-checkbox>
+            <!-- <md-checkbox class="checkbox" [(ngModel)]="scanners.restsec.headers.checked"></md-checkbox> -->
           </md-card-actions>
         </md-card>
         <!-- </div> -->
       </div>
-      <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="10px">
+      <!-- <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="10px">
         <button md-mini-fab class="check-button" (click)="checkAll()"><md-icon>done_all</md-icon></button>
         <button md-mini-fab class="uncheck-button" (click)="uncheckAll()"><md-icon>close</md-icon></button>
         <button md-mini-fab color='primary' class="finished-button" (click)="finishedMock()" mdTooltip="MOCK! (FAST FORWARD)"><md-icon>play_arrow</md-icon></button>
-      </div>
+      </div> -->
     </div>
   </md-grid-tile>
 
   <md-grid-tile colspan=1 rowspan=1>
     <md-card>
       <md-checkbox class="example-margin" [checked]="addAllHttpVerbs">
-        All HTTP Verbs
+        Scan all HTTP Verbs
       </md-checkbox>
     </md-card>
   </md-grid-tile>

@@ -11,7 +11,7 @@ import 'rxjs/add/observable/of';
 })
 
 export class ResultsComponent {
-  displayedColumns = ['type', 'low', 'mid', 'high'];
+  displayedColumns = ['type', 'low', 'mid', 'high', 'inspect'];
   dataSource = new SimpleScoresDataSource();
   constructor(private http: Http) { }
 
@@ -35,6 +35,15 @@ export class ResultsComponent {
         console.log(error);
       }
     )
+  }
+
+  showResults(element) {
+    console.log("Opening result details for " + element.type + " ...");
+    if (element.type == "OWASP Zap Proxy") {
+      //open new tab with results here ...
+      window.open('http://127.0.0.1:8080/reporting/results/zap/full');
+      console.log('done.');
+    }
   }
 
 }

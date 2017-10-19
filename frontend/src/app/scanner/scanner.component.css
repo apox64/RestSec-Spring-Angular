@@ -11,6 +11,17 @@ md-grid-tile {
   margin: 0 auto;
 }
 
+.inbuilt-badge {
+  border: 1px solid gray;
+  border-radius: 5px;
+  font-size: 10px;
+  color: gray;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 .isReachable {
   border: 1px solid green;
   border-radius: 5px;

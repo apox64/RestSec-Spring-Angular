@@ -39,6 +39,12 @@ export class AttacksetComponent implements OnInit {
         this.numberOfEndpoints = this.endpointDatabase.getLength();
     },
     1000);
+
+    //MOCK HERE FOR JUICE SHOP (default data)
+    if (this.numberOfEndpoints == 0) {
+      this.endpointDatabase.add("http://192.168.99.101:32768/api/Products/1", "GET");
+    }
+
   }
 
   addEndpoint() {

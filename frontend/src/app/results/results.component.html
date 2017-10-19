@@ -23,6 +23,11 @@
           <md-cell *cdkCellDef="let element" class="high"> {{element.high}} </md-cell>
         </ng-container>
 
+        <ng-container cdkColumnDef="inspect">
+          <md-header-cell *cdkHeaderCellDef> Show Details </md-header-cell>
+          <md-cell *cdkCellDef="let element" class="inspect"><button md-mini-fab (click)="showResults(element)"><md-icon>search</md-icon></button></md-cell>
+        </ng-container>
+
         <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
         <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
       </md-table>

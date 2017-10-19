@@ -17,14 +17,14 @@
   @include angular-material-theme($light-theme);
   background-color: #00BCD4;
   md-grid-tile { background: lightgray; };
-  .scanner-card.selected { background: white; }
+  .scanner-card.selected { background: white; box-shadow: 0px 0px 3px 3px #00BCD4; }
   .scanner-card.not-selected { background: lightgray; }
 }
 
 .dark-theme {
   @include angular-material-theme($dark-theme);
-  background-color: #000000;
+  background-color: #212121;
   md-grid-tile { background: gray; };
-  .scanner-card.selected { background: lightgray; color: black; }
+  .scanner-card.selected { background: lightgray; color: black; box-shadow: 0px 0px 3px 3px #FF9800; }
   .scanner-card.not-selected { background: gray; }
 }

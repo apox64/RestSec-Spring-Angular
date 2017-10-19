@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { URLSearchParams } from '@angular/http';
+import { MdSnackBar } from '@angular/material';
 import { Observable } from 'rxjs';
+
+import { AttacksetService } from '../attackset/attackset.service';
 
 @Component({
   selector: 'scanner',
@@ -11,7 +14,7 @@ import { Observable } from 'rxjs';
 
 export class ScannerComponent {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, public snackBar: MdSnackBar, private attacksetService: AttacksetService) { }
 
   // id: number;
   // name: string;
@@ -79,10 +82,31 @@ export class ScannerComponent {
   }
 
   runAllSelected() {
-    if (this.scanners.zap.checked) { this.scanners.zap.spider.finished = false; this.scanners.zap.scanner.finished = false; this.runZap() }
-    if (this.scanners.sqlmap.checked) { this.scanners.sqlmap.finished = false; this.runSqlmap() }
-    if (this.scanners.restsec.xss.checked) { this.scanners.restsec.xss.finished = false; this.runRestsecXssScanner() }
-    if (this.scanners.restsec.headers.checked) { this.scanners.restsec.headers.finished = false; this.runRestsecHeaderScanner() }
+    if (!this.scanners.zap.checked && !this.scanners.sqlmap.checked && !this.scanners.restsec.xss.checked && !this.scanners.restsec.headers.checked) {
+      this.snackBar.open("Please select at least one scanner.", "OK", {
+        duration: 5000
+      });
+    }
+    this.attacksetService.getAll()
+      .subscribe(
+      data => {
+        if (data.length == 0) {
+          this.snackBar.open("No Endpoints specified.", "OK", {
+            duration: 5000
+          });
+        } else {
+          if (this.scanners.zap.checked) { this.scanners.zap.spider.finished = false; this.scanners.zap.scanner.finished = false; this.runZap() }
+          if (this.scanners.sqlmap.checked) { this.scanners.sqlmap.finished = false; this.runSqlmap() }
+          if (this.scanners.restsec.xss.checked) { this.scanners.restsec.xss.finished = false; this.runRestsecXssScanner() }
+          if (this.scanners.restsec.headers.checked) { this.scanners.restsec.headers.finished = false; this.runRestsecHeaderScanner() }
+        }
+        console.log(data);
+      },
+      error => console.log(error),
+      () => {
+        console.log("getAll(): done.")
+      }
+      );
   }
 
   runZap() {
@@ -180,7 +204,7 @@ export class ScannerComponent {
         const response = res.json();
         console.log("Answer from /scanner/zap/start")
         console.log(response);
-        if (response["status"] != "done") {
+        if (response["status"] != "OK") {
           console.log("something went wrong on the backend (zap)?")
         }
       }
@@ -206,6 +230,8 @@ export class ScannerComponent {
         this.scanners.zap.spider.progress = spiderStatus.spider;
         if (this.scanners.zap.spider.progress == 100) {
           this.scanners.zap.spider.finished = true;
+        } else {
+          this.scanners.zap.spider.finished = false;
         }
       },
       error => console.log("something went wrong")
@@ -220,6 +246,8 @@ export class ScannerComponent {
         this.scanners.zap.scanner.progress = scannerStatus.ascan;
         if (this.scanners.zap.scanner.progress == 100) {
           this.scanners.zap.scanner.finished = true;
+        } else {
+          this.scanners.zap.scanner.finished = false;
         }
       }
       );
@@ -227,12 +255,12 @@ export class ScannerComponent {
 
   clearZapSessions() {
     this.http.get('/scanner/zap/clear')
-    .subscribe(
+      .subscribe(
       (res: Response) => {
         const status = res.json();
         console.log("clearZapSessions() : " + status);
       }
-    )
+      )
   }
 
 }
