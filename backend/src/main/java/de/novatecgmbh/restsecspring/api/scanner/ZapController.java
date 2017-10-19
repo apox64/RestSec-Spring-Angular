@@ -45,14 +45,14 @@ public class ZapController {
     public ResponseEntity zapStart(@RequestParam Map<String, String> requestParams) {
         ZapGateway zapGateway = new ZapGateway();
         zapGateway.runAll();
-        return new ResponseEntity<String>("{\"status\" : \"done\"}", new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<String>("{\"status\" : \"OK\"}", new HttpHeaders(), HttpStatus.OK);
     }
 
     @RequestMapping(path = "clear", method = RequestMethod.GET)
     public ResponseEntity zapClear() {
         ZapGateway zapGateway = new ZapGateway();
         zapGateway.clearSession();
-        return new ResponseEntity<String>("{\"status\" : \"cleared\"}", new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<String>("{\"status\" : \"OK\"}", new HttpHeaders(), HttpStatus.OK);
     }
 
 }

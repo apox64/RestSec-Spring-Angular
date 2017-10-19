@@ -51,7 +51,7 @@ public class ResultsController {
                 .headers(headers)
 //                .contentLength(htmlFile.contentLength())
                 .contentLength(zapGateway.getHtmlReport().length())
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .contentType(MediaType.parseMediaType("text/html"))
 //                .body(new InputStreamResource(htmlFile.getInputStream()));
                 .body(new InputStreamResource(inputStream));
     }
