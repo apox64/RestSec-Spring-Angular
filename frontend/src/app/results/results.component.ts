@@ -21,18 +21,34 @@ export class ResultsComponent {
     .subscribe(
       data => {
         const res = data.json();
+        console.log("zap (simple)");
         console.log(res);
         // access values of "data" here ... ?
         for (let e of scores) {
           if (e.type == "OWASP Zap Proxy") {
             e.low = res.riskLow;
             e.mid = res.riskMedium;
-            e.low = res.riskLow;
+            e.high = res.riskHigh;
           }
         }
       },
       error => {
         console.log(error);
+      }
+    )
+    this.http.get('reporting/results/headerscan')
+    .subscribe(
+      data => {
+        const res = data.json();
+        console.log("headerscan");
+        console.log(res);
+        for (let e of scores) {
+          if (e.type == "RestSec Security Header Scanner") {
+            e.low = res.riskLow;
+            e.mid = res.riskMedium;
+            e.high = res.riskHigh;
+          }
+        }
       }
     )
   }

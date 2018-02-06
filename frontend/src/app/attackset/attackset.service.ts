@@ -19,13 +19,14 @@ export class AttacksetService {
       .map(res => res.json());
   }
 
-  add(endpointUrl: string, httpVerb: string) {
+  add(endpointUrl: string, httpVerb: string, authToken: string) {
     const attackableEndpoint = {
       endpointUrl: endpointUrl,
       httpVerb: httpVerb,
+      authToken: authToken,
       scanStatus : false
     }
-    console.log("attackset.service : add(" + attackableEndpoint.endpointUrl + ", " + attackableEndpoint.httpVerb + ", " + attackableEndpoint.scanStatus + ")")
+    console.log("attackset.service : add(" + attackableEndpoint.endpointUrl + ", " + attackableEndpoint.httpVerb + ", " + attackableEndpoint.authToken + ", "+ attackableEndpoint.scanStatus + ")")
     return this._http.post('reporting/attackset', attackableEndpoint)
       .map(res => res.json());
   }

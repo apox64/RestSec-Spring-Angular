@@ -26,6 +26,11 @@
           <md-header-cell fxFlex="100px" *cdkHeaderCellDef md-sort-header> HTTP Verb </md-header-cell>
           <md-cell fxFlex="100px" *cdkCellDef="let row"> {{row.httpVerb}} </md-cell>
         </ng-container>
+        <!-- AuthToken-->
+        <ng-container cdkColumnDef="authToken">
+          <md-header-cell fxFlex="100px" *cdkHeaderCellDef md-sort-header> Auth Token </md-header-cell>
+          <md-cell fxFlex="100px" *cdkCellDef="let row"> {{row.authToken}} </md-cell>
+        </ng-container>
         <!-- Scan Status Column -->
         <ng-container cdkColumnDef="scanStatus">
           <md-header-cell fxFlex="100px" *cdkHeaderCellDef md-sort-header> Scan Status </md-header-cell>
@@ -48,6 +53,9 @@
         <div fxLayout="column" fxLayoutAlign="start center">
           <md-input-container md-block>
             <input mdInput type="url" placeholder="Endpoint URL" [(ngModel)]="endpointUrl">
+          </md-input-container>
+          <md-input-container md-block>
+            <input mdInput type="string" placeholder="Auth Token" [(ngModel)]="authToken">
           </md-input-container>
           <md-select placeholder="HTTP Verb" [(ngModel)]="httpVerb" name="httpVerbs" class="selector-http-verbs">
             <md-option *ngFor="let httpVerb of httpVerbs" [value]="httpVerb">

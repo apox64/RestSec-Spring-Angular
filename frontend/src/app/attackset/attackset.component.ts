@@ -4,6 +4,7 @@ import { MdSort } from '@angular/material';
 import { DataSource } from '@angular/cdk';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { MdSnackBar } from '@angular/material';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
@@ -19,18 +20,19 @@ import { AttacksetService } from './attackset.service';
 })
 
 export class AttacksetComponent implements OnInit {
-  public displayedColumns = [ 'endpointUrl', 'httpVerb', 'scanStatus', 'delete' ];
+  public displayedColumns = [ 'endpointUrl', 'httpVerb', 'authToken', 'scanStatus', 'delete' ];
   public endpointDatabase: EndpointDatabase | null;
   public dataSource: EndpointDataSource | null;
 
   numberOfEndpoints = 0;
   endpointUrl: string;
   httpVerb = 'GET';
-  httpVerbs = [ 'GET', 'POST', 'PUT', 'DELETE' ]
+  httpVerbs = [ 'GET', 'POST', 'PUT', 'DELETE' ];
+  authToken: string;
 
   @ViewChild(MdSort) sort: MdSort;
 
-  constructor(private _attacksetService: AttacksetService) { }
+  constructor(private _attacksetService: AttacksetService, private _snackBar: MdSnackBar) { }
 
   getAttackset() {
     console.log("getAttackset()")
@@ -42,14 +44,14 @@ export class AttacksetComponent implements OnInit {
 
     //MOCK HERE FOR JUICE SHOP (default data)
     if (this.numberOfEndpoints == 0) {
-      this.endpointDatabase.add("http://192.168.99.101:32768/api/Products/1", "GET");
+      this.endpointDatabase.add("http://192.168.99.101:32768/api/Products/1", "GET", "none");
     }
 
   }
 
   addEndpoint() {
-    console.log("addEndpoint(\"" + this.endpointUrl + "\", \"" + this.httpVerb + "\")")
-    this.endpointDatabase.add(this.endpointUrl, this.httpVerb);
+    console.log("addEndpoint(\"" + this.endpointUrl + "\", \"" + this.httpVerb + "\", \"" + this.authToken + "\")")
+    this.endpointDatabase.add(this.endpointUrl, this.httpVerb, this.authToken);
     this.getAttackset();
   }
 
@@ -66,7 +68,7 @@ export class AttacksetComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.endpointDatabase = new EndpointDatabase(this._attacksetService);
+    this.endpointDatabase = new EndpointDatabase(this._attacksetService, this._snackBar);
     this.dataSource = new EndpointDataSource(this.endpointDatabase, this.sort);
     this.getAttackset();
   }
@@ -119,7 +121,7 @@ export class EndpointDatabase {
   public dataChange: BehaviorSubject<AttackableEndpoint[]> = new BehaviorSubject<AttackableEndpoint[]>([]);
   get data(): AttackableEndpoint[] { return this.dataChange.value; }
 
-  constructor(private _attacksetService: AttacksetService) { }
+  constructor(private _attacksetService: AttacksetService, private _snackBar: MdSnackBar) { }
 
   getAll() {
     this._attacksetService.getAll()
@@ -127,15 +129,20 @@ export class EndpointDatabase {
       data => {
         this.dataChange.next(data);
       },
-      error => console.log(error),
+      error => {
+        console.log(error),
+        this._snackBar.open("Backend seems to be offline ...", "OK", {
+          duration: 2000
+        });
+      },
       () => {
         console.log("getAll(): done.")
       }
     );
   }
 
-  add(entrypointUrl: string, httpVerb: string) {
-    this._attacksetService.add(entrypointUrl, httpVerb)
+  add(entrypointUrl: string, httpVerb: string, authToken: string) {
+    this._attacksetService.add(entrypointUrl, httpVerb, authToken)
     .subscribe(
       data => {
         console.log(data)
