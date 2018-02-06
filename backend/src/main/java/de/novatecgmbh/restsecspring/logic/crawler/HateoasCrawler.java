@@ -56,7 +56,7 @@ public class HateoasCrawler implements Crawler {
         logger.info("Crawling for HATEOAS Links on \"" + entryPoint + "\" ...");
         if (httpUtils.checkIfOnline(entryPoint)) {
             discoverLinks(entryPoint);
-            urls.forEach((url, isVisited) -> Attackset.getInstance().add(new AttackableEndpoint(url, "GET")));
+            urls.forEach((url, isVisited) -> Attackset.getInstance().add(new AttackableEndpoint(url, "GET", "")));
         }
     }
 

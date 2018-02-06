@@ -17,6 +17,9 @@ public class AttackableEndpoint {
     @JsonProperty("endpointUrl")
     private String endpointUrl = "";
 
+    @JsonProperty("authToken")
+    private String authToken = "";
+
     @JsonProperty("scanStatus")
     private boolean scanStatus = false;
 
@@ -26,10 +29,11 @@ public class AttackableEndpoint {
         this.id = UUID.randomUUID();
     }
 
-    public AttackableEndpoint(String endpointUrl, String httpVerb) {
+    public AttackableEndpoint(String endpointUrl, String httpVerb, String authToken) {
         this.id = UUID.randomUUID();
         this.endpointUrl = endpointUrl;
         this.httpVerb = httpVerb;
+        this.authToken = authToken;
         this.scanStatus = false;
     }
 
@@ -44,6 +48,8 @@ public class AttackableEndpoint {
     public String getHttpVerb() {
         return httpVerb;
     }
+
+    public String getAuthToken() { return authToken; }
 
     public boolean getScanStatus() {
         return scanStatus;

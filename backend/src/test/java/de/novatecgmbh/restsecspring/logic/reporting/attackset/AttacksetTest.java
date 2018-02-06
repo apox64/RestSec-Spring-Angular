@@ -13,9 +13,9 @@ class AttacksetTest {
 
     @BeforeEach
     void setUp() {
-        endpoint1 = new AttackableEndpoint("http://127.0.0.1.local/rest/1", "GET");
+        endpoint1 = new AttackableEndpoint("http://127.0.0.1.local/rest/1", "GET", "");
         endpoint1.setScanStatus(false);
-        endpoint2 = new AttackableEndpoint("http://127.0.0.1.local/rest/2", "POST");
+        endpoint2 = new AttackableEndpoint("http://127.0.0.1.local/rest/2", "POST", "");
         endpoint2.setScanStatus(false);
     }
 

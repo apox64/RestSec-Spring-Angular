@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -32,12 +33,13 @@ public class Attackset {
             if (getIndexForID(id) >= 0) {
                 return;
             }
-            logger.info("+ " + id + " : " + attackableEndpoint.getEndpointURL() + " : " + attackableEndpoint.getHttpVerb());
+            logger.info("[+] " + id + " : " + attackableEndpoint.getEndpointURL() + " : " + attackableEndpoint.getHttpVerb() + " : " + attackableEndpoint.getAuthToken());
             JSONObject attackableEndpointJSON = new JSONObject();
             try {
                 attackableEndpointJSON.put("id", id.toString());
                 attackableEndpointJSON.put("httpVerb", attackableEndpoint.getHttpVerb());
                 attackableEndpointJSON.put("endpointUrl", attackableEndpoint.getEndpointURL());
+                attackableEndpointJSON.put("authToken", attackableEndpoint.getAuthToken());
                 attackableEndpointJSON.put("scanStatus", attackableEndpoint.getScanStatus());
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -47,12 +49,12 @@ public class Attackset {
     }
 
     public void removeById(UUID attackableEndpointID) {
-        logger.info("- " + attackableEndpointID + "");
+        logger.info("[-] " + attackableEndpointID + "");
         attackSetJSON.remove(getIndexForID(attackableEndpointID));
     }
 
     public void removeAll() {
-        logger.info("- Attackset (complete)");
+        logger.info("[-] Attackset (complete)");
         attackSetJSON = new JSONArray();
     }
 
@@ -71,7 +73,7 @@ public class Attackset {
 
     void removeByAttackableEndpoint(AttackableEndpoint attackableEndpoint) {
         UUID id = attackableEndpoint.getId();
-        logger.info("- " + id + " : " + attackableEndpoint.getEndpointURL() + " : " + attackableEndpoint.getHttpVerb());
+        logger.info("[-] " + id + " : " + attackableEndpoint.getEndpointURL() + " : " + attackableEndpoint.getHttpVerb());
         attackSetJSON.remove(getIndexForID(id));
     }
 
